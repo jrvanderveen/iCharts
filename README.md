@@ -1,5 +1,19 @@
 # iCharts
 
+## Running
+
+### iOS
+
+First, meet the [requirements](http://facebook.github.io/react-native/docs/getting-started.html#requirements) on the getting started guide.
+
+Then, check out the repository and run the following inside it:
+
+`$ npm install`
+
+open `iCharts/ios/iCharts.xcodeproj` and hit run, or run `react-native run-ios` from the repository's root directory.
+
+If you have errors compiling due to linking errors, removing the derived data may help. Quit Xcode, delete `/Users/{you}/Library/Developer/Xcode/DerivedData`, and re-open Xcode.
+
 ## Style Guide
 
 ### Code
