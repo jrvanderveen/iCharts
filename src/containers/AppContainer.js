@@ -20,6 +20,7 @@ import { getSavedCharts } from '../utility/StorageUtility';
 
 const statusBarHeight = 0;
 const menuWidth = 200;
+const headerHeight = 50;
 const screenHeight = Dimensions.get('window').height;
 
 class AppContainer extends Component {
@@ -52,15 +53,6 @@ class AppContainer extends Component {
     });
   }
 
-  handleVerticalScroll(gestureStateDy: number) {
-    console.log("****************VERTICAL SCROLLL!!", gestureStateDy, this.chartsContainer !== null, this.state.route,
-      Scenes.HOME,
-      this.chartsContainer !== null && this.state.route === Scenes.HOME);
-    if (this.chartsContainer !== null && this.state.route === Scenes.HOME) {
-      this.chartsContainer.scrollTo(-gestureStateDy)
-    }
-  }
-
   getCurrentSceneForRoute() {
     switch (this.state.route.toLowerCase()) {
       case Scenes.HOME:
@@ -78,6 +70,7 @@ class AppContainer extends Component {
       <Header
         title={this.state.route.toUpperCase()}
         onPress={() => this.handleHeaderPress()}
+        headerHeight={headerHeight}
       />;
 
     const currentScene = this.getCurrentSceneForRoute();
@@ -90,8 +83,9 @@ class AppContainer extends Component {
           menuWidth={menuWidth}
           menuOpenBuffer={100}
           headerComponent={header}
+          headerHeight={headerHeight}
           useLinearGradient={true}
-          onVerticalScroll={(yValue) => this.handleVerticalScroll(yValue)}
+          respondOnStart={this.state.route !== Scenes.HOME}
           height={screenHeight - statusBarHeight}>
           {currentScene}
         </SideMenu>

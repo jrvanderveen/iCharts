@@ -31,14 +31,6 @@ class VFRChartsContainer extends Component {
 
     // bindings
     this.renderRow = this.renderRow.bind(this);
-    this.scrollTo = this.scrollTo.bind(this);
-  }
-
-  scrollTo(yValue: number) {
-    if (this.listView !== null) {
-      console.log("****************SCROLLING");
-      this.listView.scrollTo({y: yValue, animation: false});
-    }
   }
 
   renderRow(vfrChart: VFRChart) {

@@ -17,25 +17,40 @@ const screenHeight = Dimensions.get('window').height;
 
 class SideMenu extends Component {
   static propTypes = {
-    headerComponent: PropTypes.element,
+    headerComponent: PropTypes.element.isRequired,
+    headerHeight: PropTypes.number.isRequired,
     height: PropTypes.number,
     menu: PropTypes.element,
     menuWidth: PropTypes.number.isRequired,
     menuOpenBuffer: PropTypes.number.isRequired,
-    onVerticalScroll: PropTypes.func.isRequired,
     openMenu: PropTypes.bool,
+    respondOnStart: PropTypes.bool.isRequired,
     useLinearGradient: PropTypes.bool,
     width: PropTypes.number,
   }
   
   constructor(props) {
     super(props);
+
+    // bindings
+    this._menuIsOpenToThreshold = this._menuIsOpenToThreshold.bind(this);
+    this._openOrCloseMenu = this._openOrCloseMenu.bind(this);
+    this._absoluteXValueOfCurrentSceneDuringPan = this._absoluteXValueOfCurrentSceneDuringPan.bind(this);
+    this._touchIsOnHeader = this._touchIsOnHeader.bind(this);
+
+    // State not used in render method
+    this._isMenuOpen = false;
+
     this.state = {
       pan: new Animated.ValueXY(),
       panResponder: PanResponder.create({
-        onStartShouldSetPanResponder: () => true,
+        onStartShouldSetPanResponder: (evt, gestureState) => {
+          console.log("***********************WE GOT A TOUCH ON START!", this.props.respondOnStart);
+          return this.props.respondOnStart ? this.props.respondOnStart : false;
+        },
         onMoveShouldSetPanResponder: (evt, gestureState) => {
-          return (gestureState.dx != 0 && gestureState.dy != 0);
+          console.log("***********************WE GOT A TOUCH ON MOVE!", gestureState.dx, gestureState.dy);
+          return this._isMenuOpen || (gestureState.dx != 0 && gestureState.dy != 0 && gestureState.dx > gestureState.dy);
         },
         onPanResponderGrant: this._handlePanResponderGrant.bind(this),
         onPanResponderMove: this._handlePanResponderMove.bind(this),
@@ -43,15 +58,6 @@ class SideMenu extends Component {
         onPanResponderTerminate: this._handlePanResponderEnd.bind(this),
       })
     };
-
-    // State not used in render method
-    this._isMenuOpen = false;
-    this._scrollControl = false;
-
-    // bindings
-    this._menuIsOpenToThreshold = this._menuIsOpenToThreshold.bind(this);
-    this._openOrCloseMenu = this._openOrCloseMenu.bind(this);
-    this._absoluteXValueOfCurrentSceneDuringPan = this._absoluteXValueOfCurrentSceneDuringPan.bind(this);
   }
 
   componentWillReceiveProps(nextProps: object) {
@@ -99,19 +105,11 @@ class SideMenu extends Component {
   }
 
   _handlePanResponderMove(e: Object, gestureState: Object) {
-    if (!this._scrollControl) {
-      this._scrollControl = Math.abs(gestureState.dx) > Math.abs(gestureState.dy);
-    }
-    if (this._scrollControl) {
-      // update pan.x unless pan goes off left of screen. Then set pan to be the very left 
-      if (this._absoluteXValueOfCurrentSceneDuringPan(gestureState.dx) >= 0)
-        this.state.pan.setValue({x: gestureState.dx, y: 0});
-      else
-        this.state.pan.setValue({x: this._isMenuOpen ? -this.props.menuWidth : 0, y: 0});
-    } else {
-      // the user is scrolling vertically
-      this.props.onVerticalScroll(gestureState.dy);
-    }
+    // update pan.x unless pan goes off left of screen. Then set pan to be the very left 
+    if (this._absoluteXValueOfCurrentSceneDuringPan(gestureState.dx) >= 0)
+      this.state.pan.setValue({x: gestureState.dx, y: 0});
+    else
+      this.state.pan.setValue({x: this._isMenuOpen ? -this.props.menuWidth : 0, y: 0});
   }
 
   _handlePanResponderEnd(e: Object, gestureState: Object) {
@@ -123,7 +121,6 @@ class SideMenu extends Component {
     // reset the offset to 0 because we are manually setting the x value to be absolute
     let shouldMenuOpen = this._menuIsOpenToThreshold(gestureState.dx);
     this._openOrCloseMenu(shouldMenuOpen);
-    this._scrollControl = false;
   }
 
   _openOrCloseMenu(openMenu: bool) {
@@ -151,6 +148,11 @@ class SideMenu extends Component {
     return !this._isMenuOpen
       ? xPosition
       : this.props.menuWidth + xPosition;
+  }
+
+  _touchIsOnHeader(gestureState: object) {
+    console.log("***********************CHECKING WHERE THE TOUCH IS: ", gestureState.moveX, gestureState.moveY, gestureState.dx, gestureState.dy)
+    return gestureState.y0 < this.props.headerHeight;
   }
 }
 

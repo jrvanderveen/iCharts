@@ -1,7 +1,7 @@
 // @flow
 'use strict';
 
-import React from 'react';
+import React, { PropTypes } from 'react';
 import {
   StyleSheet,
   Text,
@@ -13,7 +13,7 @@ import FontStyles from '../styles/FontStyles';
 
 const Header = (props) => {
   return (
-    <View style={styles.header}>
+    <View style={[styles.header, {height: props.headerHeight}]}>
       <TouchableHighlight
         underlayColor='transparent'
         style={{justifyContent: 'center', alignItems: 'center',}}
@@ -26,13 +26,18 @@ const Header = (props) => {
   );
 }
 
+Header.propTypes = {
+  headerHeight: PropTypes.number.isRequired,
+  onPress: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired
+};
+
 const styles = StyleSheet.create({
   header: {
     paddingTop: 8,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: Colors.primary,
-    height: 50
   },
   hamburgerButton: {
 
