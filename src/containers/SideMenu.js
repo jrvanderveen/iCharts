@@ -74,7 +74,7 @@ class SideMenu extends Component {
             {this.props.useLinearGradient
               ? <LinearGradient
                   start={[0.0, 0.0]} end={[1.0, 0.0]}
-                  colors={['transparent', 'rgba(0, 0, 0, 0.3)']}
+                  colors={['transparent', 'rgba(0, 0, 0, 0.1)']}
                   style={styles.linearGradient}
                 />
               : <View />}
