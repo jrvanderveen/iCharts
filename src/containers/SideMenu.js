@@ -23,6 +23,7 @@ class SideMenu extends Component {
     menuWidth: PropTypes.number.isRequired,
     menuOpenBuffer: PropTypes.number.isRequired,
     openMenu: PropTypes.bool,
+    onMenuOpened: PropTypes.func,
     useLinearGradient: PropTypes.bool,
     width: PropTypes.number,
   }
@@ -127,6 +128,8 @@ class SideMenu extends Component {
     ).start();
 
     this._isMenuOpen = openMenu;
+    if (this.props.onMenuOpened)
+      this.props.onMenuOpened(this._isMenuOpen);
   }
 
   _menuIsOpenToThreshold(xPosition: number) {

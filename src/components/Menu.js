@@ -24,14 +24,16 @@ const Menu = (props) => {
   return (
     <View style={styles.menu}>
       <MenuCell
+        iconName="ios-home-outline"
         onPress={props.onPress}
         scene={Scenes.HOME}
         menuWidth={props.menuWidth}
       />
-      <View style={{alignItems: 'flex-start'}}>
+      <View style={{alignItems: "flex-start"}}>
         <Border style={borderStyle} />
       </View>
       <MenuCell
+        iconName="ios-settings-outline"
         onPress={props.onPress}
         scene={Scenes.SETTINGS}
         menuWidth={props.menuWidth}

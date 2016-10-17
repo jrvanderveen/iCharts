@@ -18,8 +18,7 @@ import SideMenu from './SideMenu';
 import Colors from '../styles/Colors';
 import { getSavedCharts } from '../utility/StorageUtility';
 
-const statusBarHeight = 0;
-const menuWidth = 200;
+const menuWidth = 120;
 const screenHeight = Dimensions.get('window').height;
 
 class AppContainer extends Component {
@@ -30,6 +29,9 @@ class AppContainer extends Component {
       openMenu: false,
       savedVfrCharts: [],
     };
+
+    // Track the state of the menu to determine whether to open or close it when the header is clicked
+    this._isMenuOpen = false;
   }
 
   componentDidMount() {
@@ -44,7 +46,7 @@ class AppContainer extends Component {
 
   handleHeaderPress() {
     this.setState({
-      openMenu: true
+      openMenu: !this._isMenuOpen
     });
   }
   
@@ -53,6 +55,10 @@ class AppContainer extends Component {
       route: route,
       openMenu: false
     });
+  }
+
+  handleMenuOpen(isMenuOpen: bool) {
+    this._isMenuOpen = isMenuOpen;
   }
 
   getCurrentSceneForRoute() {
@@ -83,10 +89,11 @@ class AppContainer extends Component {
           openMenu={this.state.openMenu}
           menu={menu}
           menuWidth={menuWidth}
-          menuOpenBuffer={100}
+          menuOpenBuffer={menuWidth / 2}
           headerComponent={header}
           useLinearGradient={true}
-          height={screenHeight - statusBarHeight}>
+          onMenuOpened={(isMenuOpen) => this.handleMenuOpen(isMenuOpen)}
+          height={screenHeight}>
           {currentScene}
         </SideMenu>
       </View>
@@ -97,7 +104,6 @@ class AppContainer extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: statusBarHeight,
   }
 });
 

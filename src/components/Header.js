@@ -9,6 +9,7 @@ import {
   TouchableHighlight,
   View
 } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import Border from './Border';
 import Colors from '../styles/Colors';
 import FontStyles from '../styles/FontStyles';
@@ -20,13 +21,16 @@ const Header = (props) => {
     <View style={{flex: 1}}>
       <View style={styles.header}>
         <TouchableHighlight
-          underlayColor='transparent'
-          style={{justifyContent: 'center', alignItems: 'center'}}
+          underlayColor={Colors.primary}
+          style={styles.icon}
           onPress={() => props.onPress()}>
+          <Icon style={{paddingTop: 3}} name="ios-list-outline" size={20} color={Colors.border} />
+        </TouchableHighlight>
+        <View style={styles.title}>
           <Text style={FontStyles.title}>
             {props.title}
           </Text>
-        </TouchableHighlight>
+        </View>
       </View>
       <Border style={styles.border} />
     </View>
@@ -42,15 +46,31 @@ const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     backgroundColor: Colors.primary,
-    height: 50,
-    justifyContent: 'center',
-    paddingTop: 12,
+    flexDirection: 'row',
+    height: 65,
+    justifyContent: 'flex-start',
+    paddingTop: 10,
   },
   border: {
     height: 1,
     marginTop: -1,
     width: screenWidth - 10,
   },
+  icon: {
+    alignItems: 'center',
+    backgroundColor: Colors.secondary,
+    borderRadius: 15,
+    borderWidth: 0.5,
+    height: 30,
+    justifyContent: 'center',
+    margin: 15,
+    width: 30,
+  },
+  title: {
+    alignItems: 'center',
+    flex: 1,
+    paddingRight: 60
+  }
 });
 
 export default Header;
