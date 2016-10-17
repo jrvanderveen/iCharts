@@ -16,11 +16,12 @@ import FontStyles from '../styles/FontStyles';
 
 class VFRChartsList extends Component {
   static propTypes = {
-    vfrChartsToShow: PropTypes.object.isRequired
+    vfrChartsToShow: PropTypes.arrayOf(Object).isRequired
   }
   
   constructor(props) {
     super(props);
+    this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
     // bindings
     this.renderRow = this.renderRow.bind(this);
@@ -38,11 +39,12 @@ class VFRChartsList extends Component {
   }
 
   render() {
+    let vfrChartsToShow = this.props.vfrChartsToShow ? this.props.vfrChartsToShow : []; 
     return (
       <View style={styles.container}>
         <ListView
           enableEmptySections={true}
-          dataSource={this.props.vfrChartsToShow}
+          dataSource={this.ds.cloneWithRows(vfrChartsToShow)}
           renderRow={this.renderRow}
         />
       </View>

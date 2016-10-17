@@ -21,7 +21,6 @@ import { getSavedCharts } from '../utility/StorageUtility';
 const statusBarHeight = 0;
 const menuWidth = 200;
 const screenHeight = Dimensions.get('window').height;
-const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 class AppContainer extends Component {
   constructor(props) {
@@ -30,7 +29,6 @@ class AppContainer extends Component {
       route: Scenes.HOME,
       openMenu: false,
       savedVfrCharts: [],
-      vfrChartsToShow: ds.cloneWithRows([])
     };
   }
 
@@ -41,7 +39,6 @@ class AppContainer extends Component {
 
     this.setState({
       savedVfrCharts: savedVfrCharts,
-      vfrChartsToShow: ds.cloneWithRows(savedVfrCharts)
     });
   }
 
@@ -61,12 +58,12 @@ class AppContainer extends Component {
   getCurrentSceneForRoute() {
     switch (this.state.route.toLowerCase()) {
       case Scenes.HOME:
-        return <VFRChartsList vfrChartsToShow={this.state.vfrChartsToShow} />;
+        return <VFRChartsList vfrChartsToShow={this.state.savedVfrCharts} />;
       case Scenes.SETTINGS:
         return <Settings />;
       default:
         console.log("Unkown route: ", route);
-        return <VFRChartsList vfrChartsToShow={this.state.vfrChartsToShow} />;
+        return <VFRChartsList vfrChartsToShow={this.state.savedVfrCharts} />;
     }
   }
   
