@@ -5,6 +5,16 @@ export default FontStyles = StyleSheet.create({
   title: {
     color: Colors.text,
     fontSize: 16,
-    fontFamily: 'PingFangHK-SemiBold'
+    fontFamily: 'HelveticaNeue-Bold'
+  },
+  menu: {
+    color: Colors.text,
+    fontSize: 14,
+    fontFamily: 'HelveticaNeue-Medium'
+  },
+  thin: {
+    color: Colors.text,
+    fontSize: 16,
+    fontFamily: 'HelveticaNeue-Thin'
   }
 });

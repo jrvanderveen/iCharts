@@ -8,11 +8,12 @@ import {
   View
 } from 'react-native';
 import Colors from '../styles/Colors';
+import FontStyles from '../styles/FontStyles';
 
 const Settings = (props) => {
   return (
     <View style={styles.settings}>
-      <Text>
+      <Text style={FontStyles.thin}>
         Settings!
       </Text>
     </View>

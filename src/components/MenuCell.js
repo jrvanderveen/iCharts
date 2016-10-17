@@ -13,14 +13,14 @@ import FontStyles from '../styles/FontStyles';
 
 const MenuCell = (props) => {
   let cellSizeStyle = {
-    paddingLeft: props.menuWidth * 0.1,
+    paddingLeft: props.menuWidth * 0.15,
     paddingRight: props.menuWidth * 0.2,
     width: props.menuWidth
   } 
   return (
     <View style={[styles.default, cellSizeStyle]}>
       <TouchableHighlight onPress={() => props.onPress(props.scene)} underlayColor='transparent'>
-        <Text style={FontStyles.text}>
+        <Text style={FontStyles.menu}>
           This will be a really cool menu icon!
         </Text>
       </TouchableHighlight>
@@ -36,8 +36,8 @@ MenuCell.propTypes = {
 
 const styles = StyleSheet.create({
   default: {
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: 15,
     marginTop: 15,
   },

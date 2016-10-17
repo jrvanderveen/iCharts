@@ -10,35 +10,26 @@ import {
   View
 } from 'react-native';
 import VFRChart from '../model/VFRChart';
-import Scenes from './Scenes';
+import Scenes from '../containers/Scenes';
 import Colors from '../styles/Colors';
+import FontStyles from '../styles/FontStyles';
 
-const index = 0;
-
-class VFRChartsContainer extends Component {
+class VFRChartsList extends Component {
   static propTypes = {
-    vfrChartsToShow: PropTypes.arrayOf(Object).isRequired
+    vfrChartsToShow: PropTypes.object.isRequired
   }
   
   constructor(props) {
     super(props);
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-    this.state = {
-      dataSource: ds.cloneWithRows(props.vfrChartsToShow),
-    };
-
-    this.listView = null;
 
     // bindings
     this.renderRow = this.renderRow.bind(this);
   }
 
   renderRow(vfrChart: VFRChart) {
-    index++;
     return (
-      <View style={{height: 60}}>
-        <Text>
-          {index}
+      <View style={{height: 60, paddingTop: 10}}>
+        <Text style={FontStyles.thin}>
           {vfrChart.regionId}
           {vfrChart.regionName}
         </Text>
@@ -50,10 +41,8 @@ class VFRChartsContainer extends Component {
     return (
       <View style={styles.container}>
         <ListView
-          ref={(ref) => {
-            this.listView = ref;
-          }}
-          dataSource={this.state.dataSource}
+          enableEmptySections={true}
+          dataSource={this.props.vfrChartsToShow}
           renderRow={this.renderRow}
         />
       </View>
@@ -63,11 +52,11 @@ class VFRChartsContainer extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: Colors.secondary,
-    flex: 1
+    flex: 1,
+    justifyContent: 'center',
   }
 });
 
-export default VFRChartsContainer;
+export default VFRChartsList;

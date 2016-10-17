@@ -18,13 +18,11 @@ const screenHeight = Dimensions.get('window').height;
 class SideMenu extends Component {
   static propTypes = {
     headerComponent: PropTypes.element.isRequired,
-    headerHeight: PropTypes.number.isRequired,
     height: PropTypes.number,
     menu: PropTypes.element,
     menuWidth: PropTypes.number.isRequired,
     menuOpenBuffer: PropTypes.number.isRequired,
     openMenu: PropTypes.bool,
-    respondOnStart: PropTypes.bool.isRequired,
     useLinearGradient: PropTypes.bool,
     width: PropTypes.number,
   }
@@ -36,7 +34,6 @@ class SideMenu extends Component {
     this._menuIsOpenToThreshold = this._menuIsOpenToThreshold.bind(this);
     this._openOrCloseMenu = this._openOrCloseMenu.bind(this);
     this._absoluteXValueOfCurrentSceneDuringPan = this._absoluteXValueOfCurrentSceneDuringPan.bind(this);
-    this._touchIsOnHeader = this._touchIsOnHeader.bind(this);
 
     // State not used in render method
     this._isMenuOpen = false;
@@ -44,13 +41,9 @@ class SideMenu extends Component {
     this.state = {
       pan: new Animated.ValueXY(),
       panResponder: PanResponder.create({
-        onStartShouldSetPanResponder: (evt, gestureState) => {
-          console.log("***********************WE GOT A TOUCH ON START!", this.props.respondOnStart);
-          return this.props.respondOnStart ? this.props.respondOnStart : false;
-        },
+        onStartShouldSetPanResponder: () => true,
         onMoveShouldSetPanResponder: (evt, gestureState) => {
-          console.log("***********************WE GOT A TOUCH ON MOVE!", gestureState.dx, gestureState.dy);
-          return this._isMenuOpen || (gestureState.dx != 0 && gestureState.dy != 0 && gestureState.dx > gestureState.dy);
+          return gestureState.dx != 0 && gestureState.dy != 0;
         },
         onPanResponderGrant: this._handlePanResponderGrant.bind(this),
         onPanResponderMove: this._handlePanResponderMove.bind(this),
@@ -76,25 +69,25 @@ class SideMenu extends Component {
         <View style={menuStyle}>
           {this.props.menu}
         </View>
-        <Animated.View
-          {...this.state.panResponder.panHandlers}
-          style={[this.state.pan.getLayout(), menuStyle]}>
+        <Animated.View style={[this.state.pan.getLayout(), menuStyle]}>
           <View style={this.props.useLinearGradient ? styles.sceneContainer : [styles.sceneContainer, {marginLeft: 0}]}>
-              {this.props.useLinearGradient ?
-                <LinearGradient
+            {this.props.useLinearGradient
+              ? <LinearGradient
                   start={[0.0, 0.0]} end={[1.0, 0.0]}
                   colors={['transparent', 'rgba(0, 0, 0, 0.3)']}
                   style={styles.linearGradient}
                 />
-                : <View />}
-              <View style={{flex: 1}}>
+              : <View />}
+            <View style={{flex: 1}}>
+              <View {...this.state.panResponder.panHandlers}>
                 {this.props.headerComponent}
-                {this.props.children}
               </View>
+              {this.props.children}
+            </View>
           </View>
         </Animated.View>
       </View>
-    )
+    );
   }
 
   _handlePanResponderGrant(e: Object, gestureState: Object) {
@@ -148,11 +141,6 @@ class SideMenu extends Component {
     return !this._isMenuOpen
       ? xPosition
       : this.props.menuWidth + xPosition;
-  }
-
-  _touchIsOnHeader(gestureState: object) {
-    console.log("***********************CHECKING WHERE THE TOUCH IS: ", gestureState.moveX, gestureState.moveY, gestureState.dx, gestureState.dy)
-    return gestureState.y0 < this.props.headerHeight;
   }
 }
 

@@ -12,7 +12,7 @@ const getSavedCharts = () => {
       revisionNumber: 0,
       chartUrl: 'https://www.google.com',
       filePath: '',
-      isFavorited: false,
+      isFavorited: true,
     },
     {
       regionName: 'Seattle',
@@ -82,7 +82,7 @@ const getSavedCharts = () => {
       revisionNumber: 0,
       chartUrl: 'https://www.google.com',
       filePath: '',
-      isFavorited: false,
+      isFavorited: true,
     },
     {
       regionName: 'Seattle',
@@ -132,7 +132,7 @@ const getSavedCharts = () => {
       revisionNumber: 0,
       chartUrl: 'https://www.google.com',
       filePath: '',
-      isFavorited: false,
+      isFavorited: true,
     },
     {
       regionName: 'Seattle',

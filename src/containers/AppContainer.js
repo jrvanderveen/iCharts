@@ -4,12 +4,12 @@
 import React, { Component } from 'react';
 import {
   Dimensions,
+  ListView,
   StyleSheet,
   View
 } from 'react-native';
-import VFRChartsContainer from './VFRChartsContainer';
+import VFRChartsList from '../components/VFRChartsList';
 import Header from '../components/Header';
-import Home from '../components/Home';
 import Menu from '../components/Menu';
 import Settings from '../components/Settings';
 import VFRChart from '../model/VFRChart';
@@ -20,24 +20,29 @@ import { getSavedCharts } from '../utility/StorageUtility';
 
 const statusBarHeight = 0;
 const menuWidth = 200;
-const headerHeight = 50;
 const screenHeight = Dimensions.get('window').height;
+const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 class AppContainer extends Component {
   constructor(props) {
     super(props);
-
-    var savedVfrCharts = getSavedCharts().map(function(chart) {
-      return new VFRChart(chart);
-    });
-    
     this.state = {
       route: Scenes.HOME,
       openMenu: false,
-      savedVfrCharts: savedVfrCharts
+      savedVfrCharts: [],
+      vfrChartsToShow: ds.cloneWithRows([])
     };
+  }
 
-    this.chartsContainer = null;
+  componentDidMount() {
+    var savedVfrCharts = getSavedCharts().map(function(chart) {
+      return new VFRChart(chart);
+    });
+
+    this.setState({
+      savedVfrCharts: savedVfrCharts,
+      vfrChartsToShow: ds.cloneWithRows(savedVfrCharts)
+    });
   }
 
   handleHeaderPress() {
@@ -56,11 +61,12 @@ class AppContainer extends Component {
   getCurrentSceneForRoute() {
     switch (this.state.route.toLowerCase()) {
       case Scenes.HOME:
-        return <VFRChartsContainer ref={(ref) => { this.chartsContainer = ref; }} vfrChartsToShow={this.state.savedVfrCharts} />;
+        return <VFRChartsList vfrChartsToShow={this.state.vfrChartsToShow} />;
       case Scenes.SETTINGS:
         return <Settings />;
       default:
         console.log("Unkown route: ", route);
+        return <VFRChartsList vfrChartsToShow={this.state.vfrChartsToShow} />;
     }
   }
   
@@ -70,7 +76,6 @@ class AppContainer extends Component {
       <Header
         title={this.state.route.toUpperCase()}
         onPress={() => this.handleHeaderPress()}
-        headerHeight={headerHeight}
       />;
 
     const currentScene = this.getCurrentSceneForRoute();
@@ -83,9 +88,7 @@ class AppContainer extends Component {
           menuWidth={menuWidth}
           menuOpenBuffer={100}
           headerComponent={header}
-          headerHeight={headerHeight}
           useLinearGradient={true}
-          respondOnStart={this.state.route !== Scenes.HOME}
           height={screenHeight - statusBarHeight}>
           {currentScene}
         </SideMenu>

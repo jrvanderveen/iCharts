@@ -8,11 +8,19 @@ import {
   TouchableHighlight,
   View
 } from 'react-native';
-import Colors from '../styles/Colors';
+import Border from './Border';
 import MenuCell from './MenuCell';
 import Scenes from '../containers/Scenes';
+import Colors from '../styles/Colors';
 
 const Menu = (props) => {
+  var borderStyle = {
+    alignItems: 'flex-start',
+    height: 0.5,
+    marginLeft: 10,
+    width: props.menuWidth - 20,
+  };
+
   return (
     <View style={styles.menu}>
       <MenuCell
@@ -20,6 +28,9 @@ const Menu = (props) => {
         scene={Scenes.HOME}
         menuWidth={props.menuWidth}
       />
+      <View style={{alignItems: 'flex-start'}}>
+        <Border style={borderStyle} />
+      </View>
       <MenuCell
         onPress={props.onPress}
         scene={Scenes.SETTINGS}
@@ -37,7 +48,7 @@ Menu.propTypes = {
 const styles = StyleSheet.create({
   menu: {
     flex: 1,
-    backgroundColor: Colors.highlight,
+    backgroundColor: Colors.secondary,
     paddingTop: 50
   },
 });
