@@ -16,6 +16,7 @@ import FontStyles from '../styles/FontStyles';
 
 class VFRChartsList extends Component {
   static propTypes = {
+    onChartPress: PropTypes.func.isRequired,
     vfrChartsToShow: PropTypes.arrayOf(Object).isRequired
   }
   

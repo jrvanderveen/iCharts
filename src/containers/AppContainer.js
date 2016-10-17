@@ -58,12 +58,12 @@ class AppContainer extends Component {
   getCurrentSceneForRoute() {
     switch (this.state.route.toLowerCase()) {
       case Scenes.HOME:
-        return <VFRChartsList vfrChartsToShow={this.state.savedVfrCharts} />;
+        return <VFRChartsList onChartPress={() => console.log("Wahoo!")} vfrChartsToShow={this.state.savedVfrCharts} />;
       case Scenes.SETTINGS:
         return <Settings />;
       default:
         console.log("Unkown route: ", route);
-        return <VFRChartsList vfrChartsToShow={this.state.savedVfrCharts} />;
+        return <VFRChartsList onChartPress={() => console.log("Wahoo!")} vfrChartsToShow={this.state.savedVfrCharts} />;
     }
   }
   
