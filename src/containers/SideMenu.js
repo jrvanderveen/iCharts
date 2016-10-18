@@ -39,10 +39,8 @@ class SideMenu extends Component {
     this.state = {
       pan: new Animated.ValueXY(),
       panResponder: PanResponder.create({
-        onStartShouldSetPanResponder: () => true,
-        onMoveShouldSetPanResponder: (evt, gestureState) => {
-          return gestureState.dx != 0 && gestureState.dy != 0;
-        },
+        onStartShouldSetPanResponder: this._shouldRespondToPan.bind(this),
+        onMoveShouldSetPanResponder: this._shouldRespondToPan.bind(this),
         onPanResponderGrant: this._handlePanResponderGrant.bind(this),
         onPanResponderMove: this._handlePanResponderMove.bind(this),
         onPanResponderRelease: this._handlePanResponderEnd.bind(this),
@@ -69,7 +67,9 @@ class SideMenu extends Component {
         <View style={menuStyle}>
           {this.props.menu}
         </View>
-        <Animated.View style={[this.state.pan.getLayout(), menuStyle]}>
+        <Animated.View
+          {...this.state.panResponder.panHandlers}
+          style={[this.state.pan.getLayout(), menuStyle]}>
           <View style={this.props.useLinearGradient ? styles.sceneContainer : [styles.sceneContainer, {marginLeft: 0}]}>
             {this.props.useLinearGradient
               ? <LinearGradient
@@ -79,7 +79,7 @@ class SideMenu extends Component {
                 />
               : <View />}
             <View style={{flex: 1}}>
-              <View {...this.state.panResponder.panHandlers}>
+              <View>
                 {this.props.headerComponent}
               </View>
               {this.props.children}
@@ -88,6 +88,11 @@ class SideMenu extends Component {
         </Animated.View>
       </View>
     );
+  }
+
+  _shouldRespondToPan(e: Object, gestureState: Object) {
+    // is there more left to right movement than up and down?
+    return Math.abs(gestureState.dx) > Math.abs(gestureState.dy);
   }
 
   _handlePanResponderGrant(e: Object, gestureState: Object) {
