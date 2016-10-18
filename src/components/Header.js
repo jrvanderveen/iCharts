@@ -14,9 +14,12 @@ import Border from './Border';
 import Colors from '../styles/Colors';
 import FontStyles from '../styles/FontStyles';
 
-const screenWidth = Dimensions.get('window').width;
-
 const Header = (props) => {
+  const screenWidth = Dimensions.get('window').width;
+  var borderWidth = {
+    width: screenWidth - 10
+  };
+
   return (
     <View style={{flex: 1}}>
       <View style={styles.header}>
@@ -32,7 +35,7 @@ const Header = (props) => {
           </Text>
         </View>
       </View>
-      <Border style={styles.border} />
+      <Border style={[styles.border, borderWidth]} />
     </View>
   );
 }
@@ -54,7 +57,6 @@ const styles = StyleSheet.create({
   border: {
     height: 1,
     marginTop: -1,
-    width: screenWidth - 10,
   },
   icon: {
     alignItems: 'center',

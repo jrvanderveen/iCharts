@@ -19,7 +19,6 @@ import Colors from '../styles/Colors';
 import { getSavedCharts } from '../utility/StorageUtility';
 
 const menuWidth = 120;
-const screenHeight = Dimensions.get('window').height;
 
 class AppContainer extends Component {
   constructor(props) {
@@ -98,9 +97,10 @@ class AppContainer extends Component {
       />;
 
     const currentScene = this.getCurrentSceneForRoute();
+    const screenHeight = Dimensions.get('window').height;
     
     return (
-      <View style={styles.container}>
+      <View style={styles.container} onLayout={(event) => this.setState({reRender: true})}>
         <SideMenu
           openMenu={this.state.openMenu}
           menu={menu}

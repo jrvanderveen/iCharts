@@ -12,9 +12,6 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-const screenWidth = Dimensions.get('window').width;
-const screenHeight = Dimensions.get('window').height;
-
 class SideMenu extends Component {
   static propTypes = {
     headerComponent: PropTypes.element.isRequired,
@@ -59,6 +56,8 @@ class SideMenu extends Component {
   }
 
   render() {
+    const screenWidth = Dimensions.get('window').width;
+    const screenHeight = Dimensions.get('window').height;
     let menuStyle = {
       position: 'absolute',
       width: this.props.width ? this.props.width : screenWidth,

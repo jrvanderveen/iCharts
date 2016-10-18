@@ -3,7 +3,6 @@
 
 import React, { Component, PropTypes } from 'react';
 import {
-  Dimensions,
   ListView,
   StyleSheet,
   Text,
