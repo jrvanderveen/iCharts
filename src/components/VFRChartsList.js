@@ -18,7 +18,7 @@ class VFRChartsList extends Component {
     onChartPress: PropTypes.func.isRequired,
     vfrChartsToShow: PropTypes.arrayOf(Object).isRequired
   }
-  
+
   constructor(props) {
     super(props);
     this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
