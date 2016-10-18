@@ -10,7 +10,7 @@ Then, check out the repository and run the following inside it:
 
 `$ npm install`
 
-open `iCharts/ios/iCharts.xcodeproj` and hit run, or run `react-native run-ios` from the repository's root directory.
+Open `iCharts/ios/iCharts.xcodeproj`, follow these [instructions](https://github.com/react-native-community/react-native-linear-gradient) to add react-native-linear-gradient to the project, and hit run.
 
 If you have errors compiling due to linking errors, removing the derived data may help. Quit Xcode, delete `/Users/{you}/Library/Developer/Xcode/DerivedData`, and re-open Xcode.
 
