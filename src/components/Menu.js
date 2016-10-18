@@ -21,6 +21,11 @@ const Menu = (props) => {
     width: props.menuWidth - 20,
   };
 
+  const menuBorder =
+    <View style={{alignItems: "flex-start"}}>
+      <Border style={borderStyle} />
+    </View>
+
   return (
     <View style={styles.menu}>
       <MenuCell
@@ -29,9 +34,14 @@ const Menu = (props) => {
         scene={Scenes.HOME}
         menuWidth={props.menuWidth}
       />
-      <View style={{alignItems: "flex-start"}}>
-        <Border style={borderStyle} />
-      </View>
+      {menuBorder}
+      <MenuCell
+        iconName="ios-heart-outline"
+        onPress={props.onPress}
+        scene={Scenes.FAVORITES}
+        menuWidth={props.menuWidth}
+      />
+      {menuBorder}
       <MenuCell
         iconName="ios-settings-outline"
         onPress={props.onPress}

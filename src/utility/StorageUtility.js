@@ -5,7 +5,7 @@ const getSavedCharts = () => {
   // this is where we will load our charts from disk, for now populate with this list
   var exampleVfrCharts = [
     {
-      regionName: 'Seattle',
+      regionName: ' Favorite 1',
       regionId: 'SEA',
       publicationDate: '2016-01-29',
       expirationDate: '2016-12-05',
@@ -15,7 +15,7 @@ const getSavedCharts = () => {
       isFavorited: true,
     },
     {
-      regionName: 'Seattle',
+      regionName: ' Seattle',
       regionId: 'SEA',
       publicationDate: '2016-01-29',
       expirationDate: '2016-12-05',
@@ -25,7 +25,7 @@ const getSavedCharts = () => {
       isFavorited: false,
     },
     {
-      regionName: 'Seattle',
+      regionName: ' Seattle',
       regionId: 'SEA',
       publicationDate: '2016-01-29',
       expirationDate: '2016-12-05',
@@ -35,7 +35,7 @@ const getSavedCharts = () => {
       isFavorited: false,
     },
     {
-      regionName: 'Seattle',
+      regionName: ' Seattle',
       regionId: 'SEA',
       publicationDate: '2016-01-29',
       expirationDate: '2016-12-05',
@@ -45,7 +45,7 @@ const getSavedCharts = () => {
       isFavorited: false,
     },
     {
-      regionName: 'Seattle',
+      regionName: ' Seattle',
       regionId: 'SEA',
       publicationDate: '2016-01-29',
       expirationDate: '2016-12-05',
@@ -55,7 +55,7 @@ const getSavedCharts = () => {
       isFavorited: false,
     },
     {
-      regionName: 'Seattle',
+      regionName: ' Seattle',
       regionId: 'SEA',
       publicationDate: '2016-01-29',
       expirationDate: '2016-12-05',
@@ -65,7 +65,7 @@ const getSavedCharts = () => {
       isFavorited: false,
     },
     {
-      regionName: 'Seattle',
+      regionName: ' Seattle',
       regionId: 'SEA',
       publicationDate: '2016-01-29',
       expirationDate: '2016-12-05',
@@ -75,7 +75,7 @@ const getSavedCharts = () => {
       isFavorited: false,
     },
     {
-      regionName: 'Seattle',
+      regionName: ' Favorite 2',
       regionId: 'SEA',
       publicationDate: '2016-01-29',
       expirationDate: '2016-12-05',
@@ -85,7 +85,7 @@ const getSavedCharts = () => {
       isFavorited: true,
     },
     {
-      regionName: 'Seattle',
+      regionName: ' Seattle',
       regionId: 'SEA',
       publicationDate: '2016-01-29',
       expirationDate: '2016-12-05',
@@ -95,7 +95,7 @@ const getSavedCharts = () => {
       isFavorited: false,
     },
     {
-      regionName: 'Seattle',
+      regionName: ' Seattle',
       regionId: 'SEA',
       publicationDate: '2016-01-29',
       expirationDate: '2016-12-05',
@@ -105,7 +105,7 @@ const getSavedCharts = () => {
       isFavorited: false,
     },
     {
-      regionName: 'Seattle',
+      regionName: ' Seattle',
       regionId: 'SEA',
       publicationDate: '2016-01-29',
       expirationDate: '2016-12-05',
@@ -115,7 +115,7 @@ const getSavedCharts = () => {
       isFavorited: false,
     },
     {
-      regionName: 'Seattle',
+      regionName: ' Seattle',
       regionId: 'SEA',
       publicationDate: '2016-01-29',
       expirationDate: '2016-12-05',
@@ -125,7 +125,7 @@ const getSavedCharts = () => {
       isFavorited: false,
     },
     {
-      regionName: 'Seattle',
+      regionName: ' Favorite 3',
       regionId: 'SEA',
       publicationDate: '2016-01-29',
       expirationDate: '2016-12-05',
@@ -135,7 +135,7 @@ const getSavedCharts = () => {
       isFavorited: true,
     },
     {
-      regionName: 'Seattle',
+      regionName: ' Seattle',
       regionId: 'SEA',
       publicationDate: '2016-01-29',
       expirationDate: '2016-12-05',
@@ -145,7 +145,7 @@ const getSavedCharts = () => {
       isFavorited: false,
     },
     {
-      regionName: 'Seattle',
+      regionName: ' Seattle',
       regionId: 'SEA',
       publicationDate: '2016-01-29',
       expirationDate: '2016-12-05',
@@ -155,7 +155,7 @@ const getSavedCharts = () => {
       isFavorited: false,
     },
     {
-      regionName: 'Seattle',
+      regionName: ' Seattle',
       regionId: 'SEA',
       publicationDate: '2016-01-29',
       expirationDate: '2016-12-05',

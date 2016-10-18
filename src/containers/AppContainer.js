@@ -28,6 +28,7 @@ class AppContainer extends Component {
       route: Scenes.HOME,
       openMenu: false,
       savedVfrCharts: [],
+      vfrChartsToShow: []
     };
 
     // Track the state of the menu to determine whether to open or close it when the header is clicked
@@ -41,6 +42,7 @@ class AppContainer extends Component {
 
     this.setState({
       savedVfrCharts: savedVfrCharts,
+      vfrChartsToShow: savedVfrCharts
     });
   }
 
@@ -51,9 +53,22 @@ class AppContainer extends Component {
   }
   
   handleMenuPress(route: string) {
+    let vfrChartsToShow = [];
+    switch(route) {
+      case Scenes.FAVORITES:
+        vfrChartsToShow = this.state.savedVfrCharts.filter((chart) => {
+          return chart.isFavorited;
+        });
+        break;
+      case Scenes.HOME:
+      default:
+        vfrChartsToShow = this.state.savedVfrCharts;
+    }
+    
     this.setState({
       route: route,
-      openMenu: false
+      openMenu: false,
+      vfrChartsToShow: vfrChartsToShow
     });
   }
 
@@ -64,12 +79,13 @@ class AppContainer extends Component {
   getCurrentSceneForRoute() {
     switch (this.state.route.toLowerCase()) {
       case Scenes.HOME:
-        return <VFRChartsList onChartPress={() => console.log("Wahoo!")} vfrChartsToShow={this.state.savedVfrCharts} />;
+      case Scenes.FAVORITES:
+        return <VFRChartsList onChartPress={() => console.log("Show the chart")} vfrChartsToShow={this.state.vfrChartsToShow} />;
       case Scenes.SETTINGS:
         return <Settings />;
       default:
-        console.log("Unkown route: ", route);
-        return <VFRChartsList onChartPress={() => console.log("Wahoo!")} vfrChartsToShow={this.state.savedVfrCharts} />;
+        console.log("Unkown route: ", this.state.route);
+        return <VFRChartsList onChartPress={() => console.log("Show the chart")} vfrChartsToShow={this.state.savedVfrCharts} />;
     }
   }
   
