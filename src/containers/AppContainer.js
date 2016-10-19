@@ -50,7 +50,7 @@ class AppContainer extends Component {
       openMenu: !this._isMenuOpen
     });
   }
-  
+
   handleMenuPress(route: string) {
     let vfrChartsToShow = [];
     switch(route) {
@@ -63,7 +63,7 @@ class AppContainer extends Component {
       default:
         vfrChartsToShow = this.state.savedVfrCharts;
     }
-    
+
     this.setState({
       route: route,
       openMenu: false,
@@ -87,7 +87,7 @@ class AppContainer extends Component {
         return <VFRChartsList onChartPress={() => console.log("Show the chart")} vfrChartsToShow={this.state.savedVfrCharts} />;
     }
   }
-  
+
   render() {
     const menu = <Menu onPress={(route) => this.handleMenuPress(route)} menuWidth={menuWidth} />;
     const header =
@@ -98,7 +98,7 @@ class AppContainer extends Component {
 
     const currentScene = this.getCurrentSceneForRoute();
     const screenHeight = Dimensions.get('window').height;
-    
+
     return (
       <View style={styles.container} onLayout={(event) => this.setState({reRender: true})}>
         <SideMenu

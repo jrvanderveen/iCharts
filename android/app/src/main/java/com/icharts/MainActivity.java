@@ -2,6 +2,7 @@ package com.icharts;
 
 import com.facebook.react.ReactActivity;
 import com.oblador.vectoricons.VectorIconsPackage;
+// import com.BV.LinearGradient.LinearGradientPackage;
 
 public class MainActivity extends ReactActivity {
 
@@ -13,4 +14,11 @@ public class MainActivity extends ReactActivity {
     protected String getMainComponentName() {
         return "iCharts";
     }
+    // @Override
+    // protected List<ReactPackage> getPackages() {
+    //  return Arrays.<ReactPackage>asList(
+    //    new MainReactPackage(),
+    //    new LinearGradientPackage() // <---- and This!
+    //  );
+    // }
 }
