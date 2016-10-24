@@ -9,7 +9,6 @@ import {
   View
 } from 'react-native';
 import VFRChartsList from '../components/VFRChartsList';
-import ChartCell from '../components/ChartCell'
 import Header from '../components/Header';
 import Menu from '../components/Menu';
 import Settings from '../components/Settings';

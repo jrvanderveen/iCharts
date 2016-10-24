@@ -182,14 +182,4 @@ const getSavedCharts = () => {
   // this is where we will load our charts from disk, for now populate with this list
   return exampleVfrCharts;
 }
-
-const updateVfrCharts = (chartId) => {
-    // var numCharts = exampleVfrCharts.length;
-    // for(var i = 0; i < numCharts; i++){
-    //     if(exampleVfrCharts[i].uniqueId == chartId){
-    //         exampleVfrCharts[i].isFavorited = !exampleVfrCharts[i].isFavorited;
-    //     }
-    // }
-}
-
 export { getSavedCharts};

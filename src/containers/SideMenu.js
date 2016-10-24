@@ -155,6 +155,7 @@ const styles = StyleSheet.create({
   sceneContainer: {
     flex: 1,
     marginLeft: -15,
+    flexDirection: 'row',
   },
   linearGradient: {
     width: 15
