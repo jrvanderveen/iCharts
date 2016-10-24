@@ -9,7 +9,6 @@ import {
   View
 } from 'react-native';
 import VFRChartsList from '../components/VFRChartsList';
-import ChartCell from '../components/ChartCell'
 import Header from '../components/Header';
 import Menu from '../components/Menu';
 import Settings from '../components/Settings';
@@ -17,8 +16,9 @@ import VFRChart from '../model/VFRChart';
 import Scenes from './Scenes';
 import SideMenu from './SideMenu';
 import Colors from '../styles/Colors';
-import { getSavedCharts, updateVfrCharts } from '../utility/StorageUtility';
+import { getSavedCharts } from '../utility/StorageUtility';
 
+const menuWidth = 120;
 
 class AppContainer extends Component {
   constructor(props) {
@@ -38,48 +38,10 @@ class AppContainer extends Component {
     var savedVfrCharts = getSavedCharts().map(function(chart) {
       return new VFRChart(chart);
     });
+
     this.setState({
       savedVfrCharts: savedVfrCharts,
       vfrChartsToShow: savedVfrCharts
-    });
-  }
-  //handle just like menu press so update both savedVfrCharts and vfrChartsToShow
-  handleFavPress(chartId: number){
-    let savedVfrCharts = [];
-    let vfrChartsToShow = [];
-    let vfrChart;
-
-    for(let i = 0; i < this.state.savedVfrCharts.length; i++){
-      savedVfrCharts[i] = this.state.savedVfrCharts[i];
-      if(savedVfrCharts[i].uniqueId == chartId){
-        savedVfrCharts[i].isFavorited = !savedVfrCharts[i].isFavorited;
-      }
-    }
-
-    switch(this.state.route){
-      case Scenes.FAVORITES:
-        vfrChartsToShow = savedVfrCharts.filter((chart) => {
-          return chart.isFavorited;
-        });
-        this.setState({
-          savedVfrCharts: savedVfrCharts,
-          vfrChartsToShow: vfrChartsToShow,
-        });
-        break;
-      case Scenes.HOME:
-        this.setState( {
-          savedVfrCharts: savedVfrCharts,
-          vfrChartsToShow: savedVfrCharts,
-        });
-        break;
-      default:
-        console.log("Unkown route: ", this.state.route);
-    }
-  }
-
-  handleViewPress(){
-    this.setState({
-      route: Scenes.SETTINGS,
     });
   }
 
@@ -88,7 +50,7 @@ class AppContainer extends Component {
       openMenu: !this._isMenuOpen
     });
   }
-
+  
   handleMenuPress(route: string) {
     let vfrChartsToShow = [];
     switch(route) {
@@ -101,7 +63,7 @@ class AppContainer extends Component {
       default:
         vfrChartsToShow = this.state.savedVfrCharts;
     }
-
+    
     this.setState({
       route: route,
       openMenu: false,
@@ -117,21 +79,16 @@ class AppContainer extends Component {
     switch (this.state.route.toLowerCase()) {
       case Scenes.HOME:
       case Scenes.FAVORITES:
-        return <VFRChartsList
-                    onChartPress={(chartId) => this.handleFavPress(chartId)}
-                    onViewPress={() => this.handleViewPress()}
-                    vfrChartsToShow={this.state.vfrChartsToShow}
-                />;
+        return <VFRChartsList onChartPress={() => console.log("Show the chart")} vfrChartsToShow={this.state.vfrChartsToShow} />;
       case Scenes.SETTINGS:
         return <Settings />;
       default:
         console.log("Unkown route: ", this.state.route);
-        return <VFRChartsList onChartPress={(chartId) => this.handleFavPress(chartId)} vfrChartsToShow={this.state.vfrChartsToShow}/>;
+        return <VFRChartsList onChartPress={() => console.log("Show the chart")} vfrChartsToShow={this.state.savedVfrCharts} />;
     }
   }
-
+  
   render() {
-    const menuWidth = Math.max((Dimensions.get('window').width),(Dimensions.get('window').height))/5;
     const menu = <Menu onPress={(route) => this.handleMenuPress(route)} menuWidth={menuWidth} />;
     const header =
       <Header
@@ -141,7 +98,7 @@ class AppContainer extends Component {
 
     const currentScene = this.getCurrentSceneForRoute();
     const screenHeight = Dimensions.get('window').height;
-
+    
     return (
       <View style={styles.container} onLayout={(event) => this.setState({reRender: true})}>
         <SideMenu
@@ -163,7 +120,6 @@ class AppContainer extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
   }
 });
 

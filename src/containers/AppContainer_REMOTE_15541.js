@@ -89,6 +89,8 @@ class AppContainer extends Component {
     });
   }
 
+
+
   handleMenuPress(route: string) {
     let vfrChartsToShow = [];
     switch(route) {
@@ -129,7 +131,7 @@ class AppContainer extends Component {
         return <VFRChartsList onChartPress={(chartId) => this.handleFavPress(chartId)} vfrChartsToShow={this.state.vfrChartsToShow}/>;
     }
   }
-
+// ^^^^^^^^^^^^^left off here just need to add the on press to the fav button
   render() {
     const menuWidth = Math.max((Dimensions.get('window').width),(Dimensions.get('window').height))/5;
     const menu = <Menu onPress={(route) => this.handleMenuPress(route)} menuWidth={menuWidth} />;

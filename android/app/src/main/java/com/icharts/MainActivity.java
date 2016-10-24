@@ -1,6 +1,7 @@
 package com.icharts;
 
 import com.facebook.react.ReactActivity;
+import com.BV.LinearGradient.LinearGradientPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 // import com.BV.LinearGradient.LinearGradientPackage;
 
