@@ -9,6 +9,7 @@ import {
   View
 } from 'react-native';
 import VFRChartsList from '../components/VFRChartsList';
+import ChartCell from '../components/ChartCell'
 import Header from '../components/Header';
 import Menu from '../components/Menu';
 import Settings from '../components/Settings';
@@ -16,7 +17,7 @@ import VFRChart from '../model/VFRChart';
 import Scenes from './Scenes';
 import SideMenu from './SideMenu';
 import Colors from '../styles/Colors';
-import { getSavedCharts} from '../utility/StorageUtility';
+import { getSavedCharts, updateVfrCharts } from '../utility/StorageUtility';
 
 
 class AppContainer extends Component {
@@ -42,18 +43,24 @@ class AppContainer extends Component {
       vfrChartsToShow: savedVfrCharts
     });
   }
-
+  //handle just like menu press so update both savedVfrCharts and vfrChartsToShow
   handleFavPress(chartId: number){
     let savedVfrCharts = [];
     let vfrChartsToShow = [];
-    let vfrChart;
 
-    for(let i = 0; i < this.state.savedVfrCharts.length; i++){
-      savedVfrCharts[i] = this.state.savedVfrCharts[i];
-      if(savedVfrCharts[i].uniqueId == chartId){
-        savedVfrCharts[i].isFavorited = !savedVfrCharts[i].isFavorited;
-      }
-    }
+    this.state.vfrChartsToShow.forEach(function(chart){
+        if(chart.uniqueId == chartId){
+          chart.isFavorited = !chart.isFavorited;
+        }
+        savedVfrCharts.push(chart);
+    });
+
+    // for(let i = 0; i < this.state.savedVfrCharts.length; i++){
+    //   savedVfrCharts[i] = this.state.savedVfrCharts[i];
+    //   if(savedVfrCharts[i].uniqueId == chartId){
+    //     savedVfrCharts[i].isFavorited = !savedVfrCharts[i].isFavorited;
+    //   }
+    // }
 
     switch(this.state.route){
       case Scenes.FAVORITES:
@@ -88,6 +95,8 @@ class AppContainer extends Component {
     });
   }
 
+
+
   handleMenuPress(route: string) {
     let vfrChartsToShow = [];
     switch(route) {
@@ -118,17 +127,17 @@ class AppContainer extends Component {
       case Scenes.FAVORITES:
         return <VFRChartsList
                     onChartPressed={(chartId) => this.handleFavPress(chartId)}
-                    onFavorited={() => this.handleFavorited()}
+                    onFavorited={() => this.handleViewPress()}
                     vfrChartsToShow={this.state.vfrChartsToShow}
                 />;
       case Scenes.SETTINGS:
         return <Settings />;
       default:
         console.log("Unkown route: ", this.state.route);
-        return <VFRChartsList onChartPressed={(chartId) => this.handleFavPress(chartId)} vfrChartsToShow={this.state.vfrChartsToShow}/>;
+        return <VFRChartsList onChartPress={(chartId) => this.handleFavoritedPress(chartId)} vfrChartsToShow={this.state.vfrChartsToShow}/>;
     }
   }
-
+// ^^^^^^^^^^^^^left off here just need to add the on press to the fav button
   render() {
     const menuWidth = Math.max((Dimensions.get('window').width),(Dimensions.get('window').height))/5;
     const menu = <Menu onPress={(route) => this.handleMenuPress(route)} menuWidth={menuWidth} />;
@@ -149,7 +158,7 @@ class AppContainer extends Component {
           menuWidth={menuWidth}
           menuOpenBuffer={menuWidth / 2}
           headerComponent={header}
-          useLinearGradient={false}
+          useLinearGradient={true}
           onMenuOpened={(isMenuOpen) => this.handleMenuOpen(isMenuOpen)}
           height={screenHeight}>
           {currentScene}
