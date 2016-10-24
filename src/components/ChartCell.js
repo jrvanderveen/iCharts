@@ -34,7 +34,7 @@ const ChartCell = (props) => {
              <TouchableHighlight
                underlayColor={Colors.primary}
                style={styles.icon}
-               onPress={() => props.onChartPressed(props.vfrChart.uniqueId)}>
+               onPress={() => props.onFavorited(props.vfrChart.uniqueId)}>
              <Icon style={{paddingTop: 3}} name={favIcon} size={20} color={Colors.border} />
              </TouchableHighlight>
           </View>
@@ -42,7 +42,7 @@ const ChartCell = (props) => {
              <TouchableHighlight
                underlayColor={Colors.primary}
                style={styles.icon}
-               onPress={() => props.onFavorited()}>
+               onPress={() => props.onChartPressed()}>
                <Icon style={{paddingTop: 3}} name="ios-arrow-forward" size={20} color={Colors.border} />
              </TouchableHighlight>
           </View>

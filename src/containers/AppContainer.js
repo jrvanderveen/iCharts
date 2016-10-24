@@ -43,10 +43,9 @@ class AppContainer extends Component {
       vfrChartsToShow: savedVfrCharts
     });
   }
-  //handle just like menu press so update both savedVfrCharts and vfrChartsToShow
+
   handleFavPress(chartId: number){
     let savedVfrCharts = [];
-    let vfrChartsToShow = [];
 
     this.state.vfrChartsToShow.forEach(function(chart){
         if(chart.uniqueId == chartId){
@@ -55,35 +54,12 @@ class AppContainer extends Component {
         savedVfrCharts.push(chart);
     });
 
-    // for(let i = 0; i < this.state.savedVfrCharts.length; i++){
-    //   savedVfrCharts[i] = this.state.savedVfrCharts[i];
-    //   if(savedVfrCharts[i].uniqueId == chartId){
-    //     savedVfrCharts[i].isFavorited = !savedVfrCharts[i].isFavorited;
-    //   }
-    // }
-
-    switch(this.state.route){
-      case Scenes.FAVORITES:
-        vfrChartsToShow = savedVfrCharts.filter((chart) => {
-          return chart.isFavorited;
-        });
-        this.setState({
-          savedVfrCharts: savedVfrCharts,
-          vfrChartsToShow: vfrChartsToShow,
-        });
-        break;
-      case Scenes.HOME:
-        this.setState( {
-          savedVfrCharts: savedVfrCharts,
-          vfrChartsToShow: savedVfrCharts,
-        });
-        break;
-      default:
-        console.log("Unkown route: ", this.state.route);
-    }
+    this.setState({
+      savedVfrCharts: savedVfrCharts
+    });
   }
 
-  handleFavoritedPress(){
+  handleViewPress(){
     this.setState({
       route: Scenes.SETTINGS,
     });
@@ -95,49 +71,39 @@ class AppContainer extends Component {
     });
   }
 
-
-
   handleMenuPress(route: string) {
-    let vfrChartsToShow = [];
-    switch(route) {
-      case Scenes.FAVORITES:
-        vfrChartsToShow = this.state.savedVfrCharts.filter((chart) => {
-          return chart.isFavorited;
-        });
-        break;
-      case Scenes.HOME:
-      default:
-        vfrChartsToShow = this.state.savedVfrCharts;
+      this.setState({
+        route: route,
+        openMenu: false,
+      });
     }
-
-    this.setState({
-      route: route,
-      openMenu: false,
-      vfrChartsToShow: vfrChartsToShow
-    });
-  }
 
   handleMenuOpen(isMenuOpen: bool) {
     this._isMenuOpen = isMenuOpen;
   }
 
   getCurrentSceneForRoute() {
-    switch (this.state.route.toLowerCase()) {
-      case Scenes.HOME:
-      case Scenes.FAVORITES:
-        return <VFRChartsList
-                    onChartPressed={(chartId) => this.handleFavPress(chartId)}
-                    onFavorited={() => this.handleViewPress()}
+      switch (this.state.route.toLowerCase()) {
+        case Scenes.HOME:
+          return <VFRChartsList
+                    onFavorited={(chartId) => this.handleFavPress(chartId)}
+                    onChartPressed={() => this.handleViewPress()}
                     vfrChartsToShow={this.state.vfrChartsToShow}
-                />;
-      case Scenes.SETTINGS:
-        return <Settings />;
-      default:
-        console.log("Unkown route: ", this.state.route);
-        return <VFRChartsList onChartPress={(chartId) => this.handleFavoritedPress(chartId)} vfrChartsToShow={this.state.vfrChartsToShow}/>;
-    }
+                  />;
+        case Scenes.FAVORITES:
+          return <VFRChartsList
+                    onFavorited={(chartId) => this.handleFavPress(chartId)}
+                    onChartPressed={() => this.handleViewPress()}
+                    vfrChartsToShow={this.state.savedVfrCharts.filter((chart) => { return chart.isFavorited; }) }
+                  />;
+        case Scenes.SETTINGS:
+          return <Settings />;
+        default:
+          console.log("Unkown route: ", this.state.route);
+          return <VFRChartsList onChartPress={(chartId) => this.handleFavPress(chartId)} vfrChartsToShow={this.state.savedVfrCharts}/>;
+      }
   }
-// ^^^^^^^^^^^^^left off here just need to add the on press to the fav button
+
   render() {
     const menuWidth = Math.max((Dimensions.get('window').width),(Dimensions.get('window').height))/5;
     const menu = <Menu onPress={(route) => this.handleMenuPress(route)} menuWidth={menuWidth} />;
