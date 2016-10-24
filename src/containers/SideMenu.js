@@ -19,7 +19,6 @@ class SideMenu extends Component {
     menu: PropTypes.element,
     menuWidth: PropTypes.number.isRequired,
     menuOpenBuffer: PropTypes.number.isRequired,
-    openMenu: PropTypes.bool,
     onMenuOpened: PropTypes.func,
     useLinearGradient: PropTypes.bool,
     width: PropTypes.number,
@@ -32,6 +31,9 @@ class SideMenu extends Component {
     this._menuIsOpenToThreshold = this._menuIsOpenToThreshold.bind(this);
     this._openOrCloseMenu = this._openOrCloseMenu.bind(this);
     this._absoluteXValueOfCurrentSceneDuringPan = this._absoluteXValueOfCurrentSceneDuringPan.bind(this);
+    this.openMenu = this.openMenu.bind(this);
+    this.closeMenu = this.closeMenu.bind(this);
+    this.toggleMenu = this.toggleMenu.bind(this);
 
     // State not used in render method
     this._isMenuOpen = false;
@@ -49,8 +51,16 @@ class SideMenu extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps: object) {
-    this._openOrCloseMenu(nextProps.openMenu)
+  openMenu() {
+    this._openOrCloseMenu(true);
+  }
+
+  closeMenu() {
+    this._openOrCloseMenu(false);
+  }
+
+  toggleMenu() {
+    this._openOrCloseMenu(!this._isMenuOpen);
   }
 
   render() {
@@ -121,7 +131,7 @@ class SideMenu extends Component {
     this._openOrCloseMenu(shouldMenuOpen);
   }
 
-  _openOrCloseMenu(openMenu: bool) {
+  _openOrCloseMenu(openMenu: boolean) {
     let toValue = openMenu ? {x: this.props.menuWidth, y: 0} : {x: 0, y: 0};
     this.state.pan.setOffset({x: 0});
     Animated.spring(

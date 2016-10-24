@@ -9,7 +9,6 @@ import {
   View
 } from 'react-native';
 import VFRChart from '../model/VFRChart';
-import Scenes from '../containers/Scenes';
 import Colors from '../styles/Colors';
 import FontStyles from '../styles/FontStyles';
 import ChartCell from './ChartCell'
