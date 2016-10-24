@@ -15,7 +15,7 @@ import FontStyles from '../styles/FontStyles';
 const MenuCell = (props) => {
   let cellSizeStyle = {
     paddingLeft: props.menuWidth * 0.25,
-  } 
+  }
   let touchStyle = {
     alignItems: 'center',
     borderColor: Colors.border,
@@ -25,7 +25,7 @@ const MenuCell = (props) => {
     justifyContent: 'center',
     width: props.menuWidth / 2,
   }
-  
+
   return (
     <View style={[styles.default, cellSizeStyle]}>
       <TouchableHighlight style={touchStyle} onPress={() => props.onPress(props.scene)} underlayColor={Colors.primary}>

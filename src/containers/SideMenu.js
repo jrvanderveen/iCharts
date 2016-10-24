@@ -24,7 +24,7 @@ class SideMenu extends Component {
     useLinearGradient: PropTypes.bool,
     width: PropTypes.number,
   }
-  
+
   constructor(props) {
     super(props);
 
@@ -103,7 +103,7 @@ class SideMenu extends Component {
   }
 
   _handlePanResponderMove(e: Object, gestureState: Object) {
-    // update pan.x unless pan goes off left of screen. Then set pan to be the very left 
+    // update pan.x unless pan goes off left of screen. Then set pan to be the very left
     if (this._absoluteXValueOfCurrentSceneDuringPan(gestureState.dx) >= 0)
       this.state.pan.setValue({x: gestureState.dx, y: 0});
     else
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
   sceneContainer: {
     flex: 1,
     marginLeft: -15,
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   linearGradient: {
     width: 15

@@ -10,6 +10,7 @@ export default class VFRChart {
   chartUrl: string;
   filePath: string;
   isFavorited: bool;
+  uniqueId: number;
 
   constructor(modelObject: object) {
     this.regionName = modelObject.regionName ? modelObject.regionName : '';
@@ -20,5 +21,6 @@ export default class VFRChart {
     this.chartUrl = modelObject.chartUrl ? modelObject.chartUrl : '';
     this.filePath = modelObject.filePath ? modelObject.filePath : '';
     this.isFavorited = modelObject.isFavorited ? modelObject.isFavorited : false;
+    this. uniqueId = modelObject.uniqueId ? modelObject.uniqueId : -1;
   }
 }

@@ -13,7 +13,7 @@ export default FontStyles = StyleSheet.create({
     fontFamily: 'HelveticaNeue-Medium'
   },
   thin: {
-    color: Colors.text,
+    color: 'black',
     fontSize: 16,
     fontFamily: 'HelveticaNeue-Thin'
   }

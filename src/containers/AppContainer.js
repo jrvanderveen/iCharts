@@ -16,9 +16,8 @@ import VFRChart from '../model/VFRChart';
 import Scenes from './Scenes';
 import SideMenu from './SideMenu';
 import Colors from '../styles/Colors';
-import { getSavedCharts } from '../utility/StorageUtility';
+import { getSavedCharts, updateVfrCharts } from '../utility/StorageUtility';
 
-const menuWidth = 120;
 
 class AppContainer extends Component {
   constructor(props) {
@@ -38,10 +37,30 @@ class AppContainer extends Component {
     var savedVfrCharts = getSavedCharts().map(function(chart) {
       return new VFRChart(chart);
     });
-
     this.setState({
       savedVfrCharts: savedVfrCharts,
       vfrChartsToShow: savedVfrCharts
+    });
+  }
+
+  handleFavPress(chartId: number){
+    let savedVfrCharts = [];
+
+    this.state.vfrChartsToShow.forEach(function(chart){
+        if(chart.uniqueId == chartId){
+          chart.isFavorited = !chart.isFavorited;
+        }
+        savedVfrCharts.push(chart);
+    });
+
+    this.setState({
+      savedVfrCharts: savedVfrCharts
+    });
+  }
+
+  handleViewPress(){
+    this.setState({
+      route: Scenes.SETTINGS,
     });
   }
 
@@ -50,45 +69,42 @@ class AppContainer extends Component {
       openMenu: !this._isMenuOpen
     });
   }
-  
+
   handleMenuPress(route: string) {
-    let vfrChartsToShow = [];
-    switch(route) {
-      case Scenes.FAVORITES:
-        vfrChartsToShow = this.state.savedVfrCharts.filter((chart) => {
-          return chart.isFavorited;
-        });
-        break;
-      case Scenes.HOME:
-      default:
-        vfrChartsToShow = this.state.savedVfrCharts;
+      this.setState({
+        route: route,
+        openMenu: false,
+      });
     }
-    
-    this.setState({
-      route: route,
-      openMenu: false,
-      vfrChartsToShow: vfrChartsToShow
-    });
-  }
 
   handleMenuOpen(isMenuOpen: bool) {
     this._isMenuOpen = isMenuOpen;
   }
 
   getCurrentSceneForRoute() {
-    switch (this.state.route.toLowerCase()) {
-      case Scenes.HOME:
-      case Scenes.FAVORITES:
-        return <VFRChartsList onChartPress={() => console.log("Show the chart")} vfrChartsToShow={this.state.vfrChartsToShow} />;
-      case Scenes.SETTINGS:
-        return <Settings />;
-      default:
-        console.log("Unkown route: ", this.state.route);
-        return <VFRChartsList onChartPress={() => console.log("Show the chart")} vfrChartsToShow={this.state.savedVfrCharts} />;
-    }
+      switch (this.state.route.toLowerCase()) {
+        case Scenes.HOME:
+          return <VFRChartsList
+                    onFavorited={(chartId) => this.handleFavPress(chartId)}
+                    onChartPressed={() => this.handleViewPress()}
+                    vfrChartsToShow={this.state.vfrChartsToShow}
+                  />;
+        case Scenes.FAVORITES:
+          return <VFRChartsList
+                    onFavorited={(chartId) => this.handleFavPress(chartId)}
+                    onChartPressed={() => this.handleViewPress()}
+                    vfrChartsToShow={this.state.savedVfrCharts.filter((chart) => { return chart.isFavorited; }) }
+                  />;
+        case Scenes.SETTINGS:
+          return <Settings />;
+        default:
+          console.log("Unkown route: ", this.state.route);
+          return <VFRChartsList onChartPress={(chartId) => this.handleFavPress(chartId)} vfrChartsToShow={this.state.savedVfrCharts}/>;
+      }
   }
-  
+
   render() {
+    const menuWidth = Math.max((Dimensions.get('window').width),(Dimensions.get('window').height))/5;
     const menu = <Menu onPress={(route) => this.handleMenuPress(route)} menuWidth={menuWidth} />;
     const header =
       <Header
@@ -98,7 +114,7 @@ class AppContainer extends Component {
 
     const currentScene = this.getCurrentSceneForRoute();
     const screenHeight = Dimensions.get('window').height;
-    
+
     return (
       <View style={styles.container} onLayout={(event) => this.setState({reRender: true})}>
         <SideMenu

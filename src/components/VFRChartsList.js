@@ -12,13 +12,15 @@ import VFRChart from '../model/VFRChart';
 import Scenes from '../containers/Scenes';
 import Colors from '../styles/Colors';
 import FontStyles from '../styles/FontStyles';
+import ChartCell from './ChartCell'
 
 class VFRChartsList extends Component {
   static propTypes = {
-    onChartPress: PropTypes.func.isRequired,
-    vfrChartsToShow: PropTypes.arrayOf(Object).isRequired
+    onChartPressed: PropTypes.func.isRequired,
+    onFavorited: PropTypes.func.isRequired,
+    vfrChartsToShow: PropTypes.arrayOf(Object).isRequired,
   }
-  
+
   constructor(props) {
     super(props);
     this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -28,18 +30,19 @@ class VFRChartsList extends Component {
   }
 
   renderRow(vfrChart: VFRChart) {
-    return (
-      <View style={{height: 60, paddingTop: 10}}>
-        <Text style={FontStyles.thin}>
-          {vfrChart.regionId}
-          {vfrChart.regionName}
-        </Text>
-      </View>
-    );
+      return(
+        <View>
+            <ChartCell
+                vfrChart={vfrChart}
+                onChartPressed={this.props.onChartPressed}
+                onFavorited={this.props.onFavorited}
+            />
+        </View>
+      );
   }
 
   render() {
-    let vfrChartsToShow = this.props.vfrChartsToShow ? this.props.vfrChartsToShow : []; 
+    let vfrChartsToShow = this.props.vfrChartsToShow ? this.props.vfrChartsToShow : [];
     return (
       <View style={styles.container}>
         <ListView
@@ -54,9 +57,9 @@ class VFRChartsList extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    backgroundColor: Colors.secondary,
     flex: 1,
+    alignItems: 'stretch',
+    backgroundColor: Colors.primary,
     justifyContent: 'center',
   }
 });
