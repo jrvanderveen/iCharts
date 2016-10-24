@@ -62,7 +62,7 @@ ChartCell.propTypes = {
 const styles = StyleSheet.create({
   inputsContainer:{
     flex: 1,
-    backgroundColor: 'blue',
+    backgroundColor: Colors.secondary,
     flexDirection: 'row',
     paddingTop: 10,
     paddingBottom: 10,
