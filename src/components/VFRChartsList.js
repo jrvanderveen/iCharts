@@ -16,8 +16,8 @@ import ChartCell from './ChartCell'
 
 class VFRChartsList extends Component {
   static propTypes = {
-    onChartPress: PropTypes.func.isRequired,
-    onViewPress: PropTypes.func.isRequired,
+    onChartPressed: PropTypes.func.isRequired,
+    onFavorited: PropTypes.func.isRequired,
     vfrChartsToShow: PropTypes.arrayOf(Object).isRequired,
   }
 
@@ -34,8 +34,8 @@ class VFRChartsList extends Component {
         <View>
             <ChartCell
                 vfrChart={vfrChart}
-                onChartPress={this.props.onChartPress}
-                onViewPress={this.props.onViewPress}
+                onChartPressed={this.props.onChartPressed}
+                onFavorited={this.props.onFavorited}
             />
         </View>
       );
@@ -59,7 +59,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'stretch',
-    backgroundColor: 'green',
     justifyContent: 'center',
   }
 });

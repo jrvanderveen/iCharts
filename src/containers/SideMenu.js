@@ -78,7 +78,7 @@ class SideMenu extends Component {
                   style={styles.linearGradient}
                 />
               : <View />}
-            <View style={{flex: 5}}>
+            <View style={{flex: 1}}>
               <View>
                 {this.props.headerComponent}
               </View>
@@ -155,7 +155,6 @@ const styles = StyleSheet.create({
   sceneContainer: {
     flex: 1,
     marginLeft: -15,
-
   },
   linearGradient: {
     width: 15

@@ -9,7 +9,6 @@ import {
   View
 } from 'react-native';
 import VFRChartsList from '../components/VFRChartsList';
-import ChartCell from '../components/ChartCell'
 import Header from '../components/Header';
 import Menu from '../components/Menu';
 import Settings from '../components/Settings';
@@ -17,7 +16,7 @@ import VFRChart from '../model/VFRChart';
 import Scenes from './Scenes';
 import SideMenu from './SideMenu';
 import Colors from '../styles/Colors';
-import { getSavedCharts, updateVfrCharts } from '../utility/StorageUtility';
+import { getSavedCharts} from '../utility/StorageUtility';
 
 
 class AppContainer extends Component {
@@ -43,7 +42,7 @@ class AppContainer extends Component {
       vfrChartsToShow: savedVfrCharts
     });
   }
-  //handle just like menu press so update both savedVfrCharts and vfrChartsToShow
+
   handleFavPress(chartId: number){
     let savedVfrCharts = [];
     let vfrChartsToShow = [];
@@ -77,7 +76,7 @@ class AppContainer extends Component {
     }
   }
 
-  handleViewPress(){
+  handleFavoritedPress(){
     this.setState({
       route: Scenes.SETTINGS,
     });
@@ -118,15 +117,15 @@ class AppContainer extends Component {
       case Scenes.HOME:
       case Scenes.FAVORITES:
         return <VFRChartsList
-                    onChartPress={(chartId) => this.handleFavPress(chartId)}
-                    onViewPress={() => this.handleViewPress()}
+                    onChartPressed={(chartId) => this.handleFavPress(chartId)}
+                    onFavorited={() => this.handleFavorited()}
                     vfrChartsToShow={this.state.vfrChartsToShow}
                 />;
       case Scenes.SETTINGS:
         return <Settings />;
       default:
         console.log("Unkown route: ", this.state.route);
-        return <VFRChartsList onChartPress={(chartId) => this.handleFavPress(chartId)} vfrChartsToShow={this.state.vfrChartsToShow}/>;
+        return <VFRChartsList onChartPressed={(chartId) => this.handleFavPress(chartId)} vfrChartsToShow={this.state.vfrChartsToShow}/>;
     }
   }
 
@@ -150,7 +149,7 @@ class AppContainer extends Component {
           menuWidth={menuWidth}
           menuOpenBuffer={menuWidth / 2}
           headerComponent={header}
-          useLinearGradient={true}
+          useLinearGradient={false}
           onMenuOpened={(isMenuOpen) => this.handleMenuOpen(isMenuOpen)}
           height={screenHeight}>
           {currentScene}
@@ -163,7 +162,6 @@ class AppContainer extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
   }
 });
 

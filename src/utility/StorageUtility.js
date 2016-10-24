@@ -192,4 +192,4 @@ const updateVfrCharts = (chartId) => {
     // }
 }
 
-export { getSavedCharts, updateVfrCharts};
+export { getSavedCharts};
