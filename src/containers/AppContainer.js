@@ -4,7 +4,6 @@
 import React, { Component } from 'react';
 import {
   Dimensions,
-  ListView,
   StyleSheet,
   View
 } from 'react-native';
@@ -15,22 +14,18 @@ import Settings from '../components/Settings';
 import VFRChart from '../model/VFRChart';
 import Scenes from './Scenes';
 import SideMenu from './SideMenu';
-import Colors from '../styles/Colors';
-import { getSavedCharts, updateVfrCharts } from '../utility/StorageUtility';
-
+import { getSavedCharts } from '../utility/StorageUtility';
 
 class AppContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
       route: Scenes.HOME,
-      openMenu: false,
       savedVfrCharts: [],
       vfrChartsToShow: []
     };
 
-    // Track the state of the menu to determine whether to open or close it when the header is clicked
-    this._isMenuOpen = false;
+    this._sideMenu = null;
   }
 
   componentDidMount() {
@@ -65,20 +60,19 @@ class AppContainer extends Component {
   }
 
   handleHeaderPress() {
-    this.setState({
-      openMenu: !this._isMenuOpen
-    });
+    if (this._sideMenu !== null) {
+      this._sideMenu.toggleMenu();
+    }
   }
 
   handleMenuPress(route: string) {
-      this.setState({
-        route: route,
-        openMenu: false,
-      });
+    if (this._sideMenu !== null) {
+      this._sideMenu.closeMenu();
     }
-
-  handleMenuOpen(isMenuOpen: bool) {
-    this._isMenuOpen = isMenuOpen;
+    
+    this.setState({
+      route: route
+    });
   }
 
   getCurrentSceneForRoute() {
@@ -118,13 +112,12 @@ class AppContainer extends Component {
     return (
       <View style={styles.container} onLayout={(event) => this.setState({reRender: true})}>
         <SideMenu
-          openMenu={this.state.openMenu}
+          ref={(sideMenu) => this._sideMenu = sideMenu }
           menu={menu}
           menuWidth={menuWidth}
           menuOpenBuffer={menuWidth / 2}
           headerComponent={header}
           useLinearGradient={true}
-          onMenuOpened={(isMenuOpen) => this.handleMenuOpen(isMenuOpen)}
           height={screenHeight}>
           {currentScene}
         </SideMenu>
