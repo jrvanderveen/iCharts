@@ -20,6 +20,7 @@ class SideMenu extends Component {
     menuWidth: PropTypes.number.isRequired,
     menuOpenBuffer: PropTypes.number.isRequired,
     onMenuOpened: PropTypes.func,
+    shouldRespondToPan: PropTypes.bool,
     useLinearGradient: PropTypes.bool,
     width: PropTypes.number,
   }
@@ -102,7 +103,7 @@ class SideMenu extends Component {
 
   _shouldRespondToPan(e: Object, gestureState: Object) {
     // is there more left to right movement than up and down?
-    return Math.abs(gestureState.dx) > Math.abs(gestureState.dy);
+    return this.props.shouldRespondToPan && Math.abs(gestureState.dx) > Math.abs(gestureState.dy);
   }
 
   _handlePanResponderGrant(e: Object, gestureState: Object) {
@@ -148,7 +149,7 @@ class SideMenu extends Component {
 
   _menuIsOpenToThreshold(xPosition: number) {
     // this.props.menuOpenBuffer defines a buffer to the left of the menuWidth in which to snap the menu open
-    let menuOpenBuffer = this.props.menuOpenBuffer ? this.props.menuOpenBuffer : 0;
+    let { menuOpenBuffer } = this.props;
     return this._isMenuOpen
       ? xPosition >= -menuOpenBuffer
       : xPosition >= this.props.menuWidth - menuOpenBuffer;
