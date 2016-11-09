@@ -19,36 +19,36 @@ const ChartCell = (props) => {
   if(props.vfrChart.isFavorited == true){
     favIcon = 'ios-heart';
   }
-      return (
-        <View style={styles.inputsContainer}>
-          <View style={styles.vfrText}>
-            <TouchableHighlight style={styles.textHighlight} onPress={() => console.log('eventually display more map information')} underlayColor={Colors.primary}>
-              <Text style={FontStyles.thin}>
-                {props.vfrChart.regionId}
-                {"\n"}
-                {props.vfrChart.regionName}
-              </Text>
-            </TouchableHighlight>
-          </View>
-          <View style={styles.buttons}>
-             <TouchableHighlight
-               underlayColor={Colors.primary}
-               style={styles.icon}
-               onPress={() => props.onFavorited(props.vfrChart.uniqueId)}>
-             <Icon style={{paddingTop: 3}} name={favIcon} size={20} color={Colors.border} />
-             </TouchableHighlight>
-          </View>
-          <View style={styles.buttons}>
-             <TouchableHighlight
-               underlayColor={Colors.primary}
-               style={styles.icon}
-               onPress={() => props.onChartPressed()}>
-               <Icon style={{paddingTop: 3}} name="ios-arrow-forward" size={20} color={Colors.border} />
-             </TouchableHighlight>
-          </View>
-        </View>
-      );
-  }
+  return (
+    <View style={styles.inputsContainer}>
+      <View style={styles.vfrText}>
+        <TouchableHighlight style={styles.textHighlight} onPress={() => console.log('eventually display more map information')} underlayColor={Colors.primary}>
+          <Text style={FontStyles.thin}>
+            {props.vfrChart.regionId}
+            {"\n"}
+            {props.vfrChart.regionName}
+          </Text>
+        </TouchableHighlight>
+      </View>
+      <View style={styles.buttons}>
+         <TouchableHighlight
+           underlayColor={Colors.primary}
+           style={styles.icon}
+           onPress={() => props.onFavorited(props.vfrChart.uniqueId)}>
+         <Icon style={{paddingTop: 3}} name={favIcon} size={20} color={Colors.border} />
+         </TouchableHighlight>
+      </View>
+      <View style={styles.buttons}>
+         <TouchableHighlight
+           underlayColor={Colors.primary}
+           style={styles.icon}
+           onPress={() => props.onChartPressed(props.vfrChart)}>
+           <Icon style={{paddingTop: 3}} name="ios-arrow-forward" size={20} color={Colors.border} />
+         </TouchableHighlight>
+      </View>
+    </View>
+  );
+}
 
 ChartCell.propTypes = {
     vfrChart: PropTypes.object.isRequired,

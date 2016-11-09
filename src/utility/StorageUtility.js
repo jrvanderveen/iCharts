@@ -2,8 +2,8 @@
 'use strict';
 var exampleVfrCharts = [
   {
-    regionName: 'Favorite 1 super long long long name test gonna add so much more now to see some extra shitssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss',
-    regionId: 'SEA',
+    regionName: 'Albuquerque',
+    regionId: 'ALB',
     publicationDate: '2016-01-29',
     expirationDate: '2016-12-05',
     revisionNumber: 0,
