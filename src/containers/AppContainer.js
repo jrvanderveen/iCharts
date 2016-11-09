@@ -9,12 +9,15 @@ import {
 } from 'react-native';
 import VFRChartsList from '../components/VFRChartsList';
 import Header from '../components/Header';
+import IChartsMapView from './IChartsMapView';
 import Menu from '../components/Menu';
 import Settings from '../components/Settings';
 import VFRChart from '../model/VFRChart';
 import Scenes from './Scenes';
 import SideMenu from './SideMenu';
 import { getSavedCharts } from '../utility/StorageUtility';
+
+const headerHeight = 65;
 
 class AppContainer extends Component {
   constructor(props) {
@@ -53,9 +56,10 @@ class AppContainer extends Component {
     });
   }
 
-  handleViewPress(){
+  handleViewPress(chart: object){
     this.setState({
-      route: Scenes.SETTINGS,
+      route: Scenes.CHARTVIEW,
+      selectedChart: chart,
     });
   }
 
@@ -76,33 +80,45 @@ class AppContainer extends Component {
   }
 
   getCurrentSceneForRoute() {
-      switch (this.state.route.toLowerCase()) {
-        case Scenes.HOME:
-          return <VFRChartsList
-                    onFavorited={(chartId) => this.handleFavPress(chartId)}
-                    onChartPressed={() => this.handleViewPress()}
-                    vfrChartsToShow={this.state.vfrChartsToShow}
-                  />;
-        case Scenes.FAVORITES:
-          return <VFRChartsList
-                    onFavorited={(chartId) => this.handleFavPress(chartId)}
-                    onChartPressed={() => this.handleViewPress()}
-                    vfrChartsToShow={this.state.savedVfrCharts.filter((chart) => { return chart.isFavorited; }) }
-                  />;
-        case Scenes.SETTINGS:
-          return <Settings />;
-        default:
-          console.log("Unkown route: ", this.state.route);
-          return <VFRChartsList onChartPress={(chartId) => this.handleFavPress(chartId)} vfrChartsToShow={this.state.savedVfrCharts}/>;
-      }
+    switch (this.state.route.toLowerCase()) {
+      case Scenes.HOME:
+        return <VFRChartsList
+                  onFavorited={(chartId) => this.handleFavPress(chartId)}
+                  onChartPressed={(chart) => this.handleViewPress(chart)}
+                  vfrChartsToShow={this.state.vfrChartsToShow}
+                />;
+      case Scenes.FAVORITES:
+        return <VFRChartsList
+                  onFavorited={(chartId) => this.handleFavPress(chartId)}
+                  onChartPressed={(chart) => this.handleViewPress(chart)}
+                  vfrChartsToShow={this.state.savedVfrCharts.filter((chart) => { return chart.isFavorited; }) }
+                />;
+      case Scenes.SETTINGS:
+        return <Settings />;
+      case Scenes.CHARTVIEW:
+        return <IChartsMapView style={{height: Dimensions.get('window').height - headerHeight}} />
+      default:
+        console.log("Unknown route: ", this.state.route);
+        return <VFRChartsList
+                onFavorited={(chartId) => this.handleFavPress(chartId)}
+                onChartPressed={(chart) => this.handleViewPress(chart)}
+                vfrChartsToShow={this.state.vfrChartsToShow}
+              />;
+    }
   }
 
   render() {
     const menuWidth = Math.max((Dimensions.get('window').width),(Dimensions.get('window').height))/5;
     const menu = <Menu onPress={(route) => this.handleMenuPress(route)} menuWidth={menuWidth} />;
+
+    const headerTitle = this.state.route === Scenes.CHARTVIEW && this.state.selectedChart
+      ? this.state.selectedChart.regionName
+      : this.state.route;
+
     const header =
       <Header
-        title={this.state.route.toUpperCase()}
+        title={headerTitle.toUpperCase()}
+        height={headerHeight}
         onPress={() => this.handleHeaderPress()}
       />;
 
@@ -118,7 +134,8 @@ class AppContainer extends Component {
           menuOpenBuffer={menuWidth / 2}
           headerComponent={header}
           useLinearGradient={true}
-          height={screenHeight}>
+          height={screenHeight}
+          shouldRespondToPan={this.state.route !== Scenes.CHARTVIEW}>
           {currentScene}
         </SideMenu>
       </View>

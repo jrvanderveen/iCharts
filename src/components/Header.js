@@ -22,7 +22,7 @@ const Header = (props) => {
 
   return (
     <View style={{flex: 1}}>
-      <View style={styles.header}>
+      <View style={[styles.header, {height: props.height || 65}]}>
         <TouchableHighlight
           underlayColor={Colors.primary}
           style={styles.icon}
@@ -41,8 +41,9 @@ const Header = (props) => {
 }
 
 Header.propTypes = {
+  height: PropTypes.number,
   onPress: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired
+  title: PropTypes.string.isRequired,
 };
 
 const styles = StyleSheet.create({
@@ -50,7 +51,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: Colors.primary,
     flexDirection: 'row',
-    height: 65,
     justifyContent: 'flex-start',
     paddingTop: 10,
   },
