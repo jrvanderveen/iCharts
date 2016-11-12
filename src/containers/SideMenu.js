@@ -7,7 +7,6 @@ import {
   Dimensions,
   PanResponder,
   StyleSheet,
-  Text,
   View
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -35,6 +34,7 @@ class SideMenu extends Component {
     this.openMenu = this.openMenu.bind(this);
     this.closeMenu = this.closeMenu.bind(this);
     this.toggleMenu = this.toggleMenu.bind(this);
+    this.isOpen = this.isOpen.bind(this);
 
     // State not used in render method
     this._isMenuOpen = false;
@@ -50,6 +50,10 @@ class SideMenu extends Component {
         onPanResponderTerminate: this._handlePanResponderEnd.bind(this),
       })
     };
+  }
+
+  isOpen() {
+    return this._isMenuOpen;
   }
 
   openMenu() {

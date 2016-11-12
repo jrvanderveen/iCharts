@@ -25,30 +25,36 @@ class AppContainer extends Component {
     this.state = {
       route: Scenes.HOME,
       savedVfrCharts: [],
-      vfrChartsToShow: []
+      hideHeader: false,
+      vfrChartsToShow: [],
     };
 
     this._sideMenu = null;
+    this._intervalId = 0;
   }
 
   componentDidMount() {
     var savedVfrCharts = getSavedCharts().map(function(chart) {
       return new VFRChart(chart);
     });
+
     this.setState({
       savedVfrCharts: savedVfrCharts,
       vfrChartsToShow: savedVfrCharts
     });
+
+    this._timeOfLastActivity = Date.now();
   }
 
   handleFavPress(chartId: number){
     let savedVfrCharts = [];
 
     this.state.vfrChartsToShow.forEach(function(chart){
-        if(chart.uniqueId == chartId){
-          chart.isFavorited = !chart.isFavorited;
-        }
-        savedVfrCharts.push(chart);
+      if(chart.uniqueId === chartId){
+        chart.isFavorited = !chart.isFavorited;
+      }
+
+      savedVfrCharts.push(chart);
     });
 
     this.setState({
@@ -61,11 +67,14 @@ class AppContainer extends Component {
       route: Scenes.CHARTVIEW,
       selectedChart: chart,
     });
+
+    this._timeOfLastActivity = Date.now();
   }
 
-  handleHeaderPress() {
+  handleHamburgerPress() {
     if (this._sideMenu !== null) {
       this._sideMenu.toggleMenu();
+      this._timeOfLastActivity = Date.now();
     }
   }
 
@@ -73,13 +82,20 @@ class AppContainer extends Component {
     if (this._sideMenu !== null) {
       this._sideMenu.closeMenu();
     }
-    
+
+    this._timeOfLastActivity = Date.now();
     this.setState({
+      hideHeader: false,
       route: route
     });
   }
 
   getCurrentSceneForRoute() {
+    if (this._intervalId > 0){
+      clearInterval(this._intervalId);
+      this._intervalId = 0;
+    }
+
     switch (this.state.route.toLowerCase()) {
       case Scenes.HOME:
         return <VFRChartsList
@@ -96,7 +112,13 @@ class AppContainer extends Component {
       case Scenes.SETTINGS:
         return <Settings />;
       case Scenes.CHARTVIEW:
-        return <IChartsMapView style={{height: Dimensions.get('window').height - headerHeight}} />
+        this._intervalId = setInterval(() => {
+          if (this._shouldHideHeader() && Math.abs(Date.now() - this._timeOfLastActivity) > 3500) {
+            this.setState({ hideHeader: true });
+          }
+        }, 4000);
+
+        return <IChartsMapView style={{flex: 1}} onAction={() => { this._timeOfLastActivity = Date.now(); this.setState({ hideHeader: false }); }} />
       default:
         console.log("Unknown route: ", this.state.route);
         return <VFRChartsList
@@ -110,16 +132,15 @@ class AppContainer extends Component {
   render() {
     const menuWidth = Math.max((Dimensions.get('window').width),(Dimensions.get('window').height))/5;
     const menu = <Menu onPress={(route) => this.handleMenuPress(route)} menuWidth={menuWidth} />;
+    const { selectedChart, route, hideHeader } = this.state;
 
-    const headerTitle = this.state.route === Scenes.CHARTVIEW && this.state.selectedChart
-      ? this.state.selectedChart.regionName
-      : this.state.route;
-
+    const headerTitle = route === Scenes.CHARTVIEW && selectedChart ? selectedChart.regionName : route;
     const header =
       <Header
+        hideHeader={hideHeader}
         title={headerTitle.toUpperCase()}
         height={headerHeight}
-        onPress={() => this.handleHeaderPress()}
+        onPress={() => this.handleHamburgerPress()}
       />;
 
     const currentScene = this.getCurrentSceneForRoute();
@@ -128,18 +149,22 @@ class AppContainer extends Component {
     return (
       <View style={styles.container} onLayout={(event) => this.setState({reRender: true})}>
         <SideMenu
-          ref={(sideMenu) => this._sideMenu = sideMenu }
+          ref={(sideMenu) => this._sideMenu = sideMenu}
           menu={menu}
           menuWidth={menuWidth}
           menuOpenBuffer={menuWidth / 2}
           headerComponent={header}
           useLinearGradient={true}
           height={screenHeight}
-          shouldRespondToPan={this.state.route !== Scenes.CHARTVIEW}>
+          shouldRespondToPan={route !== Scenes.CHARTVIEW}>
           {currentScene}
         </SideMenu>
       </View>
     );
+  }
+
+  _shouldHideHeader = () => {
+    return this._sideMenu && !this._sideMenu.isOpen() && this.state.route === Scenes.CHARTVIEW;
   }
 }
 

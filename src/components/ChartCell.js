@@ -35,7 +35,7 @@ const ChartCell = (props) => {
            underlayColor={Colors.primary}
            style={styles.icon}
            onPress={() => props.onFavorited(props.vfrChart.uniqueId)}>
-         <Icon style={{paddingTop: 3}} name={favIcon} size={20} color={Colors.border} />
+         <Icon style={{paddingTop: 3}} name={favIcon} size={18} color={Colors.border} />
          </TouchableHighlight>
       </View>
       <View style={styles.buttons}>
@@ -64,8 +64,8 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
     paddingLeft: 25,
-    borderColor: 'black',
-    borderWidth: 0.5,
+    borderColor: '#D3D3D3',
+    borderBottomWidth: 0.5,
     alignItems: 'center'
   },
   textHighlight: {
@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
   },
   vfrText: {
     flex: 1,
+    paddingTop: 10,
   },
   icon: {
     alignItems: 'center',

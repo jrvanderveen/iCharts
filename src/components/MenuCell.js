@@ -4,13 +4,11 @@
 import React, { PropTypes } from 'react';
 import {
   StyleSheet,
-  Text,
   TouchableHighlight,
   View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Colors from '../styles/Colors';
-import FontStyles from '../styles/FontStyles';
 
 const MenuCell = (props) => {
   let cellSizeStyle = {

@@ -1,8 +1,9 @@
 // @flow
 'use strict';
 
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
+  Animated,
   Dimensions,
   StyleSheet,
   Text,
@@ -14,45 +15,87 @@ import Border from './Border';
 import Colors from '../styles/Colors';
 import FontStyles from '../styles/FontStyles';
 
-const Header = (props) => {
-  const screenWidth = Dimensions.get('window').width;
-  var borderWidth = {
-    width: screenWidth - 10
+class Header extends Component {
+  static propTypes = {
+    height: PropTypes.number,
+    hideHeader: PropTypes.bool.isRequired,
+    onPress: PropTypes.func.isRequired,
+    title: PropTypes.string.isRequired,
   };
 
-  return (
-    <View style={{flex: 1}}>
-      <View style={[styles.header, {height: props.height || 65}]}>
-        <TouchableHighlight
-          underlayColor={Colors.primary}
-          style={styles.icon}
-          onPress={() => props.onPress()}>
-          <Icon style={{paddingTop: 3}} name="ios-list-outline" size={20} color={Colors.border} />
-        </TouchableHighlight>
-        <View style={styles.title}>
-          <Text style={FontStyles.title}>
-            {props.title}
-          </Text>
-        </View>
-      </View>
-      <Border style={[styles.border, borderWidth]} />
-    </View>
-  );
-}
+  constructor(props) {
+    super(props);
 
-Header.propTypes = {
-  height: PropTypes.number,
-  onPress: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
-};
+    this.state = {
+      animatedValue: new Animated.Value(this.props.height || 65), // the header height
+    };
+
+    this.animateOpen = this.animateOpen.bind(this);
+    this.animateClosed = this.animateClosed.bind(this);
+  }
+
+  animateOpen() {
+    requestAnimationFrame(() =>
+      Animated.timing(
+        this.state.animatedValue,
+        {
+          duration: 250,
+          toValue: this.props.height || 65,
+        }
+      ).start());
+  }
+
+  animateClosed() {
+    requestAnimationFrame(() => {
+      Animated.timing(
+        this.state.animatedValue,
+        {
+          duration: 250,
+          toValue: 0,
+        }
+      ).start();
+    });
+  }
+
+  render() {
+    const screenWidth = Dimensions.get('window').width;
+    const borderWidth = {
+      width: screenWidth - 10
+    };
+
+    if (this.props.hideHeader)
+      this.animateClosed();
+    else
+      this.animateOpen();
+
+    return (
+      <View style={{flex: 1}}>
+        <Animated.View style={[styles.header, {height: this.state.animatedValue}]}>
+          <TouchableHighlight
+            underlayColor={Colors.primary}
+            style={styles.icon}
+            onPress={() => this.props.onPress()}>
+            <Icon style={{paddingTop: 3}} name="ios-list-outline" size={20} color={Colors.border}/>
+          </TouchableHighlight>
+          <View style={styles.title}>
+            <Text style={FontStyles.title}>
+              {this.props.title}
+            </Text>
+          </View>
+        </Animated.View>
+        <Border style={[styles.border, borderWidth]}/>
+      </View>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     backgroundColor: Colors.primary,
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    paddingTop: 10,
   },
   border: {
     height: 1,
@@ -65,14 +108,18 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     height: 30,
     justifyContent: 'center',
-    margin: 15,
+    marginBottom: 15,
+    marginLeft: 15,
+    marginRight: 15,
+    marginTop: 24,
     width: 30,
   },
   title: {
     alignItems: 'center',
     flex: 1,
-    paddingRight: 60
-  }
+    paddingRight: 60,
+    paddingTop: 8,
+  },
 });
 
 export default Header;
