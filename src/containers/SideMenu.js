@@ -7,7 +7,6 @@ import {
   Dimensions,
   PanResponder,
   StyleSheet,
-  Text,
   View
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -20,6 +19,7 @@ class SideMenu extends Component {
     menuWidth: PropTypes.number.isRequired,
     menuOpenBuffer: PropTypes.number.isRequired,
     onMenuOpened: PropTypes.func,
+    shouldRespondToPan: PropTypes.bool,
     useLinearGradient: PropTypes.bool,
     width: PropTypes.number,
   }
@@ -34,6 +34,7 @@ class SideMenu extends Component {
     this.openMenu = this.openMenu.bind(this);
     this.closeMenu = this.closeMenu.bind(this);
     this.toggleMenu = this.toggleMenu.bind(this);
+    this.isOpen = this.isOpen.bind(this);
 
     // State not used in render method
     this._isMenuOpen = false;
@@ -49,6 +50,10 @@ class SideMenu extends Component {
         onPanResponderTerminate: this._handlePanResponderEnd.bind(this),
       })
     };
+  }
+
+  isOpen() {
+    return this._isMenuOpen;
   }
 
   openMenu() {
@@ -102,7 +107,7 @@ class SideMenu extends Component {
 
   _shouldRespondToPan(e: Object, gestureState: Object) {
     // is there more left to right movement than up and down?
-    return Math.abs(gestureState.dx) > Math.abs(gestureState.dy);
+    return this.props.shouldRespondToPan && Math.abs(gestureState.dx) > Math.abs(gestureState.dy);
   }
 
   _handlePanResponderGrant(e: Object, gestureState: Object) {
@@ -148,7 +153,7 @@ class SideMenu extends Component {
 
   _menuIsOpenToThreshold(xPosition: number) {
     // this.props.menuOpenBuffer defines a buffer to the left of the menuWidth in which to snap the menu open
-    let menuOpenBuffer = this.props.menuOpenBuffer ? this.props.menuOpenBuffer : 0;
+    let { menuOpenBuffer } = this.props;
     return this._isMenuOpen
       ? xPosition >= -menuOpenBuffer
       : xPosition >= this.props.menuWidth - menuOpenBuffer;

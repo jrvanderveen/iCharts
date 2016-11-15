@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -23,6 +24,10 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		2110AD2B1DC98FF2004193C6 /* IChartsMapManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2110AD2A1DC98FF2004193C6 /* IChartsMapManager.m */; };
+		2110AD6A1DC9ADC3004193C6 /* IChartsMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 2110AD691DC9ADC3004193C6 /* IChartsMap.m */; };
+		2110B73B1DD05E0E004193C6 /* AlbuquerqueTiles2 in Resources */ = {isa = PBXBuildFile; fileRef = 2110B73A1DD05E0D004193C6 /* AlbuquerqueTiles2 */; };
+		2110B73E1DD06E82004193C6 /* IChartsTileOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 2110B73D1DD06E82004193C6 /* IChartsTileOverlay.m */; };
 		21D8A8F71DB30A0B0026CB03 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 21D8A8F61DB309F00026CB03 /* libBVLinearGradient.a */; };
 		29E9CFB9787743C89C941070 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BE418D7F803047248B4C6312 /* Zocial.ttf */; };
 		2D898ADDFAFD4A28BFCEDAF0 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8F98503D09ED4FAAAAE8C619 /* Foundation.ttf */; };
@@ -149,6 +154,13 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = iCharts/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		1D7871E94A564D38BAFF538A /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
+		2110AD291DC98FF1004193C6 /* IChartsMapManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IChartsMapManager.h; sourceTree = "<group>"; };
+		2110AD2A1DC98FF2004193C6 /* IChartsMapManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IChartsMapManager.m; sourceTree = "<group>"; };
+		2110AD681DC9ADC3004193C6 /* IChartsMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IChartsMap.h; sourceTree = "<group>"; };
+		2110AD691DC9ADC3004193C6 /* IChartsMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IChartsMap.m; sourceTree = "<group>"; };
+		2110B73A1DD05E0D004193C6 /* AlbuquerqueTiles2 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = AlbuquerqueTiles2; sourceTree = "<group>"; };
+		2110B73C1DD06E82004193C6 /* IChartsTileOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IChartsTileOverlay.h; sourceTree = "<group>"; };
+		2110B73D1DD06E82004193C6 /* IChartsTileOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IChartsTileOverlay.m; sourceTree = "<group>"; };
 		21D8A8F11DB309F00026CB03 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 		2A429082DEB64B568F4B42D5 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		327D3DCDDA204DA7AAE189EC /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
@@ -277,6 +289,13 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				2110B73A1DD05E0D004193C6 /* AlbuquerqueTiles2 */,
+				2110AD291DC98FF1004193C6 /* IChartsMapManager.h */,
+				2110AD2A1DC98FF2004193C6 /* IChartsMapManager.m */,
+				2110AD681DC9ADC3004193C6 /* IChartsMap.h */,
+				2110AD691DC9ADC3004193C6 /* IChartsMap.m */,
+				2110B73C1DD06E82004193C6 /* IChartsTileOverlay.h */,
+				2110B73D1DD06E82004193C6 /* IChartsTileOverlay.m */,
 			);
 			name = iCharts;
 			sourceTree = "<group>";
@@ -609,6 +628,7 @@
 				81D80803DBE742D3AF90B8BE /* EvilIcons.ttf in Resources */,
 				0F08C0832C7B4F4D942A4210 /* FontAwesome.ttf in Resources */,
 				2D898ADDFAFD4A28BFCEDAF0 /* Foundation.ttf in Resources */,
+				2110B73B1DD05E0E004193C6 /* AlbuquerqueTiles2 in Resources */,
 				C018F38BB4B54A97B6D43146 /* Ionicons.ttf in Resources */,
 				03FC00FC653C486089775375 /* MaterialIcons.ttf in Resources */,
 				EDE1BD4F418041ACA9EF054C /* Octicons.ttf in Resources */,
@@ -648,8 +668,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2110AD2B1DC98FF2004193C6 /* IChartsMapManager.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				2110B73E1DD06E82004193C6 /* IChartsTileOverlay.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				2110AD6A1DC9ADC3004193C6 /* IChartsMap.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -719,6 +742,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMPRESS_PNG_FILES = NO;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = XC7D9796M8;
 				HEADER_SEARCH_PATHS = (
@@ -744,6 +768,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMPRESS_PNG_FILES = NO;
 				DEVELOPMENT_TEAM = XC7D9796M8;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",

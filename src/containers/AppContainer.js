@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import VFRChartsList from '../components/VFRChartsList';
 import Header from '../components/Header';
+import IChartsMapView from './IChartsMapView';
 import Menu from '../components/Menu';
 import Settings from '../components/Settings';
 import VFRChart from '../model/VFRChart';
@@ -16,36 +17,44 @@ import Scenes from './Scenes';
 import SideMenu from './SideMenu';
 import { getSavedCharts } from '../utility/StorageUtility';
 
+const headerHeight = 65;
+
 class AppContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
       route: Scenes.HOME,
       savedVfrCharts: [],
-      vfrChartsToShow: []
+      hideHeader: false,
+      vfrChartsToShow: [],
     };
 
     this._sideMenu = null;
+    this._intervalId = 0;
   }
 
   componentDidMount() {
     var savedVfrCharts = getSavedCharts().map(function(chart) {
       return new VFRChart(chart);
     });
+
     this.setState({
       savedVfrCharts: savedVfrCharts,
       vfrChartsToShow: savedVfrCharts
     });
+
+    this._timeOfLastActivity = Date.now();
   }
 
   handleFavPress(chartId: number){
     let savedVfrCharts = [];
 
     this.state.vfrChartsToShow.forEach(function(chart){
-        if(chart.uniqueId == chartId){
-          chart.isFavorited = !chart.isFavorited;
-        }
-        savedVfrCharts.push(chart);
+      if(chart.uniqueId === chartId){
+        chart.isFavorited = !chart.isFavorited;
+      }
+
+      savedVfrCharts.push(chart);
     });
 
     this.setState({
@@ -53,15 +62,19 @@ class AppContainer extends Component {
     });
   }
 
-  handleViewPress(){
+  handleViewPress(chart: object){
     this.setState({
-      route: Scenes.SETTINGS,
+      route: Scenes.CHARTVIEW,
+      selectedChart: chart,
     });
+
+    this._timeOfLastActivity = Date.now();
   }
 
-  handleHeaderPress() {
+  handleHamburgerPress() {
     if (this._sideMenu !== null) {
       this._sideMenu.toggleMenu();
+      this._timeOfLastActivity = Date.now();
     }
   }
 
@@ -69,41 +82,65 @@ class AppContainer extends Component {
     if (this._sideMenu !== null) {
       this._sideMenu.closeMenu();
     }
-    
+
+    this._timeOfLastActivity = Date.now();
     this.setState({
+      hideHeader: false,
       route: route
     });
   }
 
   getCurrentSceneForRoute() {
-      switch (this.state.route.toLowerCase()) {
-        case Scenes.HOME:
-          return <VFRChartsList
-                    onFavorited={(chartId) => this.handleFavPress(chartId)}
-                    onChartPressed={() => this.handleViewPress()}
-                    vfrChartsToShow={this.state.vfrChartsToShow}
-                  />;
-        case Scenes.FAVORITES:
-          return <VFRChartsList
-                    onFavorited={(chartId) => this.handleFavPress(chartId)}
-                    onChartPressed={() => this.handleViewPress()}
-                    vfrChartsToShow={this.state.savedVfrCharts.filter((chart) => { return chart.isFavorited; }) }
-                  />;
-        case Scenes.SETTINGS:
-          return <Settings />;
-        default:
-          console.log("Unkown route: ", this.state.route);
-          return <VFRChartsList onChartPress={(chartId) => this.handleFavPress(chartId)} vfrChartsToShow={this.state.savedVfrCharts}/>;
-      }
+    if (this._intervalId > 0){
+      clearInterval(this._intervalId);
+      this._intervalId = 0;
+    }
+
+    switch (this.state.route.toLowerCase()) {
+      case Scenes.HOME:
+        return <VFRChartsList
+                  onFavorited={(chartId) => this.handleFavPress(chartId)}
+                  onChartPressed={(chart) => this.handleViewPress(chart)}
+                  vfrChartsToShow={this.state.vfrChartsToShow}
+                />;
+      case Scenes.FAVORITES:
+        return <VFRChartsList
+                  onFavorited={(chartId) => this.handleFavPress(chartId)}
+                  onChartPressed={(chart) => this.handleViewPress(chart)}
+                  vfrChartsToShow={this.state.savedVfrCharts.filter((chart) => { return chart.isFavorited; }) }
+                />;
+      case Scenes.SETTINGS:
+        return <Settings />;
+      case Scenes.CHARTVIEW:
+        this._intervalId = setInterval(() => {
+          if (this._shouldHideHeader() && Math.abs(Date.now() - this._timeOfLastActivity) > 3500) {
+            this.setState({ hideHeader: true });
+          }
+        }, 4000);
+
+        return <IChartsMapView style={{flex: 1}} onAction={() => { this._timeOfLastActivity = Date.now(); this.setState({ hideHeader: false }); }} />
+      default:
+        console.log("Unknown route: ", this.state.route);
+        return <VFRChartsList
+                onFavorited={(chartId) => this.handleFavPress(chartId)}
+                onChartPressed={(chart) => this.handleViewPress(chart)}
+                vfrChartsToShow={this.state.vfrChartsToShow}
+              />;
+    }
   }
 
   render() {
     const menuWidth = Math.max((Dimensions.get('window').width),(Dimensions.get('window').height))/5;
     const menu = <Menu onPress={(route) => this.handleMenuPress(route)} menuWidth={menuWidth} />;
+    const { selectedChart, route, hideHeader } = this.state;
+
+    const headerTitle = route === Scenes.CHARTVIEW && selectedChart ? selectedChart.regionName : route;
     const header =
       <Header
-        title={this.state.route.toUpperCase()}
-        onPress={() => this.handleHeaderPress()}
+        hideHeader={hideHeader}
+        title={headerTitle.toUpperCase()}
+        height={headerHeight}
+        onPress={() => this.handleHamburgerPress()}
       />;
 
     const currentScene = this.getCurrentSceneForRoute();
@@ -112,17 +149,22 @@ class AppContainer extends Component {
     return (
       <View style={styles.container} onLayout={(event) => this.setState({reRender: true})}>
         <SideMenu
-          ref={(sideMenu) => this._sideMenu = sideMenu }
+          ref={(sideMenu) => this._sideMenu = sideMenu}
           menu={menu}
           menuWidth={menuWidth}
           menuOpenBuffer={menuWidth / 2}
           headerComponent={header}
           useLinearGradient={true}
-          height={screenHeight}>
+          height={screenHeight}
+          shouldRespondToPan={route !== Scenes.CHARTVIEW}>
           {currentScene}
         </SideMenu>
       </View>
     );
+  }
+
+  _shouldHideHeader = () => {
+    return this._sideMenu && !this._sideMenu.isOpen() && this.state.route === Scenes.CHARTVIEW;
   }
 }
 

@@ -4,8 +4,6 @@
 import React, { PropTypes } from 'react';
 import {
   StyleSheet,
-  Text,
-  TouchableHighlight,
   View
 } from 'react-native';
 import Border from './Border';
