@@ -155,7 +155,7 @@ class AppContainer extends Component {
     const screenHeight = Dimensions.get('window').height;
 
     return (
-      <View style={styles.container} onLayout={(event) => this.setState({reRender: true})}>
+      <View style={styles.container} onLayout={(event) => this.forceUpdate()}>
         <SideMenu
           ref={(sideMenu) => this._sideMenu = sideMenu}
           menu={menu}
