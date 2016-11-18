@@ -11,10 +11,11 @@ import VFRChartsList from '../components/VFRChartsList';
 import Header from '../components/Header';
 import IChartsMapView from './IChartsMapView';
 import Menu from '../components/Menu';
+import realm from '../model/realm';
 import Settings from '../components/Settings';
-import VFRChart from '../model/VFRChart';
 import Scenes from './Scenes';
 import SideMenu from './SideMenu';
+import VFRChart from '../model/VFRChart';
 import { getSavedCharts } from '../utility/StorageUtility';
 
 const headerHeight = 65;
@@ -31,12 +32,19 @@ class AppContainer extends Component {
 
     this._sideMenu = null;
     this._intervalId = 0;
+    this._savedVfrCharts = realm.objects('VFRChartsList');
+
+    console.log("SAVED CHARTS", this._savedVfrCharts);
+    if (this._savedVfrCharts.length < 1) {
+      realm.write(() => {
+        console.log("WRITING CHART: ", getSavedCharts());
+        realm.create('VFRChartsList', {name: 'VFRChartsList', items: getSavedCharts()});
+      });
+    }
   }
 
   componentDidMount() {
-    var savedVfrCharts = getSavedCharts().map(function(chart) {
-      return new VFRChart(chart);
-    });
+    const savedVfrCharts = Array.from(realm.objects('VFRChart'));
 
     this.setState({
       savedVfrCharts: savedVfrCharts,

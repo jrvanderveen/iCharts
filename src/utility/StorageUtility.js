@@ -4,8 +4,8 @@ var exampleVfrCharts = [
   {
     regionName: 'Albuquerque',
     regionId: 'ALB',
-    publicationDate: '2016-01-29',
-    expirationDate: '2016-12-05',
+    publicationDate: new Date('2016-01-29'),
+    expirationDate: new Date('2016-12-05'),
     revisionNumber: 0,
     chartUrl: 'https://www.google.com',
     filePath: '',
@@ -15,8 +15,8 @@ var exampleVfrCharts = [
   {
     regionName: 'Anchorage',
     regionId: 'ANC',
-    publicationDate: '2016-01-29',
-    expirationDate: '2016-12-05',
+    publicationDate: new Date('2016-01-29'),
+    expirationDate: new Date('2016-12-05'),
     revisionNumber: 0,
     chartUrl: 'https://www.google.com',
     filePath: '',
@@ -26,8 +26,8 @@ var exampleVfrCharts = [
   {
     regionName: 'Atlanta',
     regionId: 'ATL',
-    publicationDate: '2016-01-29',
-    expirationDate: '2016-12-05',
+    publicationDate: new Date('2016-01-29'),
+    expirationDate: new Date('2016-12-05'),
     revisionNumber: 0,
     chartUrl: 'https://www.google.com',
     filePath: '',
@@ -37,8 +37,8 @@ var exampleVfrCharts = [
   {
     regionName: 'Bethel',
     regionId: 'BET',
-    publicationDate: '2016-01-29',
-    expirationDate: '2016-12-05',
+    publicationDate: new Date('2016-01-29'),
+    expirationDate: new Date('2016-12-05'),
     revisionNumber: 0,
     chartUrl: 'https://www.google.com',
     filePath: '',
@@ -48,8 +48,8 @@ var exampleVfrCharts = [
   {
     regionName: 'Billings',
     regionId: 'BIL',
-    publicationDate: '2016-01-29',
-    expirationDate: '2016-12-05',
+    publicationDate: new Date('2016-01-29'),
+    expirationDate: new Date('2016-12-05'),
     revisionNumber: 0,
     chartUrl: 'https://www.google.com',
     filePath: '',
@@ -59,8 +59,8 @@ var exampleVfrCharts = [
   {
     regionName: 'Denver',
     regionId: 'DEN',
-    publicationDate: '2016-01-29',
-    expirationDate: '2016-12-05',
+    publicationDate: new Date('2016-01-29'),
+    expirationDate: new Date('2016-12-05'),
     revisionNumber: 0,
     chartUrl: 'https://www.google.com',
     filePath: '',
@@ -70,8 +70,8 @@ var exampleVfrCharts = [
   {
     regionName: 'Detroit',
     regionId: 'DET',
-    publicationDate: '2016-01-29',
-    expirationDate: '2016-12-05',
+    publicationDate: new Date('2016-01-29'),
+    expirationDate: new Date('2016-12-05'),
     revisionNumber: 0,
     chartUrl: 'https://www.google.com',
     filePath: '',
@@ -81,8 +81,8 @@ var exampleVfrCharts = [
   {
     regionName: 'Dutch Harbor',
     regionId: 'DUT',
-    publicationDate: '2016-01-29',
-    expirationDate: '2016-12-05',
+    publicationDate: new Date('2016-01-29'),
+    expirationDate: new Date('2016-12-05'),
     revisionNumber: 0,
     chartUrl: 'https://www.google.com',
     filePath: '',
@@ -92,8 +92,8 @@ var exampleVfrCharts = [
   {
     regionName: 'Great Falls',
     regionId: 'GF',
-    publicationDate: '2016-01-29',
-    expirationDate: '2016-12-05',
+    publicationDate: new Date('2016-01-29'),
+    expirationDate: new Date('2016-12-05'),
     revisionNumber: 0,
     chartUrl: 'https://www.google.com',
     filePath: '',
@@ -103,8 +103,8 @@ var exampleVfrCharts = [
   {
     regionName: 'Halifax',
     regionId: 'HAL',
-    publicationDate: '2016-01-29',
-    expirationDate: '2016-12-05',
+    publicationDate: new Date('2016-01-29'),
+    expirationDate: new Date('2016-12-05'),
     revisionNumber: 0,
     chartUrl: 'https://www.google.com',
     filePath: '',
@@ -114,8 +114,8 @@ var exampleVfrCharts = [
   {
     regionName: 'Jacksonville',
     regionId: 'JAC',
-    publicationDate: '2016-01-29',
-    expirationDate: '2016-12-05',
+    publicationDate: new Date('2016-01-29'),
+    expirationDate: new Date('2016-12-05'),
     revisionNumber: 0,
     chartUrl: 'https://www.google.com',
     filePath: '',
@@ -125,8 +125,8 @@ var exampleVfrCharts = [
   {
     regionName: 'Juneau',
     regionId: 'JUN',
-    publicationDate: '2016-01-29',
-    expirationDate: '2016-12-05',
+    publicationDate: new Date('2016-01-29'),
+    expirationDate: new Date('2016-12-05'),
     revisionNumber: 0,
     chartUrl: 'https://www.google.com',
     filePath: '',
@@ -136,8 +136,8 @@ var exampleVfrCharts = [
   {
     regionName: 'Ketchikan',
     regionId: 'KET',
-    publicationDate: '2016-01-29',
-    expirationDate: '2016-12-05',
+    publicationDate: new Date('2016-01-29'),
+    expirationDate: new Date('2016-12-05'),
     revisionNumber: 0,
     chartUrl: 'https://www.google.com',
     filePath: '',
@@ -147,8 +147,8 @@ var exampleVfrCharts = [
   {
     regionName: 'Kodiak',
     regionId: 'KOD',
-    publicationDate: '2016-01-29',
-    expirationDate: '2016-12-05',
+    publicationDate: new Date('2016-01-29'),
+    expirationDate: new Date('2016-12-05'),
     revisionNumber: 0,
     chartUrl: 'https://www.google.com',
     filePath: '',
@@ -158,8 +158,8 @@ var exampleVfrCharts = [
   {
     regionName: 'Klamath Falls',
     regionId: 'KF',
-    publicationDate: '2016-01-29',
-    expirationDate: '2016-12-05',
+    publicationDate: new Date('2016-01-29'),
+    expirationDate: new Date('2016-12-05'),
     revisionNumber: 0,
     chartUrl: 'https://www.google.com',
     filePath: '',
@@ -169,8 +169,8 @@ var exampleVfrCharts = [
   {
     regionName: 'Seattle',
     regionId: 'SEA',
-    publicationDate: '2016-01-29',
-    expirationDate: '2016-12-05',
+    publicationDate: new Date('2016-01-29'),
+    expirationDate: new Date('2016-12-05'),
     revisionNumber: 0,
     chartUrl: 'https://www.google.com',
     filePath: '',
@@ -181,5 +181,6 @@ var exampleVfrCharts = [
 const getSavedCharts = () => {
   // this is where we will load our charts from disk, for now populate with this list
   return exampleVfrCharts;
-}
-export { getSavedCharts};
+};
+
+export { getSavedCharts };
