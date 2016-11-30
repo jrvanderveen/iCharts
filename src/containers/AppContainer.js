@@ -25,52 +25,43 @@ class AppContainer extends Component {
     super(props);
     this.state = {
       route: Scenes.HOME,
-      savedVfrCharts: [],
       hideHeader: false,
-      vfrChartsToShow: [],
+      selectedChart: {}
     };
 
     this._sideMenu = null;
     this._intervalId = 0;
-    this._savedVfrCharts = realm.objects('VFRChartsList');
+    let savedVfrChartsList = realm.objects('VFRChartsList');
 
-    console.log("SAVED CHARTS", this._savedVfrCharts);
-    if (this._savedVfrCharts.length < 1) {
+    if (savedVfrChartsList.length < 1) {
       realm.write(() => {
-        console.log("WRITING CHART: ", getSavedCharts());
-        realm.create('VFRChartsList', {name: 'VFRChartsList', items: getSavedCharts()});
+        realm.create('VFRChartsList', {name: 'VFRChartsList', charts: getSavedCharts()});
       });
     }
+
+    this._savedVfrChartsList = savedVfrChartsList[0];
   }
 
   componentDidMount() {
-    const savedVfrCharts = Array.from(realm.objects('VFRChart'));
-
-    this.setState({
-      savedVfrCharts: savedVfrCharts,
-      vfrChartsToShow: savedVfrCharts
-    });
-
     this._timeOfLastActivity = Date.now();
   }
 
-  handleFavPress(chartId: number){
-    let savedVfrCharts = [];
+  handleFavPress(chartId){
+    if (!this._savedVfrChartsList || !this._savedVfrChartsList.charts)
+      return;
 
-    this.state.vfrChartsToShow.forEach(function(chart){
-      if(chart.uniqueId === chartId){
-        chart.isFavorited = !chart.isFavorited;
-      }
+    let favoritedChart = this._savedVfrChartsList.charts.find((chart) => chart.uniqueId === chartId);
 
-      savedVfrCharts.push(chart);
-    });
+    if (favoritedChart) {
+      realm.write(() => {
+        favoritedChart.isFavorited = !favoritedChart.isFavorited;
+      });
 
-    this.setState({
-      savedVfrCharts: savedVfrCharts
-    });
+      this.forceUpdate();
+    }
   }
 
-  handleViewPress(chart: object){
+  handleViewPress(chart){
     this.setState({
       route: Scenes.CHARTVIEW,
       selectedChart: chart,
@@ -86,7 +77,7 @@ class AppContainer extends Component {
     }
   }
 
-  handleMenuPress(route: string) {
+  handleMenuPress(route) {
     if (this._sideMenu !== null) {
       this._sideMenu.closeMenu();
     }
@@ -104,18 +95,20 @@ class AppContainer extends Component {
       this._intervalId = 0;
     }
 
+    const savedVfrCharts = Array.from(realm.objects('VFRChart'));
+
     switch (this.state.route.toLowerCase()) {
       case Scenes.HOME:
         return <VFRChartsList
                   onFavorited={(chartId) => this.handleFavPress(chartId)}
                   onChartPressed={(chart) => this.handleViewPress(chart)}
-                  vfrChartsToShow={this.state.vfrChartsToShow}
+                  vfrChartsToShow={savedVfrCharts}
                 />;
       case Scenes.FAVORITES:
         return <VFRChartsList
                   onFavorited={(chartId) => this.handleFavPress(chartId)}
                   onChartPressed={(chart) => this.handleViewPress(chart)}
-                  vfrChartsToShow={this.state.savedVfrCharts.filter((chart) => { return chart.isFavorited; }) }
+                  vfrChartsToShow={savedVfrCharts.filter((chart) => { return chart.isFavorited; }) }
                 />;
       case Scenes.SETTINGS:
         return <Settings />;
@@ -132,7 +125,7 @@ class AppContainer extends Component {
         return <VFRChartsList
                 onFavorited={(chartId) => this.handleFavPress(chartId)}
                 onChartPressed={(chart) => this.handleViewPress(chart)}
-                vfrChartsToShow={this.state.vfrChartsToShow}
+                vfrChartsToShow={savedVfrCharts}
               />;
     }
   }

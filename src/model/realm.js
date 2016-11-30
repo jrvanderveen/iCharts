@@ -5,6 +5,7 @@ import Realm from 'realm';
 class VFRChart extends Realm.Object {}
 VFRChart.schema = {
   name: 'VFRChart',
+  primaryKey: 'uniqueId',
   properties: {
     regionName: 'string',
     regionId: 'string',
@@ -22,7 +23,7 @@ class VFRChartsList extends Realm.Object {}
 VFRChartsList.schema = {
   name: 'VFRChartsList',
   properties: {
-    items: {type: 'list', objectType: 'VFRChart'},
+    charts: {type: 'list', objectType: 'VFRChart'},
   }
 };
 
