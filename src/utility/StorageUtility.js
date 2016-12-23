@@ -1,5 +1,12 @@
 // @flow
 'use strict';
+
+import RNFetchBlob from 'react-native-fetch-blob';
+import ZipArchive from 'react-native-zip-archive';
+
+const fs = RNFetchBlob.fs;
+const servicesEndpoint = 'http://192.168.0.11:8888';
+
 var exampleVfrCharts = [
   {
     regionName: 'Albuquerque',
@@ -183,4 +190,40 @@ const getSavedCharts = () => {
   return exampleVfrCharts;
 };
 
-export { getSavedCharts };
+async function fetchAndProcessTiles(regionId) {
+  if (!regionId || regionId === '')
+    return;
+
+  try {
+    console.log(`Request tiles for reqion id: ${regionId}`);
+    const response = await RNFetchBlob.fetch('GET', `${servicesEndpoint}/charts/${regionId}/zip`);
+
+    let status = response.info().status;
+    if (status !== 200) {
+      console.warn(`Request for ${regionId} failed with code ${status}`);
+      return;
+    }
+
+    console.log(`Saving ${regionId}.zip`);
+    const zipPath = `${RNFetchBlob.fs.dirs.DocumentDir}/${regionId}.zip`;
+    const responseBlob = await response.base64();
+    await fs.createFile(zipPath, responseBlob, 'base64');
+
+    const unzippedTilesPath = `${fs.dirs.DocumentDir}/${regionId}/`;
+    let exists = await fs.exists(unzippedTilesPath);
+    if (exists) {
+      console.log(`Unzipped tiles already exist; removing them.`);
+      await fs.unlink(unzippedTilesPath);
+    }
+
+    console.log(`Unzipping ${regionId}.zip`);
+    await ZipArchive.unzip(zipPath, unzippedTilesPath);
+
+    console.log(`Removing ${regionId}.zip`);
+    await fs.unlink(zipPath);
+  } catch(error) {
+    console.warn(`Error getting chart tiles for ${regionId}: ${error}`);
+  }
+}
+
+export { getSavedCharts, fetchAndProcessTiles };
