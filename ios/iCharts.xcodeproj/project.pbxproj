@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -39,6 +40,7 @@
 		C018F38BB4B54A97B6D43146 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3BCA2BAA26FC4750881B405A /* Ionicons.ttf */; };
 		C625698B2B6F4ED294B07B35 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D3A2EECEA55415FB7CD40D3 /* libc++.tbd */; };
 		C65B138D4BDD4300863588FF /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D7871E94A564D38BAFF538A /* libRNVectorIcons.a */; };
+		E907ADFD18544395A838C3F1 /* libRNZipArchive.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13453BC6795B4C0BB5E4D6A5 /* libRNZipArchive.a */; };
 		EDE1BD4F418041ACA9EF054C /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 97AA55B0642C4A8FB94752AF /* Octicons.ttf */; };
 /* End PBXBuildFile section */
 
@@ -134,6 +136,13 @@
 			remoteGlobalIDString = A15C300E1CD25C330074CB35;
 			remoteInfo = RNFetchBlob;
 		};
+		21DC1CE61E0DD952009F7AC3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 10BB6A19EE064758895B533B /* RNZipArchive.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D058BD741B8DA4AB004D9F18;
+			remoteInfo = RNZipArchive;
+		};
 		78C398B81ACF4ADC00677621 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */;
@@ -160,6 +169,8 @@
 		00E356EE1AD99517003FC87E /* iChartsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iChartsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* iChartsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iChartsTests.m; sourceTree = "<group>"; };
+		10BB6A19EE064758895B533B /* RNZipArchive.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNZipArchive.xcodeproj; path = "../node_modules/react-native-zip-archive/RNZipArchive.xcodeproj"; sourceTree = "<group>"; };
+		13453BC6795B4C0BB5E4D6A5 /* libRNZipArchive.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNZipArchive.a; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* iCharts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iCharts.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -227,6 +238,7 @@
 				C625698B2B6F4ED294B07B35 /* libc++.tbd in Frameworks */,
 				B960E1413F62474BBB089471 /* libz.tbd in Frameworks */,
 				93E2DAD8B2CE4946B6EEB716 /* libRNFetchBlob.a in Frameworks */,
+				E907ADFD18544395A838C3F1 /* libRNZipArchive.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -367,6 +379,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		21DC1CD51E0DD952009F7AC3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				21DC1CE71E0DD952009F7AC3 /* libRNZipArchive.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		78C398B11ACF4ADC00677621 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -392,6 +412,7 @@
 				927690D0BE404A5085C0C30A /* RNVectorIcons.xcodeproj */,
 				8C37B018971D409EA2F03DD9 /* RealmReact.xcodeproj */,
 				BDE9882722854BA79370CC8E /* RNFetchBlob.xcodeproj */,
+				10BB6A19EE064758895B533B /* RNZipArchive.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -577,6 +598,10 @@
 					ProductGroup = 21D8A91C1DB5466C0026CB03 /* Products */;
 					ProjectRef = 927690D0BE404A5085C0C30A /* RNVectorIcons.xcodeproj */;
 				},
+				{
+					ProductGroup = 21DC1CD51E0DD952009F7AC3 /* Products */;
+					ProjectRef = 10BB6A19EE064758895B533B /* RNZipArchive.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -669,6 +694,13 @@
 			fileType = archive.ar;
 			path = libRNFetchBlob.a;
 			remoteRef = 21DC1CB41E0D9DE0009F7AC3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		21DC1CE71E0DD952009F7AC3 /* libRNZipArchive.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNZipArchive.a;
+			remoteRef = 21DC1CE61E0DD952009F7AC3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		78C398B91ACF4ADC00677621 /* libRCTLinking.a */ = {
@@ -793,6 +825,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iCharts.app/iCharts";
@@ -810,6 +843,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -833,6 +867,7 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/realm/src/**",
 					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-zip-archive/**",
 				);
 				INFOPLIST_FILE = iCharts/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -860,6 +895,7 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/realm/src/**",
 					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-zip-archive/**",
 				);
 				INFOPLIST_FILE = iCharts/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -915,6 +951,7 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/realm/src/**",
 					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-zip-archive/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -958,6 +995,7 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/realm/src/**",
 					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-zip-archive/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
