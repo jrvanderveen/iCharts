@@ -39,19 +39,16 @@ class AppContainer extends Component {
       });
     }
 
-    this._savedVfrChartsList = savedVfrChartsList[0];
+    // query the realm once for favorited charts and rely on auto-updated results
+    this._savedVfrCharts = realm.objects('VFRChart');
+    this._favoritedCharts = this._savedVfrCharts.filtered('isFavorited = true');
   }
 
   componentDidMount() {
     this._timeOfLastActivity = Date.now();
   }
 
-  handleFavPress(chartId){
-    if (!this._savedVfrChartsList || !this._savedVfrChartsList.charts)
-      return;
-
-    let favoritedChart = this._savedVfrChartsList.charts.find((chart) => chart.uniqueId === chartId);
-
+  handleFavPress(favoritedChart){
     if (favoritedChart) {
       realm.write(() => {
         favoritedChart.isFavorited = !favoritedChart.isFavorited;
@@ -95,20 +92,18 @@ class AppContainer extends Component {
       this._intervalId = 0;
     }
 
-    const savedVfrCharts = Array.from(realm.objects('VFRChart'));
-
     switch (this.state.route.toLowerCase()) {
       case Scenes.HOME:
         return <VFRChartsList
                   onFavorited={(chartId) => this.handleFavPress(chartId)}
                   onChartPressed={(chart) => this.handleViewPress(chart)}
-                  vfrChartsToShow={savedVfrCharts}
+                  vfrChartsToShow={Array.from(this._savedVfrCharts)}
                 />;
       case Scenes.FAVORITES:
         return <VFRChartsList
                   onFavorited={(chartId) => this.handleFavPress(chartId)}
                   onChartPressed={(chart) => this.handleViewPress(chart)}
-                  vfrChartsToShow={savedVfrCharts.filter((chart) => { return chart.isFavorited; }) }
+                  vfrChartsToShow={Array.from(this._favoritedCharts)}
                 />;
       case Scenes.SETTINGS:
         return <Settings />;
@@ -125,7 +120,7 @@ class AppContainer extends Component {
         return <VFRChartsList
                 onFavorited={(chartId) => this.handleFavPress(chartId)}
                 onChartPressed={(chart) => this.handleViewPress(chart)}
-                vfrChartsToShow={savedVfrCharts}
+                vfrChartsToShow={Array.from(this._savedVfrCharts)}
               />;
     }
   }

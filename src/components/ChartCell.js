@@ -34,7 +34,7 @@ const ChartCell = (props) => {
          <TouchableHighlight
            underlayColor={Colors.primary}
            style={styles.icon}
-           onPress={() => props.onFavorited(props.vfrChart.uniqueId)}>
+           onPress={() => props.onFavorited(props.vfrChart)}>
          <Icon style={{paddingTop: 3}} name={favIcon} size={18} color={Colors.border} />
          </TouchableHighlight>
       </View>
