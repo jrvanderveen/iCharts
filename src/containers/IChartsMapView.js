@@ -29,6 +29,11 @@ class IChartsMapView extends Component {
   }
 }
 
+IChartsMapView.propTypes = {
+  regionId: PropTypes.string.isRequired,
+  onAction: PropTypes.func.isRequired,
+};
+
 const styles = StyleSheet.create({
   topTouchBar: {
     height: 60,

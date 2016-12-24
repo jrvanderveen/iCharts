@@ -9,4 +9,6 @@
 
 @interface IChartsMap : MKMapView
 
+@property (nonatomic, assign) NSString *regionId;
+
 @end

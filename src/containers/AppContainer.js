@@ -114,7 +114,13 @@ class AppContainer extends Component {
           }
         }, 4000);
 
-        return <IChartsMapView style={{flex: 1}} onAction={() => { this._timeOfLastActivity = Date.now(); this.setState({ hideHeader: false }); }} />
+        return <IChartsMapView
+                style={{flex: 1}}
+                onAction={() => {
+                  this._timeOfLastActivity = Date.now();
+                  this.setState({ hideHeader: false });
+                }}
+                regionId={this.state.selectedChart.regionId} />
       default:
         console.log("Unknown route: ", this.state.route);
         return <VFRChartsList
