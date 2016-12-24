@@ -2,10 +2,10 @@
 'use strict';
 
 import RNFetchBlob from 'react-native-fetch-blob';
+import ServicesClient from './ServicesClient';
 import ZipArchive from 'react-native-zip-archive';
 
 const fs = RNFetchBlob.fs;
-const servicesEndpoint = 'http://192.168.0.11:8888';
 
 var exampleVfrCharts = [
   {
@@ -195,19 +195,9 @@ async function fetchAndProcessTiles(regionId) {
     return;
 
   try {
-    console.log(`Request tiles for reqion id: ${regionId}`);
-    const response = await RNFetchBlob.fetch('GET', `${servicesEndpoint}/charts/${regionId}/zip`);
-
-    let status = response.info().status;
-    if (status !== 200) {
-      console.warn(`Request for ${regionId} failed with code ${status}`);
+    let zipFilePath = await ServicesClient.downloadTilesZip(regionId);
+    if (!zipFilePath)
       return;
-    }
-
-    console.log(`Saving ${regionId}.zip`);
-    const zipPath = `${RNFetchBlob.fs.dirs.DocumentDir}/${regionId}.zip`;
-    const responseBlob = await response.base64();
-    await fs.createFile(zipPath, responseBlob, 'base64');
 
     const unzippedTilesPath = `${fs.dirs.DocumentDir}/${regionId}/`;
     let exists = await fs.exists(unzippedTilesPath);
@@ -217,10 +207,10 @@ async function fetchAndProcessTiles(regionId) {
     }
 
     console.log(`Unzipping ${regionId}.zip`);
-    await ZipArchive.unzip(zipPath, unzippedTilesPath);
+    await ZipArchive.unzip(zipFilePath, unzippedTilesPath);
 
     console.log(`Removing ${regionId}.zip`);
-    await fs.unlink(zipPath);
+    await fs.unlink(zipFilePath);
   } catch(error) {
     console.warn(`Error getting chart tiles for ${regionId}: ${error}`);
   }
