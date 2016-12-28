@@ -16,5 +16,10 @@ export default FontStyles = StyleSheet.create({
     color: 'black',
     fontSize: 16,
     fontFamily: 'HelveticaNeue-Thin'
+  },
+  settingsItem: {
+    color: 'black',
+    fontSize: 26,
+    fontFamily: 'HelveticaNeue-Thin'
   }
 });

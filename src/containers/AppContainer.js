@@ -12,7 +12,7 @@ import Header from '../components/Header';
 import IChartsMapView from './IChartsMapView';
 import Menu from '../components/Menu';
 import realm from '../model/realm';
-import Settings from '../components/Settings';
+import SettingsContainer from './SettingsContainer';
 import Scenes from '../constants/Scenes';
 import SideMenu from './SideMenu';
 import VFRChart from '../model/VFRChart';
@@ -106,7 +106,7 @@ class AppContainer extends Component {
                   vfrChartsToShow={Array.from(this._favoritedCharts)}
                 />;
       case Scenes.SETTINGS:
-        return <Settings />;
+        return <SettingsContainer />;
       case Scenes.CHARTVIEW:
         this._intervalId = setInterval(() => {
           if (this._shouldHideHeader() && Math.abs(Date.now() - this._timeOfLastActivity) > 3500) {
