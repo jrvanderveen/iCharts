@@ -13,7 +13,7 @@ import IChartsMapView from './IChartsMapView';
 import Menu from '../components/Menu';
 import realm from '../model/realm';
 import Settings from '../components/Settings';
-import Scenes from './Scenes';
+import Scenes from '../constants/Scenes';
 import SideMenu from './SideMenu';
 import VFRChart from '../model/VFRChart';
 import { getSavedCharts } from '../utility/StorageUtility';
