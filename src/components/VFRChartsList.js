@@ -11,7 +11,7 @@ import {
 import VFRChart from '../model/VFRChart';
 import Colors from '../styles/Colors';
 import FontStyles from '../styles/FontStyles';
-import ChartCell from './ChartCell'
+import ChartCell from '../containers/ChartCell'
 
 class VFRChartsList extends Component {
   static propTypes = {

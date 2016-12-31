@@ -7,7 +7,7 @@ export default FontStyles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'HelveticaNeue-Bold'
   },
-  menu: {
+  subHeader: {
     color: Colors.text,
     fontSize: 14,
     fontFamily: 'HelveticaNeue-Medium'
