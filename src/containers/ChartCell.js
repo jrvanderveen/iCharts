@@ -14,6 +14,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Colors from '../styles/Colors';
 import FontStyles from '../styles/FontStyles';
 
+const AnimatedIcon = Animated.createAnimatedComponent(Icon);
 const dateStringCutoffIndex = 15;
 
 export default class ChartCell extends Component {
@@ -23,10 +24,12 @@ export default class ChartCell extends Component {
     this.isExpanded = false;
     this.expandedBodyHeight = 0;
     this.state = {
-      animatedHeight: new Animated.Value(0)
+      animatedHeight: new Animated.Value(0),
+      animatedIconSpringValue: new Animated.Value(1),
     };
 
     this.toggleExpanded = this.toggleExpanded.bind(this);
+    this.springHeart = this.springHeart.bind(this);
   }
 
   toggleExpanded() {
@@ -46,8 +49,20 @@ export default class ChartCell extends Component {
     ).start();
   }
 
+  springHeart() {
+    this.state.animatedIconSpringValue.setValue(0.5);
+    Animated.spring(
+      this.state.animatedIconSpringValue,
+      {
+        toValue: 1,
+        friction: 5,
+      }
+    ).start();
+  }
+
   render() {
     let favIcon = this.props.vfrChart.isFavorited ? 'ios-heart' : 'ios-heart-outline';
+    let heartColor = this.props.vfrChart.isFavorited ? Colors.highlight : Colors.border;
 
     return (
       <View style={{overflow: 'hidden'}}>
@@ -65,8 +80,16 @@ export default class ChartCell extends Component {
             <TouchableHighlight
               underlayColor={Colors.primary}
               style={styles.icon}
-              onPress={() => this.props.onFavorited(this.props.vfrChart)}>
-              <Icon style={{paddingTop: 3}} name={favIcon} size={18} color={Colors.border} />
+              onPress={() => {
+                this.props.onFavorited(this.props.vfrChart);
+                this.springHeart();
+              }}>
+              <AnimatedIcon
+                style={{paddingTop: 3, transform: [{scale: this.state.animatedIconSpringValue}]}}
+                name={favIcon}
+                size={18}
+                color={heartColor}
+              />
             </TouchableHighlight>
           </View>
           <View style={styles.buttons}>
