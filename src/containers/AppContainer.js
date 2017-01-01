@@ -48,13 +48,11 @@ class AppContainer extends Component {
     this._timeOfLastActivity = Date.now();
   }
 
-  handleFavPress(favoritedChart){
+  handleFavPress(favoritedChart) {
     if (favoritedChart) {
       realm.write(() => {
         favoritedChart.isFavorited = !favoritedChart.isFavorited;
       });
-
-      this.forceUpdate();
     }
   }
 

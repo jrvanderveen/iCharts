@@ -7,7 +7,7 @@ import {
   Easing,
   StyleSheet,
   Text,
-  TouchableHighlight,
+  TouchableOpacity,
   View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -16,6 +16,8 @@ import FontStyles from '../styles/FontStyles';
 
 const AnimatedIcon = Animated.createAnimatedComponent(Icon);
 const dateStringCutoffIndex = 15;
+const emptyHeartIcon = 'ios-heart-outline';
+const fullHeartIcon = 'ios-heart';
 
 export default class ChartCell extends Component {
   constructor(props) {
@@ -23,13 +25,28 @@ export default class ChartCell extends Component {
 
     this.isExpanded = false;
     this.expandedBodyHeight = 0;
+
+    // store heart color in state to toggle the color faster than waiting
+    // for the re-render after the realm write
     this.state = {
+      heartIcon: this.props.vfrChart.isFavorited ? fullHeartIcon : emptyHeartIcon,
+      heartColor: this.props.vfrChart.isFavorited ? Colors.highlight : Colors.border,
       animatedHeight: new Animated.Value(0),
       animatedIconSpringValue: new Animated.Value(1),
     };
 
     this.toggleExpanded = this.toggleExpanded.bind(this);
     this.springHeart = this.springHeart.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.vfrChart.regionId === this.props.vfrChart.regionId)
+      return;
+
+    this.setState({
+      heartIcon: nextProps.vfrChart.isFavorited ? fullHeartIcon : emptyHeartIcon,
+      heartColor: nextProps.vfrChart.isFavorited ? Colors.highlight : Colors.border,
+    });
   }
 
   toggleExpanded() {
@@ -50,55 +67,59 @@ export default class ChartCell extends Component {
   }
 
   springHeart() {
+    this.setState({
+      heartIcon: this.state.heartIcon === emptyHeartIcon ? fullHeartIcon : emptyHeartIcon,
+      heartColor: this.state.heartColor === Colors.border ? Colors.highlight : Colors.border
+    });
+
     this.state.animatedIconSpringValue.setValue(0.5);
     Animated.spring(
       this.state.animatedIconSpringValue,
       {
         toValue: 1,
-        friction: 5,
+        friction: 3,
       }
     ).start();
   }
 
   render() {
-    let favIcon = this.props.vfrChart.isFavorited ? 'ios-heart' : 'ios-heart-outline';
-    let heartColor = this.props.vfrChart.isFavorited ? Colors.highlight : Colors.border;
+    const { heartIcon, heartColor } = this.state;
 
     return (
       <View style={{overflow: 'hidden'}}>
         <View style={styles.inputsContainer}>
           <View style={styles.vfrText}>
-            <TouchableHighlight onPress={this.toggleExpanded} underlayColor={Colors.primary}>
+            <TouchableOpacity onPress={this.toggleExpanded} activeOpacity={0.5}>
               <Text style={FontStyles.thin}>
                 {this.props.vfrChart.regionId}
                 {"\n"}
                 {this.props.vfrChart.regionName}
               </Text>
-            </TouchableHighlight>
+            </TouchableOpacity>
           </View>
           <View style={styles.buttons}>
-            <TouchableHighlight
-              underlayColor={Colors.primary}
+            <TouchableOpacity
+              activeOpacity={1.0}
               style={styles.icon}
               onPress={() => {
-                this.props.onFavorited(this.props.vfrChart);
                 this.springHeart();
+                this.props.onFavorited(this.props.vfrChart);
               }}>
               <AnimatedIcon
                 style={{paddingTop: 3, transform: [{scale: this.state.animatedIconSpringValue}]}}
-                name={favIcon}
-                size={18}
+                name={heartIcon}
+                size={30}
                 color={heartColor}
               />
-            </TouchableHighlight>
+          </TouchableOpacity>
           </View>
           <View style={styles.buttons}>
-            <TouchableHighlight
-              underlayColor={Colors.primary}
+            <TouchableOpacity
+              activeOpacity={0.5}
               style={styles.icon}
               onPress={() => this.props.onChartPressed(this.props.vfrChart)}>
-              <Icon style={{paddingTop: 3}} name="ios-arrow-forward" size={20} color={Colors.border} />
-            </TouchableHighlight>
+              <Icon style={{paddingTop: 3}} name="ios-arrow-forward" size={30} color={Colors.border} />
+            </TouchableOpacity>
           </View>
         </View>
 
@@ -167,12 +188,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   icon: {
-    alignItems: 'center',
-    backgroundColor: Colors.secondary,
-    borderRadius: 15,
-    borderWidth: 0.5,
     height: 30,
-    justifyContent: 'center',
     margin: 15,
     width: 30,
   },
