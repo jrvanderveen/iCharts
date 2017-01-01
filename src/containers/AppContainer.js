@@ -3,6 +3,7 @@
 
 import React, { Component } from 'react';
 import {
+  ActivityIndicator,
   Dimensions,
   StyleSheet,
   View
@@ -24,6 +25,7 @@ class AppContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isWorking: false,
       route: Scenes.HOME,
       hideHeader: false,
       selectedChart: {}
@@ -73,19 +75,28 @@ class AppContainer extends Component {
   }
 
   handleMenuPress(route) {
+    this.setState({
+      isWorking: true,
+      route: route,
+    });
+
     if (this._sideMenu !== null) {
       this._sideMenu.closeMenu();
     }
 
-    this._timeOfLastActivity = Date.now();
-    this.setState({
-      hideHeader: false,
-      route: route
-    });
+    // give the menu some time to close before changing the scene to make the
+    // animation smoother. Rerendering and animations don't mix well
+    setTimeout(() => {
+      this._timeOfLastActivity = Date.now();
+      this.setState({
+        isWorking: false,
+        hideHeader: false,
+      });
+    }, 250);
   }
 
   getCurrentSceneForRoute() {
-    if (this._intervalId > 0){
+    if (this._intervalId > 0) {
       clearInterval(this._intervalId);
       this._intervalId = 0;
     }
@@ -132,7 +143,7 @@ class AppContainer extends Component {
   render() {
     const menuWidth = Math.max((Dimensions.get('window').width),(Dimensions.get('window').height))/5;
     const menu = <Menu onPress={(route) => this.handleMenuPress(route)} menuWidth={menuWidth} />;
-    const { selectedChart, route, hideHeader } = this.state;
+    const { selectedChart, route, hideHeader, isWorking } = this.state;
 
     const headerTitle = route === Scenes.CHARTVIEW && selectedChart ? selectedChart.regionName : route;
     const header =
@@ -143,7 +154,15 @@ class AppContainer extends Component {
         onPress={() => this.handleHamburgerPress()}
       />;
 
-    const currentScene = this.getCurrentSceneForRoute();
+    let currentScene = null;
+    if (isWorking) {
+      currentScene = <ActivityIndicator
+                        style={{flex: 1, backgroundColor: Colors.secondary }}
+                        size="large"
+                      />
+    } else {
+      currentScene = this.getCurrentSceneForRoute();
+    }
     const screenHeight = Dimensions.get('window').height;
 
     return (
