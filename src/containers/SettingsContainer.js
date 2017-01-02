@@ -6,34 +6,77 @@ import {
 } from 'react-native';
 import Colors from '../styles/Colors';
 import DownloadChartsView from './DownloadChartsView';
-import SettingsScenes from '../constants/SettingsScenes';
+import ServicesClient from '../api/ServicesClient';
+import { SettingsScenes } from '../constants';
 import SettingsMenu from '../components/SettingsMenu';
+import SettingsMenuCell from '../components/SettingsMenuCell';
 
 class SettingsContainer extends Component {
   constructor(props) {
     super(props);
+
+    this.isStillMounted = false;
+    this.state = {
+      downloadModels: [],
+    };
+
+    this._getModels = this._getModels.bind(this);
+  }
+
+  componentDidMount() {
+    this.isStillMounted = true;
+    this._getModels();
+  }
+
+  componentWillUnmount() {
+    this.isStillMounted = false;
   }
 
   render() {
+    const { downloadModels, errorMessage } = this.state;
+
     return (
       <View style={styles.settings}>
         <Navigator
-          style={{ flex:1 }}
           initialRoute={{ name: SettingsScenes.SETTINGS_MAIN_MENU }}
           renderScene={(route, navigator) => {
             switch (route.name) {
               case SettingsScenes.DOWNLOAD:
-                console.log("RENDER SCENE SETTINGS CONTAINER DOWNLOAD");
-                return <DownloadChartsView navigator={navigator} />
+                return (
+                  <DownloadChartsView
+                    navigator={navigator}
+                    downloadModels={downloadModels}
+                    errorMessage={errorMessage}
+                  />
+                );
               case SettingsScenes.SETTINGS_MAIN_MENU:
               default:
-                console.log("RENDER SCENE SETTINGS CONTAINER MAIN MENU");
-                return <SettingsMenu navigator={navigator} />
+                return (
+                  <SettingsMenu>
+                    <SettingsMenuCell
+                      buttonText={"Download Charts"}
+                      navigateToSettingsView={() => {
+                        navigator.push({name: 'download'})
+                      }}
+                    />
+                  </SettingsMenu>
+              );
             }
           }}
         />
       </View>
     );
+  }
+
+  _getModels() {
+    ServicesClient.getAllModels().then((result) => {
+      if (this.isStillMounted && result) {
+        this.setState({
+          downloadModels: result.models,
+          errorMessage: result.error,
+        });
+      }
+    });
   }
 }
 

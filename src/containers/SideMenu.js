@@ -140,7 +140,8 @@ class SideMenu extends Component {
     Animated.spring(
       this.state.pan,
       {
-        toValue: toValue
+        toValue: toValue,
+        tension: 60,
       }
     ).start();
 

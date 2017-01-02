@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import {
   ActivityIndicator,
   Dimensions,
+  InteractionManager,
   StyleSheet,
   View
 } from 'react-native';
@@ -14,7 +15,7 @@ import IChartsMapView from './IChartsMapView';
 import Menu from '../components/Menu';
 import realm from '../model/realm';
 import SettingsContainer from './SettingsContainer';
-import Scenes from '../constants/Scenes';
+import { Scenes } from '../constants';
 import SideMenu from './SideMenu';
 import VFRChart from '../model/VFRChart';
 import { getSavedCharts } from '../utility/StorageUtility';
@@ -86,13 +87,13 @@ class AppContainer extends Component {
 
     // give the menu some time to close before changing the scene to make the
     // animation smoother. Rerendering and animations don't mix well
-    setTimeout(() => {
+    InteractionManager.runAfterInteractions(() => {
       this._timeOfLastActivity = Date.now();
       this.setState({
         isWorking: false,
         hideHeader: false,
       });
-    }, 250);
+    });
   }
 
   getCurrentSceneForRoute() {

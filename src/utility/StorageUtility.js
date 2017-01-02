@@ -1,11 +1,9 @@
 // @flow
 'use strict';
 
-import RNFetchBlob from 'react-native-fetch-blob';
-import ServicesClient from './ServicesClient';
+import RNFS from 'react-native-fs';
+import ServicesClient from '../api/ServicesClient';
 import ZipArchive from 'react-native-zip-archive';
-
-const fs = RNFetchBlob.fs;
 
 var exampleVfrCharts = [
   {
@@ -190,29 +188,36 @@ const getSavedCharts = () => {
   return exampleVfrCharts;
 };
 
-async function fetchAndProcessTiles(regionId) {
-  if (!regionId || regionId === '')
+async function fetchAndProcessTiles(regionId, progressCallback) {
+  if (!regionId)
     return;
 
   try {
-    let zipFilePath = await ServicesClient.downloadTilesZip(regionId);
-    if (!zipFilePath)
-      return;
+    let downloadResponse = await ServicesClient.downloadTilesZip(regionId, progressCallback);
+    let zipFilePath = downloadResponse.zipPath;
+    if (!zipFilePath) {
+      return {
+        error: downloadResponse.error,
+      };
+    }
 
-    const unzippedTilesPath = `${fs.dirs.DocumentDir}/${regionId}/`;
-    let exists = await fs.exists(unzippedTilesPath);
+    const unzippedTilesPath = `${RNFS.DocumentDirectoryPath}/${regionId}/`;
+    let exists = await RNFS.exists(unzippedTilesPath);
     if (exists) {
       console.log(`Unzipped tiles already exist; removing them.`);
-      await fs.unlink(unzippedTilesPath);
+      await RNFS.unlink(unzippedTilesPath);
     }
 
     console.log(`Unzipping ${regionId}.zip`);
     await ZipArchive.unzip(zipFilePath, unzippedTilesPath);
 
     console.log(`Removing ${regionId}.zip`);
-    await fs.unlink(zipFilePath);
+    await RNFS.unlink(zipFilePath);
   } catch(error) {
     console.warn(`Error getting chart tiles for ${regionId}: ${error}`);
+    return {
+      error: error,
+    };
   }
 }
 
