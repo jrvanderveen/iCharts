@@ -86,7 +86,7 @@ export default class ChartCell extends Component {
     const { heartIcon, heartColor } = this.state;
 
     return (
-      <View style={{overflow: 'hidden'}}>
+      <View>
         <View style={styles.inputsContainer}>
           <View style={styles.vfrText}>
             <TouchableOpacity onPress={this.toggleExpanded} activeOpacity={0.5}>
@@ -111,7 +111,7 @@ export default class ChartCell extends Component {
                 size={30}
                 color={heartColor}
               />
-          </TouchableOpacity>
+            </TouchableOpacity>
           </View>
           <View style={styles.buttons}>
             <TouchableOpacity
@@ -125,6 +125,7 @@ export default class ChartCell extends Component {
 
         <Animated.View
           style={{
+            overflow: 'scroll',
             height: this.state.animatedHeight,
           }}>
           <View
