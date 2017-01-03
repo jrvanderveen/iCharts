@@ -15,6 +15,8 @@ import Border from './Border';
 import Colors from '../styles/Colors';
 import FontStyles from '../styles/FontStyles';
 
+const headerBorderMarginLeftRight = 5;
+
 class Header extends Component {
   static propTypes = {
     height: PropTypes.number,
@@ -60,7 +62,7 @@ class Header extends Component {
   render() {
     const screenWidth = Dimensions.get('window').width;
     const borderWidth = {
-      width: screenWidth - 10
+      width: screenWidth - headerBorderMarginLeftRight * 2
     };
 
     if (this.props.hideHeader)
@@ -69,8 +71,8 @@ class Header extends Component {
       this.animateOpen();
 
     return (
-      <View style={{flex: 1}}>
-        <Animated.View style={[styles.header, {height: this.state.animatedValue}]}>
+      <Animated.View style={{height: this.state.animatedValue}}>
+        <View style={styles.header}>
           <TouchableHighlight
             underlayColor={Colors.primary}
             style={styles.icon}
@@ -82,9 +84,9 @@ class Header extends Component {
               {this.props.title}
             </Text>
           </View>
-        </Animated.View>
+        </View>
         <Border style={[styles.border, borderWidth]}/>
-      </View>
+      </Animated.View>
     );
   }
 }
@@ -99,6 +101,7 @@ const styles = StyleSheet.create({
   },
   border: {
     height: 1,
+    marginLeft: headerBorderMarginLeftRight,
     marginTop: -1,
   },
   icon: {

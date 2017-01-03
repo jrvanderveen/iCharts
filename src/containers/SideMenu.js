@@ -94,9 +94,7 @@ class SideMenu extends Component {
                 />
               : <View />}
             <View style={{flex: 1}}>
-              <View>
-                {this.props.headerComponent}
-              </View>
+              {this.props.headerComponent}
               {this.props.children}
             </View>
           </View>
