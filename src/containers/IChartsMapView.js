@@ -12,7 +12,8 @@ import {
 
 class IChartsMapView extends Component {
   static propTypes = {
-    onAction: PropTypes.func.isRequired
+    onAction: PropTypes.func.isRequired,
+    regionId: PropTypes.string.isRequired,
   };
 
   render() {
