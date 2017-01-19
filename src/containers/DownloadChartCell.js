@@ -5,12 +5,10 @@ import {
   ListView,
   StyleSheet,
   Text,
-  TouchableHighlight,
   TouchableOpacity,
   View
 } from 'react-native';
 import ChartInformationContainer from './ChartInformationContainer';
-import { dateStringCutoffIndex } from '../constants';
 import { fetchAndProcessTiles } from '../utility/StorageUtility';
 import { FontStyles } from '../styles';
 import Icon from 'react-native-vector-icons/Ionicons';

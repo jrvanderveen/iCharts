@@ -11,6 +11,7 @@ import {
 import DownloadChartCell from './DownloadChartCell';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ServicesClient from '../api/ServicesClient';
+import SettingsBackButton from '../components/SettingsBackButton';
 
 export default class DownloadChartsView extends Component {
   static propTypes = {
@@ -30,11 +31,7 @@ export default class DownloadChartsView extends Component {
 
     return (
       <View style={{flex: 1, backgroundColor: Colors.secondary}}>
-        <TouchableOpacity style={styles.backButton} onPress={() => this.props.navigator.pop()}>
-          <Text>
-            Back
-          </Text>
-        </TouchableOpacity>
+        <SettingsBackButton onPress={() => this.props.navigator.pop()} />
         <View style={styles.listView}>
           {downloadModels ?
             <ListView
@@ -73,17 +70,6 @@ export default class DownloadChartsView extends Component {
 }
 
 const styles = StyleSheet.create({
-  backButton: {
-    borderColor: Colors.border,
-    borderWidth: 1,
-    borderRadius: 8,
-    height: 32,
-    justifyContent:'center',
-    marginLeft: 10,
-    marginRight: 10,
-    marginTop: 10,
-    paddingLeft: 20,
-  },
   centered: {
     alignItems: 'center',
   },

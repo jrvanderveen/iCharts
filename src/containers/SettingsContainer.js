@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
   Navigator,
   StyleSheet,
@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 import Colors from '../styles/Colors';
 import DownloadChartsView from './DownloadChartsView';
+import RemoveChartsView from './RemoveChartsView';
 import ServicesClient from '../api/ServicesClient';
 import { SettingsScenes } from '../constants';
 import SettingsMenu from '../components/SettingsMenu';
@@ -17,7 +18,7 @@ class SettingsContainer extends Component {
 
     this.isStillMounted = false;
     this.state = {
-      downloadModels: [],
+      downloadModels: undefined,
     };
 
     this._getModels = this._getModels.bind(this);
@@ -49,6 +50,12 @@ class SettingsContainer extends Component {
                     errorMessage={errorMessage}
                   />
                 );
+              case SettingsScenes.REMOVE:
+                return (
+                  <RemoveChartsView
+                    navigator={navigator}
+                  />
+                );
               case SettingsScenes.SETTINGS_MAIN_MENU:
               default:
                 return (
@@ -57,6 +64,12 @@ class SettingsContainer extends Component {
                       buttonText={"Download Charts"}
                       navigateToSettingsView={() => {
                         navigator.push({name: 'download'})
+                      }}
+                    />
+                    <SettingsMenuCell
+                      buttonText={"Remove Charts"}
+                      navigateToSettingsView={() => {
+                        navigator.push({name: 'remove'})
                       }}
                     />
                   </SettingsMenu>

@@ -221,4 +221,23 @@ async function fetchAndProcessTiles(regionId, progressCallback) {
   }
 }
 
-export { getSavedCharts, fetchAndProcessTiles };
+async function removeTiles(regionId) {
+  if (!regionId)
+    return;
+
+  try {
+    const unzippedTilesPath = `${RNFS.DocumentDirectoryPath}/${regionId}/`;
+    let exists = await RNFS.exists(unzippedTilesPath);
+    if (exists) {
+      console.log(`Removing tiles for ${regionId}.`);
+      await RNFS.unlink(unzippedTilesPath);
+    }
+  } catch(error) {
+    console.warn(`Error removing chart tiles for ${regionId}: ${error}`);
+    return {
+      error: error,
+    };
+  }
+}
+
+export { getSavedCharts, fetchAndProcessTiles, removeTiles };

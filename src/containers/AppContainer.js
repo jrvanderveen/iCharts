@@ -18,7 +18,7 @@ import SettingsContainer from './SettingsContainer';
 import { Scenes } from '../constants';
 import SideMenu from './SideMenu';
 import VFRChart from '../model/VFRChart';
-import { getSavedCharts } from '../utility/StorageUtility';
+import { getSavedCharts, sortModelsByRegionId } from '../utility';
 
 const headerHeight = 65;
 
@@ -107,13 +107,13 @@ class AppContainer extends Component {
         return <VFRChartsList
                   onFavorited={(chartId) => this.handleFavPress(chartId)}
                   onChartPressed={(chart) => this.handleViewPress(chart)}
-                  vfrChartsToShow={Array.from(this._savedVfrCharts)}
+                  vfrChartsToShow={Array.from(this._savedVfrCharts).sort(sortModelsByRegionId)}
                 />;
       case Scenes.FAVORITES:
         return <VFRChartsList
                   onFavorited={(chartId) => this.handleFavPress(chartId)}
                   onChartPressed={(chart) => this.handleViewPress(chart)}
-                  vfrChartsToShow={Array.from(this._favoritedCharts)}
+                  vfrChartsToShow={Array.from(this._favoritedCharts).sort(sortModelsByRegionId)}
                 />;
       case Scenes.SETTINGS:
         return <SettingsContainer />;
@@ -125,18 +125,19 @@ class AppContainer extends Component {
         }, 4000);
 
         return <IChartsMapView
-                style={{flex: 1}}
-                onAction={() => {
-                  this._timeOfLastActivity = Date.now();
-                  this.setState({ hideHeader: false });
-                }}
-                regionId={this.state.selectedChart.regionId} />
+                  style={{flex: 1}}
+                  onAction={() => {
+                    this._timeOfLastActivity = Date.now();
+                    this.setState({ hideHeader: false });
+                  }}
+                  regionId={this.state.selectedChart.regionId}
+                />
       default:
         console.log("Unknown route: ", this.state.route);
         return <VFRChartsList
                 onFavorited={(chartId) => this.handleFavPress(chartId)}
                 onChartPressed={(chart) => this.handleViewPress(chart)}
-                vfrChartsToShow={Array.from(this._savedVfrCharts)}
+                vfrChartsToShow={Array.from(this._savedVfrCharts).sort(sortModelsByRegionId)}
               />;
     }
   }
