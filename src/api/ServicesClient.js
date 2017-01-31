@@ -2,7 +2,7 @@
 
 import RNFS from 'react-native-fs';
 
-const servicesEndpoint = 'http://192.168.0.11:8888';
+const servicesEndpoint = 'http://104.236.153.135';
 
 export default class ServicesClient {
 
