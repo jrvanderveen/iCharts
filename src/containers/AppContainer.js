@@ -17,7 +17,6 @@ import realm from '../model/realm';
 import SettingsContainer from './SettingsContainer';
 import { Scenes } from '../constants';
 import SideMenu from './SideMenu';
-import VFRChart from '../model/VFRChart';
 import { getSavedCharts, sortModelsByRegionId } from '../utility';
 
 const headerHeight = 65;

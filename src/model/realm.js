@@ -5,17 +5,14 @@ import Realm from 'realm';
 class VFRChart extends Realm.Object {}
 VFRChart.schema = {
   name: 'VFRChart',
-  primaryKey: 'uniqueId',
+  primaryKey: 'regionId',
   properties: {
     regionName: 'string',
     regionId: 'string',
     publicationDate: 'date',
     expirationDate: 'date',
     revisionNumber: 'int',
-    chartUrl: 'string',
-    filePath: 'string',
     isFavorited: 'bool',
-    uniqueId: 'int',
   }
 };
 
