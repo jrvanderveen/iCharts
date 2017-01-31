@@ -7,14 +7,6 @@ import ZipArchive from 'react-native-zip-archive';
 
 var exampleVfrCharts = [
   {
-    regionName: 'Albuquerque',
-    regionId: 'ALB',
-    publicationDate: new Date('2016-01-29'),
-    expirationDate: new Date('2016-12-05'),
-    revisionNumber: 0,
-    isFavorited: true,
-  },
-  {
     regionName: 'Anchorage',
     regionId: 'ANC',
     publicationDate: new Date('2016-01-29'),
@@ -121,14 +113,6 @@ var exampleVfrCharts = [
   {
     regionName: 'Klamath Falls',
     regionId: 'KF',
-    publicationDate: new Date('2016-01-29'),
-    expirationDate: new Date('2016-12-05'),
-    revisionNumber: 0,
-    isFavorited: false,
-  },
-  {
-    regionName: 'Seattle',
-    regionId: 'SEA',
     publicationDate: new Date('2016-01-29'),
     expirationDate: new Date('2016-12-05'),
     revisionNumber: 0,

@@ -21,8 +21,14 @@ export default class ServicesClient {
         return errorObject;
       }
 
+      const models = await modelsResponse.json();
+      models.forEach(model => {
+        model.publicationDate = new Date(model.publicationDate);
+        model.expirationDate = new Date(model.expirationDate);
+      });
+
       return {
-        models: await modelsResponse.json()
+        models: models
       };
     } catch(error) {
       console.warn(`Error getting models for download: ${error}`);

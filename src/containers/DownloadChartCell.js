@@ -12,8 +12,9 @@ import ChartInformationContainer from './ChartInformationContainer';
 import { fetchAndProcessTiles } from '../utility/StorageUtility';
 import { FontStyles } from '../styles';
 import Icon from 'react-native-vector-icons/Ionicons';
+import realm from '../model/realm';
 import ServicesClient from '../api/ServicesClient';
-import * as Progress from 'react-native-progress';
+import { Circle } from 'react-native-progress';
 
 export default class DownloadChartCell extends Component {
   static propTypes = {
@@ -86,7 +87,7 @@ export default class DownloadChartCell extends Component {
         color="green"
       />
     } else if (isDownloading) {
-      icon = <Progress.Circle
+      icon = <Circle
         size={32}
         style={styles.icon}
         progress={downloadProgress}
@@ -139,13 +140,28 @@ export default class DownloadChartCell extends Component {
     });
 
     fetchAndProcessTiles(vfrChart.regionId, this._progressCallback).then((result) => {
+      const successfullyDownloaded = !(result && result.error);
+
       if (this.isStillMounted) {
         this.setState({
           isDownloading: false,
-          hasDownloaded: !(result && result.error),
+          hasDownloaded: successfullyDownloaded,
           indeterminate: false,
           downloadProgress: 0,
           error: result && result.error,
+        });
+      }
+
+      // add this vfr chart to the realm
+      if (successfullyDownloaded) {
+        realm.write(() => {
+          const { expirationDate, publicationDate, ...rest } = vfrChart;
+          realm.create('VFRChart', {
+            ...rest,
+            publicationDate: new Date(publicationDate),
+            expirationDate: new Date(expirationDate),
+            isFavorited: false,
+          }, true);
         });
       }
     });
