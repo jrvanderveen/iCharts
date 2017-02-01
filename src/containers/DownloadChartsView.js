@@ -20,6 +20,10 @@ export default class DownloadChartsView extends Component {
     errorMessage: PropTypes.string,
   };
 
+  static defaultProps = {
+    downloadModels: [],
+  };
+
   constructor(props) {
     super(props);
 
@@ -33,7 +37,7 @@ export default class DownloadChartsView extends Component {
       <View style={{flex: 1, backgroundColor: Colors.secondary}}>
         <SettingsBackButton onPress={() => this.props.navigator.pop()} />
         <View style={styles.listView}>
-          {downloadModels ?
+          {!errorMessage ?
             <ListView
               enableEmptySections={true}
               dataSource={this.ds.cloneWithRows(downloadModels)}

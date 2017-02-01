@@ -13,6 +13,14 @@ import SettingsMenu from '../components/SettingsMenu';
 import SettingsMenuCell from '../components/SettingsMenuCell';
 
 class SettingsContainer extends Component {
+  static propTypes = {
+    initialRoute: PropTypes.string,
+  };
+
+  static defaultProps = {
+    initialRoute: SettingsScenes.SETTINGS_MAIN_MENU,
+  };
+
   constructor(props) {
     super(props);
 
@@ -34,12 +42,21 @@ class SettingsContainer extends Component {
   }
 
   render() {
+    const { initialRoute } = this.props;
     const { downloadModels, errorMessage } = this.state;
+
+    const initialRouteStack = [
+      {mame: SettingsScenes.SETTINGS_MAIN_MENU}
+    ];
+
+    if (initialRoute && initialRoute !== '') {
+      initialRouteStack.push({name: initialRoute});
+    }
 
     return (
       <View style={styles.settings}>
         <Navigator
-          initialRoute={{ name: SettingsScenes.SETTINGS_MAIN_MENU }}
+          initialRouteStack={initialRouteStack}
           renderScene={(route, navigator) => {
             switch (route.name) {
               case SettingsScenes.DOWNLOAD:

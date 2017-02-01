@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   Dimensions,
   InteractionManager,
+  LayoutAnimation,
   StyleSheet,
   View
 } from 'react-native';
@@ -13,9 +14,10 @@ import VFRChartsList from '../components/VFRChartsList';
 import Header from '../components/Header';
 import IChartsMapView from './IChartsMapView';
 import Menu from '../components/Menu';
+import NoChartsWarningMessage from '../components/NoChartsWarningMessage';
 import realm from '../model/realm';
 import SettingsContainer from './SettingsContainer';
-import { Scenes } from '../constants';
+import { Scenes, SettingsScenes } from '../constants';
 import SideMenu from './SideMenu';
 import { getSavedCharts, sortModelsByRegionId } from '../utility';
 
@@ -78,6 +80,7 @@ class AppContainer extends Component {
     this.setState({
       isWorking: true,
       route: route,
+      initialSettingsRoute: null,
     });
 
     if (this._sideMenu !== null) {
@@ -103,11 +106,17 @@ class AppContainer extends Component {
 
     switch (this.state.route.toLowerCase()) {
       case Scenes.HOME:
-        return <VFRChartsList
-                  onFavorited={(chartId) => this.handleFavPress(chartId)}
-                  onChartPressed={(chart) => this.handleViewPress(chart)}
-                  vfrChartsToShow={Array.from(this._savedVfrCharts).sort(sortModelsByRegionId)}
-                />;
+        const chartsList = (
+          <VFRChartsList
+            onFavorited={(chartId) => this.handleFavPress(chartId)}
+            onChartPressed={(chart) => this.handleViewPress(chart)}
+            vfrChartsToShow={Array.from(this._savedVfrCharts).sort(sortModelsByRegionId)}
+          />
+        );
+
+        const noChartsButton = <NoChartsWarningMessage onPress={this._goToDownloadsView} />;
+
+        return this._savedVfrCharts.length === 0 ? noChartsButton : chartsList;
       case Scenes.FAVORITES:
         return <VFRChartsList
                   onFavorited={(chartId) => this.handleFavPress(chartId)}
@@ -115,7 +124,7 @@ class AppContainer extends Component {
                   vfrChartsToShow={Array.from(this._favoritedCharts).sort(sortModelsByRegionId)}
                 />;
       case Scenes.SETTINGS:
-        return <SettingsContainer />;
+        return <SettingsContainer initialRoute={this.state.initialSettingsRoute} />;
       case Scenes.CHARTVIEW:
         this._intervalId = setInterval(() => {
           if (this._shouldHideHeader() && Math.abs(Date.now() - this._timeOfLastActivity) > 3500) {
@@ -170,6 +179,7 @@ class AppContainer extends Component {
       <View style={styles.container} onLayout={(event) => this.forceUpdate()}>
         <SideMenu
           ref={(sideMenu) => this._sideMenu = sideMenu}
+          mainContentBackgroundColor={Colors.primary}
           menu={menu}
           menuWidth={menuWidth}
           menuOpenBuffer={menuWidth / 2}
@@ -185,6 +195,26 @@ class AppContainer extends Component {
 
   _shouldHideHeader = () => {
     return this._sideMenu && !this._sideMenu.isOpen() && this.state.route === Scenes.CHARTVIEW;
+  }
+
+  _goToDownloadsView = () => {
+    const customLayoutSpring = {
+      duration: 400,
+      create: {
+        type: LayoutAnimation.Types.spring,
+        property: LayoutAnimation.Properties.scaleXY,
+        springDamping: 0.9,
+      },
+      update: {
+        type: LayoutAnimation.Types.spring,
+        springDamping: 0.9,
+      },
+    };
+    LayoutAnimation.configureNext(customLayoutSpring);
+    this.setState({
+      route: Scenes.SETTINGS,
+      initialSettingsRoute: SettingsScenes.DOWNLOAD,
+    });
   }
 }
 
