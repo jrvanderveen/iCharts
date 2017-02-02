@@ -6,7 +6,7 @@ import {
   Text,
   TouchableHighlight,
 } from 'react-native';
-import Colors from '../styles/Colors';
+import { Colors } from '../styles';
 
 const SettingsMenuCell = (props) => {
   return (
@@ -28,9 +28,12 @@ SettingsMenuCell.propTypes = {
 
 const styles = StyleSheet.create({
   textHighlight: {
+    borderColor: Colors.border,
     borderRadius: 10,
+    borderWidth: 1,
     height: 100,
     justifyContent: 'center',
+    marginBottom: 10,
   },
   text: {
     paddingLeft: 8

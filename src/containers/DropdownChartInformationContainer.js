@@ -11,9 +11,9 @@ import {
   View
 } from 'react-native';
 import { dateStringCutoffIndex } from '../constants';
-import { FontStyles } from '../styles';
+import { Colors, FontStyles } from '../styles';
 
-export default class ChartInformationContainer extends Component {
+export default class DropdownChartInformationContainer extends Component {
   static propTypes = {
     vfrChart: PropTypes.object.isRequired,
   };

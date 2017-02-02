@@ -8,20 +8,22 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import DownloadChartCell from './DownloadChartCell';
+import { Colors } from '../styles';
+import ChartsView from './ChartsView';
 import Icon from 'react-native-vector-icons/Ionicons';
-import ServicesClient from '../api/ServicesClient';
 import SettingsBackButton from '../components/SettingsBackButton';
 
-export default class DownloadChartsView extends Component {
+export default class SettingsChartsViewWrapper extends Component {
   static propTypes = {
+    chartCellClass: PropTypes.func.isRequired,
     navigator: PropTypes.object.isRequired,
-    downloadModels: PropTypes.array,
+    chartCellProps: PropTypes.object,
     errorMessage: PropTypes.string,
+    modelsToShow: PropTypes.array,
   };
 
   static defaultProps = {
-    downloadModels: [],
+    modelsToShow: [],
   };
 
   constructor(props) {
@@ -31,23 +33,17 @@ export default class DownloadChartsView extends Component {
   }
 
   render() {
-    const { downloadModels, errorMessage } = this.props;
+    const { chartCellProps, chartCellClass, modelsToShow, errorMessage } = this.props;
 
     return (
       <View style={{flex: 1, backgroundColor: Colors.secondary}}>
         <SettingsBackButton onPress={() => this.props.navigator.pop()} />
         <View style={styles.listView}>
           {!errorMessage ?
-            <ListView
-              enableEmptySections={true}
-              dataSource={this.ds.cloneWithRows(downloadModels)}
-              renderRow={(downloadVfrChartModel) => {
-                return (
-                  <DownloadChartCell
-                    vfrChart={downloadVfrChartModel}
-                  />
-                );
-              }}
+            <ChartsView
+              chartsToShow={modelsToShow}
+              chartCellClass={chartCellClass}
+              chartCellProps={chartCellProps}
             /> :
             this._renderErrorMessage(errorMessage)
           }
@@ -56,7 +52,7 @@ export default class DownloadChartsView extends Component {
     );
   }
 
-  _renderErrorMessage = (message) => {
+  _renderErrorMessage = message => {
     return (
       <View style={styles.centered}>
         <Icon

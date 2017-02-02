@@ -2,15 +2,15 @@
 
 import React, { Component, PropTypes } from 'react';
 import {
-  ListView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View
 } from 'react-native';
-import ChartInformationContainer from './ChartInformationContainer';
+import ChartInformation from '../components/ChartInformation';
+import DropdownChartInformationContainer from './DropdownChartInformationContainer';
 import { fetchAndProcessTiles } from '../utility/StorageUtility';
-import { FontStyles } from '../styles';
+import { Colors, FontStyles } from '../styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import realm from '../model/realm';
 import ServicesClient from '../api/ServicesClient';
@@ -32,11 +32,6 @@ export default class DownloadChartCell extends Component {
       indeterminate: true,
       error: null,
     };
-
-    this._toggleExpanded = this._toggleExpanded.bind(this);
-    this._fetchAndProcessTiles = this._fetchAndProcessTiles.bind(this);
-    this._progressCallback = this._progressCallback.bind(this);
-    this._getIcon = this._getIcon.bind(this);
   }
 
   componentDidMount() {
@@ -52,20 +47,11 @@ export default class DownloadChartCell extends Component {
 
     return (
       <View>
-        <View style={styles.inputsContainer}>
-          <View style={styles.vfrText}>
-            <TouchableOpacity onPress={this._toggleExpanded} activeOpacity={0.5}>
-              <Text style={FontStyles.thin}>
-                {vfrChart.regionId}
-                {"\n"}
-                {vfrChart.regionName}
-              </Text>
-            </TouchableOpacity>
-          </View>
+        <ChartInformation style={{paddingRight: 20}} toggleExpanded={this._toggleExpanded} vfrChart={vfrChart}>
           {this._getIcon()}
-        </View>
+        </ChartInformation>
 
-        <ChartInformationContainer
+        <DropdownChartInformationContainer
           ref={(informationExpander) => { this.informationExpander = informationExpander; }}
           vfrChart={vfrChart}
         />
@@ -75,7 +61,7 @@ export default class DownloadChartCell extends Component {
     );
   }
 
-  _getIcon() {
+  _getIcon = () => {
     const { hasDownloaded, isDownloading, downloadProgress, indeterminate, error } = this.state;
     let icon;
 
@@ -122,14 +108,14 @@ export default class DownloadChartCell extends Component {
     return icon;
   }
 
-  _toggleExpanded() {
+  _toggleExpanded = () => {
     if (!this.informationExpander)
       return;
 
     this.informationExpander.toggleExpanded();
   }
 
-  _fetchAndProcessTiles() {
+  _fetchAndProcessTiles = () => {
     const { vfrChart } = this.props;
 
     if (!vfrChart || !vfrChart.regionId)
@@ -156,6 +142,7 @@ export default class DownloadChartCell extends Component {
       if (successfullyDownloaded) {
         realm.write(() => {
           const { expirationDate, publicationDate, ...rest } = vfrChart;
+          
           realm.create('VFRChart', {
             ...rest,
             publicationDate: new Date(publicationDate),
@@ -167,8 +154,8 @@ export default class DownloadChartCell extends Component {
     });
   }
 
-  _progressCallback(bytesWritten, contentLength) {
-    const percentage = Math.floor((bytesWritten / contentLength) * 100);
+  _progressCallback = (bytesWritten, contentLength) => {
+    const percentage = bytesWritten / contentLength;
 
     if (this.isStillMounted) {
       this.setState({
@@ -180,28 +167,16 @@ export default class DownloadChartCell extends Component {
 }
 
 const styles = StyleSheet.create({
-  inputsContainer:{
-    backgroundColor: Colors.secondary,
-    flexDirection: 'row',
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingLeft: 25,
-    paddingRight: 25,
-    alignItems: 'center',
-  },
   border: {
-    borderColor: '#D3D3D3',
-    borderBottomWidth: 0.5,
-  },
-  vfrText: {
-    flex: 1,
+    borderColor: Colors.primary,
+    borderBottomWidth: 4,
   },
   icon: {
     alignItems: 'center',
     height: 44,
     justifyContent: 'center',
     marginBottom: 10,
-    marginLeft: 15,
+    marginLeft: 25,
     marginRight: 15,
     marginTop: 10,
     width: 44,

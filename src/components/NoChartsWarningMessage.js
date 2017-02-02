@@ -7,15 +7,15 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import Colors from '../styles/Colors';
+import { Colors } from '../styles';
 
-const NoChartsWarningMessage = (props) => {
+const NoChartsWarningMessage = ({onPress}) => {
   return (
     <View style={styles.container}>
       <Text>
         It looks like you don't have any charts yet.
       </Text>
-      <TouchableOpacity style={styles.button} onPress={props.onPress}>
+      <TouchableOpacity style={styles.button} onPress={onPress}>
         <Text>
           Find some...
         </Text>

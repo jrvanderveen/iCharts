@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
-import Colors from '../styles/Colors';
+import { Colors } from '../styles/Colors';
 
 export default FontStyles = StyleSheet.create({
   title: {
-    color: Colors.text,
+    color: Colors.headerText,
     fontSize: 16,
     fontFamily: 'HelveticaNeue-Bold'
   },
@@ -21,5 +21,10 @@ export default FontStyles = StyleSheet.create({
     color: 'black',
     fontSize: 26,
     fontFamily: 'HelveticaNeue-Thin'
+  },
+  regionId: {
+    color: 'black',
+    fontSize: 26,
+    fontFamily: 'HelveticaNeue-Light',
   }
 });

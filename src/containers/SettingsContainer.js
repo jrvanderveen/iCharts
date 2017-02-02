@@ -4,13 +4,16 @@ import {
   StyleSheet,
   View
 } from 'react-native';
-import Colors from '../styles/Colors';
-import DownloadChartsView from './DownloadChartsView';
-import RemoveChartsView from './RemoveChartsView';
+import { Colors } from '../styles';
+import DownloadChartCell from './DownloadChartCell';
+import realm from '../model/realm';
+import RemoveChartCell from './RemoveChartCell';
 import ServicesClient from '../api/ServicesClient';
+import SettingsChartsViewWrapper from './SettingsChartsViewWrapper';;
 import { SettingsScenes } from '../constants';
 import SettingsMenu from '../components/SettingsMenu';
 import SettingsMenuCell from '../components/SettingsMenuCell';
+import { sortModelsByRegionId, removeTiles } from '../utility';
 
 class SettingsContainer extends Component {
   static propTypes = {
@@ -29,7 +32,7 @@ class SettingsContainer extends Component {
       downloadModels: undefined,
     };
 
-    this._getModels = this._getModels.bind(this);
+    this._savedVfrCharts = realm.objects('VFRChart');
   }
 
   componentDidMount() {
@@ -41,9 +44,53 @@ class SettingsContainer extends Component {
     this.isStillMounted = false;
   }
 
+  renderScene = (route, navigator) => {
+    const { downloadModels, errorMessage } = this.state;
+
+    switch (route.name) {
+      case SettingsScenes.DOWNLOAD:
+        return (
+          <SettingsChartsViewWrapper
+            navigator={navigator}
+            chartCellClass={DownloadChartCell}
+            modelsToShow={downloadModels}
+            errorMessage={errorMessage}
+          />
+        );
+      case SettingsScenes.REMOVE:
+        return (
+          <SettingsChartsViewWrapper
+            navigator={navigator}
+            chartCellClass={RemoveChartCell}
+            modelsToShow={Array.from(this._savedVfrCharts).sort(sortModelsByRegionId)}
+            chartCellProps={{
+              doRemoveTiles: this._doRemoveTiles
+            }}
+          />
+        );
+      case SettingsScenes.SETTINGS_MAIN_MENU:
+      default:
+        return (
+          <SettingsMenu>
+            <SettingsMenuCell
+              buttonText={"Download Charts"}
+              navigateToSettingsView={() => {
+                navigator.push({name: 'download'})
+              }}
+            />
+            <SettingsMenuCell
+              buttonText={"Remove Charts"}
+              navigateToSettingsView={() => {
+                navigator.push({name: 'remove'})
+              }}
+            />
+          </SettingsMenu>
+      );
+    }
+  }
+
   render() {
     const { initialRoute } = this.props;
-    const { downloadModels, errorMessage } = this.state;
 
     const initialRouteStack = [
       {mame: SettingsScenes.SETTINGS_MAIN_MENU}
@@ -57,48 +104,13 @@ class SettingsContainer extends Component {
       <View style={styles.settings}>
         <Navigator
           initialRouteStack={initialRouteStack}
-          renderScene={(route, navigator) => {
-            switch (route.name) {
-              case SettingsScenes.DOWNLOAD:
-                return (
-                  <DownloadChartsView
-                    navigator={navigator}
-                    downloadModels={downloadModels}
-                    errorMessage={errorMessage}
-                  />
-                );
-              case SettingsScenes.REMOVE:
-                return (
-                  <RemoveChartsView
-                    navigator={navigator}
-                  />
-                );
-              case SettingsScenes.SETTINGS_MAIN_MENU:
-              default:
-                return (
-                  <SettingsMenu>
-                    <SettingsMenuCell
-                      buttonText={"Download Charts"}
-                      navigateToSettingsView={() => {
-                        navigator.push({name: 'download'})
-                      }}
-                    />
-                    <SettingsMenuCell
-                      buttonText={"Remove Charts"}
-                      navigateToSettingsView={() => {
-                        navigator.push({name: 'remove'})
-                      }}
-                    />
-                  </SettingsMenu>
-              );
-            }
-          }}
+          renderScene={this.renderScene}
         />
       </View>
     );
   }
 
-  _getModels() {
+  _getModels = () => {
     ServicesClient.getAllModels().then((result) => {
       if (this.isStillMounted && result) {
         this.setState({
@@ -108,6 +120,17 @@ class SettingsContainer extends Component {
       }
     });
   }
+
+  _doRemoveTiles = vfrChart => {
+    if (!vfrChart)
+      return;
+
+    realm.write(() => {
+      removeTiles(vfrChart.regionId);
+      realm.delete(vfrChart);
+      this.forceUpdate();
+    });
+  };
 }
 
 const styles = StyleSheet.create({

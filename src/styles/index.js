@@ -1,7 +1,8 @@
 import FontStyles from './FontStyles';
-import Colors from './Colors';
+import { Colors, RegionIdColors } from './Colors';
 
 export {
-  FontStyles,
   Colors,
+  FontStyles,
+  RegionIdColors
 };

@@ -21,11 +21,8 @@ export default class ServicesClient {
         return errorObject;
       }
 
-      const models = await modelsResponse.json();
-      models.forEach(model => {
-        model.publicationDate = new Date(model.publicationDate);
-        model.expirationDate = new Date(model.expirationDate);
-      });
+      const modelsJson = await modelsResponse.json();
+      const models = modelsJson.map(this.jsonToModelMapper);
 
       return {
         models: models
@@ -52,7 +49,7 @@ export default class ServicesClient {
       }
 
       return {
-        models: await modelResponse.json()
+        models: this.jsonToModelMapper(await modelResponse.json())
       };
     } catch(error) {
       console.warn(`Error getting model for region ${regionId}: ${error}`);
@@ -86,5 +83,16 @@ export default class ServicesClient {
         error: error,
       };
     }
+  }
+
+  // convert json string properties to correct data types
+  static jsonToModelMapper(modelJson) {
+    let model = {...modelJson};
+
+    model.publicationDate = new Date(modelJson.publicationDate);
+    model.expirationDate = new Date(modelJson.expirationDate);
+    model.revisionNumber = parseInt(modelJson.revisionNumber);
+
+    return model;
   }
 }

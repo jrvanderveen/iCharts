@@ -4,14 +4,14 @@ import React, { Component, PropTypes } from 'react';
 import {
   Alert,
   Animated,
-  ListView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View
 } from 'react-native';
-import ChartInformationContainer from './ChartInformationContainer';
-import { FontStyles } from '../styles';
+import ChartInformation from '../components/ChartInformation';
+import DropdownChartInformationContainer from './DropdownChartInformationContainer';
+import { Colors, FontStyles } from '../styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class RemoveChartCell extends Component {
@@ -38,20 +38,11 @@ export default class RemoveChartCell extends Component {
 
     return (
       <Animated.View style={{transform: [{scale: animatedScale}]}}>
-        <View style={styles.inputsContainer}>
-          <View style={styles.vfrText}>
-            <TouchableOpacity onPress={this._toggleExpanded} activeOpacity={0.5}>
-              <Text style={FontStyles.thin}>
-                {vfrChart.regionId}
-                {"\n"}
-                {vfrChart.regionName}
-              </Text>
-            </TouchableOpacity>
-          </View>
+        <ChartInformation style={{paddingRight: 25}} toggleExpanded={this._toggleExpanded} vfrChart={vfrChart}>
           {this._getIcon()}
-        </View>
+        </ChartInformation>
 
-        <ChartInformationContainer
+        <DropdownChartInformationContainer
           ref={(informationExpander) => { this.informationExpander = informationExpander; }}
           vfrChart={vfrChart}
         />
@@ -98,7 +89,7 @@ export default class RemoveChartCell extends Component {
             animatedScale,
             {
               toValue: 0,
-              duration: 400,
+              duration: 300,
             }
           ).start(() => doRemoveTiles(vfrChart));
         }},
@@ -108,29 +99,16 @@ export default class RemoveChartCell extends Component {
 }
 
 const styles = StyleSheet.create({
-  inputsContainer:{
-    backgroundColor: Colors.secondary,
-    flexDirection: 'row',
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingLeft: 25,
-    paddingRight: 25,
-    alignItems: 'center',
-  },
   border: {
-    borderColor: '#D3D3D3',
-    borderBottomWidth: 0.5,
-  },
-  vfrText: {
-    flex: 1,
+    borderColor: Colors.primary,
+    borderBottomWidth: 4,
   },
   icon: {
     alignItems: 'center',
     height: 44,
     justifyContent: 'center',
     marginBottom: 10,
-    marginLeft: 15,
-    marginRight: 10,
+    marginLeft: 25,
     marginTop: 10,
     width: 44,
   },

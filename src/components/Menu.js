@@ -9,13 +9,13 @@ import {
 import Border from './Border';
 import MenuCell from './MenuCell';
 import Scenes from '../constants/Scenes';
-import Colors from '../styles/Colors';
+import {Colors} from '../styles';
 
-const Menu = (props) => {
+const Menu = ({currentRoute, menuWidth, onPress}) => {
   var borderStyle = {
     height: 0.5,
     marginLeft: 10,
-    width: props.menuWidth - 20,
+    width: menuWidth - 20,
   };
 
   const menuBorder = <Border style={borderStyle} />
@@ -23,32 +23,36 @@ const Menu = (props) => {
   return (
     <View style={styles.menu}>
       <MenuCell
+        currentRoute={currentRoute}
         iconName="ios-home-outline"
-        onPress={props.onPress}
-        scene={Scenes.HOME}
-        menuWidth={props.menuWidth}
+        onPress={onPress}
+        goToScene={Scenes.HOME}
+        menuWidth={menuWidth}
       />
       {menuBorder}
       <MenuCell
+        currentRoute={currentRoute}
         iconName="ios-heart-outline"
-        onPress={props.onPress}
-        scene={Scenes.FAVORITES}
-        menuWidth={props.menuWidth}
+        onPress={onPress}
+        goToScene={Scenes.FAVORITES}
+        menuWidth={menuWidth}
       />
       {menuBorder}
       <MenuCell
+        currentRoute={currentRoute}
         iconName="ios-settings-outline"
-        onPress={props.onPress}
-        scene={Scenes.SETTINGS}
-        menuWidth={props.menuWidth}
+        onPress={onPress}
+        goToScene={Scenes.SETTINGS}
+        menuWidth={menuWidth}
       />
     </View>
   );
 }
 
 Menu.propTypes = {
+  currentRoute: PropTypes.string.isRequired,
+  menuWidth: PropTypes.number.isRequired,
   onPress: PropTypes.func.isRequired,
-  menuWidth: PropTypes.number.isRequired
 }
 
 const styles = StyleSheet.create({

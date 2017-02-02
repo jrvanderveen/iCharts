@@ -7,12 +7,12 @@ import {
   Dimensions,
   StyleSheet,
   Text,
-  TouchableHighlight,
+  TouchableOpacity,
   View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Border from './Border';
-import Colors from '../styles/Colors';
+import {Colors} from '../styles';
 import FontStyles from '../styles/FontStyles';
 
 const headerBorderMarginLeftRight = 5;
@@ -73,12 +73,11 @@ class Header extends Component {
     return (
       <Animated.View style={{height: this.state.animatedValue}}>
         <View style={styles.header}>
-          <TouchableHighlight
-            underlayColor={Colors.primary}
+          <TouchableOpacity
             style={styles.icon}
             onPress={() => this.props.onPress()}>
-            <Icon style={{paddingTop: 3}} name="ios-list-outline" size={20} color={Colors.border}/>
-          </TouchableHighlight>
+            <Icon style={{paddingTop: 3}} name="ios-list-outline" size={20} color={'white'}/>
+          </TouchableOpacity>
           <View style={styles.title}>
             <Text style={FontStyles.title}>
               {this.props.title}
@@ -94,7 +93,7 @@ class Header extends Component {
 const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
-    backgroundColor: Colors.primary,
+    backgroundColor: Colors.header,
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-start',
@@ -106,9 +105,9 @@ const styles = StyleSheet.create({
   },
   icon: {
     alignItems: 'center',
-    backgroundColor: Colors.secondary,
+    borderColor: 'white',
     borderRadius: 15,
-    borderWidth: 0.5,
+    borderWidth: 1,
     height: 30,
     justifyContent: 'center',
     marginBottom: 15,

@@ -10,7 +10,9 @@ import {
   StyleSheet,
   View
 } from 'react-native';
-import VFRChartsList from '../components/VFRChartsList';
+import { Colors } from '../styles';
+import ChartCell from './ChartCell';
+import ChartsView from './ChartsView';
 import Header from '../components/Header';
 import IChartsMapView from './IChartsMapView';
 import Menu from '../components/Menu';
@@ -52,7 +54,7 @@ class AppContainer extends Component {
     this._timeOfLastActivity = Date.now();
   }
 
-  handleFavPress(favoritedChart) {
+  handleFavPress = favoritedChart => {
     if (favoritedChart) {
       realm.write(() => {
         favoritedChart.isFavorited = !favoritedChart.isFavorited;
@@ -60,7 +62,7 @@ class AppContainer extends Component {
     }
   }
 
-  handleViewPress(chart){
+  handleViewPress = chart => {
     this.setState({
       route: Scenes.CHARTVIEW,
       selectedChart: chart,
@@ -69,14 +71,14 @@ class AppContainer extends Component {
     this._timeOfLastActivity = Date.now();
   }
 
-  handleHamburgerPress() {
+  handleHamburgerPress = () => {
     if (this._sideMenu !== null) {
       this._sideMenu.toggleMenu();
       this._timeOfLastActivity = Date.now();
     }
   }
 
-  handleMenuPress(route) {
+  handleMenuPress = route => {
     this.setState({
       isWorking: true,
       route: route,
@@ -98,31 +100,29 @@ class AppContainer extends Component {
     });
   }
 
-  getCurrentSceneForRoute() {
+  setLastActivity = () => {
+    this._timeOfLastActivity = Date.now();
+    this.setState({ hideHeader: false });
+  }
+
+  getCurrentSceneForRoute = () => {
     if (this._intervalId > 0) {
       clearInterval(this._intervalId);
       this._intervalId = 0;
     }
 
     switch (this.state.route.toLowerCase()) {
-      case Scenes.HOME:
-        const chartsList = (
-          <VFRChartsList
-            onFavorited={(chartId) => this.handleFavPress(chartId)}
-            onChartPressed={(chart) => this.handleViewPress(chart)}
-            vfrChartsToShow={Array.from(this._savedVfrCharts).sort(sortModelsByRegionId)}
+      case Scenes.FAVORITES:
+        return (
+          <ChartsView
+            chartsToShow={Array.from(this._favoritedCharts).sort(sortModelsByRegionId)}
+            chartCellClass={ChartCell}
+            chartCellProps={{
+              onFavorited: this.handleFavPress,
+              onChartPressed: this.handleViewPress
+            }}
           />
         );
-
-        const noChartsButton = <NoChartsWarningMessage onPress={this._goToDownloadsView} />;
-
-        return this._savedVfrCharts.length === 0 ? noChartsButton : chartsList;
-      case Scenes.FAVORITES:
-        return <VFRChartsList
-                  onFavorited={(chartId) => this.handleFavPress(chartId)}
-                  onChartPressed={(chart) => this.handleViewPress(chart)}
-                  vfrChartsToShow={Array.from(this._favoritedCharts).sort(sortModelsByRegionId)}
-                />;
       case Scenes.SETTINGS:
         return <SettingsContainer initialRoute={this.state.initialSettingsRoute} />;
       case Scenes.CHARTVIEW:
@@ -132,28 +132,36 @@ class AppContainer extends Component {
           }
         }, 4000);
 
-        return <IChartsMapView
-                  style={{flex: 1}}
-                  onAction={() => {
-                    this._timeOfLastActivity = Date.now();
-                    this.setState({ hideHeader: false });
-                  }}
-                  regionId={this.state.selectedChart.regionId}
-                />
+        return (
+          <IChartsMapView
+            style={{flex: 1}}
+            onAction={this.setLastActivity}
+            regionId={this.state.selectedChart.regionId}
+          />
+        );
+      case Scenes.HOME:
       default:
-        console.log("Unknown route: ", this.state.route);
-        return <VFRChartsList
-                onFavorited={(chartId) => this.handleFavPress(chartId)}
-                onChartPressed={(chart) => this.handleViewPress(chart)}
-                vfrChartsToShow={Array.from(this._savedVfrCharts).sort(sortModelsByRegionId)}
-              />;
+        const noChartsButton = <NoChartsWarningMessage onPress={this._goToDownloadsView} />;
+        const defaultChartsList = (
+          <ChartsView
+            chartsToShow={Array.from(this._savedVfrCharts).sort(sortModelsByRegionId)}
+            chartCellClass={ChartCell}
+            chartCellProps={{
+              onFavorited: this.handleFavPress,
+              onChartPressed: this.handleViewPress
+            }}
+          />
+        );
+
+        return this._savedVfrCharts.length === 0 ? noChartsButton : defaultChartsList;
     }
   }
 
   render() {
-    const menuWidth = Math.max((Dimensions.get('window').width),(Dimensions.get('window').height))/5;
-    const menu = <Menu onPress={(route) => this.handleMenuPress(route)} menuWidth={menuWidth} />;
     const { selectedChart, route, hideHeader, isWorking } = this.state;
+
+    const menuWidth = Math.max((Dimensions.get('window').width),(Dimensions.get('window').height)) / 5;
+    const menu = <Menu currentRoute={route} onPress={this.handleMenuPress} menuWidth={menuWidth} />;
 
     const headerTitle = route === Scenes.CHARTVIEW && selectedChart ? selectedChart.regionName : route;
     const header =
@@ -161,7 +169,7 @@ class AppContainer extends Component {
         hideHeader={hideHeader}
         title={headerTitle.toUpperCase()}
         height={headerHeight}
-        onPress={() => this.handleHamburgerPress()}
+        onPress={this.handleHamburgerPress}
       />;
 
     let currentScene = null;

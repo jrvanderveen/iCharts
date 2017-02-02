@@ -7,7 +7,7 @@ import {
   Text,
   View
 } from 'react-native';
-import Colors from '../styles/Colors';
+import {Colors} from '../styles';
 
 const Border = (props) => {
   return (
