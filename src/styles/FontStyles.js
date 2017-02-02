@@ -7,7 +7,7 @@ export default FontStyles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'HelveticaNeue-Bold'
   },
-  menu: {
+  subHeader: {
     color: Colors.text,
     fontSize: 14,
     fontFamily: 'HelveticaNeue-Medium'
@@ -15,6 +15,11 @@ export default FontStyles = StyleSheet.create({
   thin: {
     color: 'black',
     fontSize: 16,
+    fontFamily: 'HelveticaNeue-Thin'
+  },
+  settingsItem: {
+    color: 'black',
+    fontSize: 26,
     fontFamily: 'HelveticaNeue-Thin'
   }
 });

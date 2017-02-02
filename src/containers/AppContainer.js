@@ -3,7 +3,10 @@
 
 import React, { Component } from 'react';
 import {
+  ActivityIndicator,
   Dimensions,
+  InteractionManager,
+  LayoutAnimation,
   StyleSheet,
   View
 } from 'react-native';
@@ -11,11 +14,12 @@ import VFRChartsList from '../components/VFRChartsList';
 import Header from '../components/Header';
 import IChartsMapView from './IChartsMapView';
 import Menu from '../components/Menu';
-import Settings from '../components/Settings';
-import VFRChart from '../model/VFRChart';
-import Scenes from './Scenes';
+import NoChartsWarningMessage from '../components/NoChartsWarningMessage';
+import realm from '../model/realm';
+import SettingsContainer from './SettingsContainer';
+import { Scenes, SettingsScenes } from '../constants';
 import SideMenu from './SideMenu';
-import { getSavedCharts } from '../utility/StorageUtility';
+import { getSavedCharts, sortModelsByRegionId } from '../utility';
 
 const headerHeight = 65;
 
@@ -23,46 +27,40 @@ class AppContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isWorking: false,
       route: Scenes.HOME,
-      savedVfrCharts: [],
       hideHeader: false,
-      vfrChartsToShow: [],
+      selectedChart: {}
     };
 
     this._sideMenu = null;
     this._intervalId = 0;
+    let savedVfrChartsList = realm.objects('VFRChartsList');
+
+    if (savedVfrChartsList.length < 1) {
+      realm.write(() => {
+        realm.create('VFRChartsList', {name: 'VFRChartsList', charts: getSavedCharts()});
+      });
+    }
+
+    // query the realm once for favorited charts and rely on auto-updated results
+    this._savedVfrCharts = realm.objects('VFRChart');
+    this._favoritedCharts = this._savedVfrCharts.filtered('isFavorited = true');
   }
 
   componentDidMount() {
-    var savedVfrCharts = getSavedCharts().map(function(chart) {
-      return new VFRChart(chart);
-    });
-
-    this.setState({
-      savedVfrCharts: savedVfrCharts,
-      vfrChartsToShow: savedVfrCharts
-    });
-
     this._timeOfLastActivity = Date.now();
   }
 
-  handleFavPress(chartId: number){
-    let savedVfrCharts = [];
-
-    this.state.vfrChartsToShow.forEach(function(chart){
-      if(chart.uniqueId === chartId){
-        chart.isFavorited = !chart.isFavorited;
-      }
-
-      savedVfrCharts.push(chart);
-    });
-
-    this.setState({
-      savedVfrCharts: savedVfrCharts
-    });
+  handleFavPress(favoritedChart) {
+    if (favoritedChart) {
+      realm.write(() => {
+        favoritedChart.isFavorited = !favoritedChart.isFavorited;
+      });
+    }
   }
 
-  handleViewPress(chart: object){
+  handleViewPress(chart){
     this.setState({
       route: Scenes.CHARTVIEW,
       selectedChart: chart,
@@ -78,39 +76,55 @@ class AppContainer extends Component {
     }
   }
 
-  handleMenuPress(route: string) {
+  handleMenuPress(route) {
+    this.setState({
+      isWorking: true,
+      route: route,
+      initialSettingsRoute: null,
+    });
+
     if (this._sideMenu !== null) {
       this._sideMenu.closeMenu();
     }
 
-    this._timeOfLastActivity = Date.now();
-    this.setState({
-      hideHeader: false,
-      route: route
+    // give the menu some time to close before changing the scene to make the
+    // animation smoother. Rerendering and animations don't mix well
+    InteractionManager.runAfterInteractions(() => {
+      this._timeOfLastActivity = Date.now();
+      this.setState({
+        isWorking: false,
+        hideHeader: false,
+      });
     });
   }
 
   getCurrentSceneForRoute() {
-    if (this._intervalId > 0){
+    if (this._intervalId > 0) {
       clearInterval(this._intervalId);
       this._intervalId = 0;
     }
 
     switch (this.state.route.toLowerCase()) {
       case Scenes.HOME:
-        return <VFRChartsList
-                  onFavorited={(chartId) => this.handleFavPress(chartId)}
-                  onChartPressed={(chart) => this.handleViewPress(chart)}
-                  vfrChartsToShow={this.state.vfrChartsToShow}
-                />;
+        const chartsList = (
+          <VFRChartsList
+            onFavorited={(chartId) => this.handleFavPress(chartId)}
+            onChartPressed={(chart) => this.handleViewPress(chart)}
+            vfrChartsToShow={Array.from(this._savedVfrCharts).sort(sortModelsByRegionId)}
+          />
+        );
+
+        const noChartsButton = <NoChartsWarningMessage onPress={this._goToDownloadsView} />;
+
+        return this._savedVfrCharts.length === 0 ? noChartsButton : chartsList;
       case Scenes.FAVORITES:
         return <VFRChartsList
                   onFavorited={(chartId) => this.handleFavPress(chartId)}
                   onChartPressed={(chart) => this.handleViewPress(chart)}
-                  vfrChartsToShow={this.state.savedVfrCharts.filter((chart) => { return chart.isFavorited; }) }
+                  vfrChartsToShow={Array.from(this._favoritedCharts).sort(sortModelsByRegionId)}
                 />;
       case Scenes.SETTINGS:
-        return <Settings />;
+        return <SettingsContainer initialRoute={this.state.initialSettingsRoute} />;
       case Scenes.CHARTVIEW:
         this._intervalId = setInterval(() => {
           if (this._shouldHideHeader() && Math.abs(Date.now() - this._timeOfLastActivity) > 3500) {
@@ -118,13 +132,20 @@ class AppContainer extends Component {
           }
         }, 4000);
 
-        return <IChartsMapView style={{flex: 1}} onAction={() => { this._timeOfLastActivity = Date.now(); this.setState({ hideHeader: false }); }} />
+        return <IChartsMapView
+                  style={{flex: 1}}
+                  onAction={() => {
+                    this._timeOfLastActivity = Date.now();
+                    this.setState({ hideHeader: false });
+                  }}
+                  regionId={this.state.selectedChart.regionId}
+                />
       default:
         console.log("Unknown route: ", this.state.route);
         return <VFRChartsList
                 onFavorited={(chartId) => this.handleFavPress(chartId)}
                 onChartPressed={(chart) => this.handleViewPress(chart)}
-                vfrChartsToShow={this.state.vfrChartsToShow}
+                vfrChartsToShow={Array.from(this._savedVfrCharts).sort(sortModelsByRegionId)}
               />;
     }
   }
@@ -132,7 +153,7 @@ class AppContainer extends Component {
   render() {
     const menuWidth = Math.max((Dimensions.get('window').width),(Dimensions.get('window').height))/5;
     const menu = <Menu onPress={(route) => this.handleMenuPress(route)} menuWidth={menuWidth} />;
-    const { selectedChart, route, hideHeader } = this.state;
+    const { selectedChart, route, hideHeader, isWorking } = this.state;
 
     const headerTitle = route === Scenes.CHARTVIEW && selectedChart ? selectedChart.regionName : route;
     const header =
@@ -143,13 +164,22 @@ class AppContainer extends Component {
         onPress={() => this.handleHamburgerPress()}
       />;
 
-    const currentScene = this.getCurrentSceneForRoute();
+    let currentScene = null;
+    if (isWorking) {
+      currentScene = <ActivityIndicator
+                        style={{flex: 1, backgroundColor: Colors.secondary }}
+                        size="large"
+                      />
+    } else {
+      currentScene = this.getCurrentSceneForRoute();
+    }
     const screenHeight = Dimensions.get('window').height;
 
     return (
-      <View style={styles.container} onLayout={(event) => this.setState({reRender: true})}>
+      <View style={styles.container} onLayout={(event) => this.forceUpdate()}>
         <SideMenu
           ref={(sideMenu) => this._sideMenu = sideMenu}
+          mainContentBackgroundColor={Colors.primary}
           menu={menu}
           menuWidth={menuWidth}
           menuOpenBuffer={menuWidth / 2}
@@ -165,6 +195,26 @@ class AppContainer extends Component {
 
   _shouldHideHeader = () => {
     return this._sideMenu && !this._sideMenu.isOpen() && this.state.route === Scenes.CHARTVIEW;
+  }
+
+  _goToDownloadsView = () => {
+    const customLayoutSpring = {
+      duration: 400,
+      create: {
+        type: LayoutAnimation.Types.spring,
+        property: LayoutAnimation.Properties.scaleXY,
+        springDamping: 0.9,
+      },
+      update: {
+        type: LayoutAnimation.Types.spring,
+        springDamping: 0.9,
+      },
+    };
+    LayoutAnimation.configureNext(customLayoutSpring);
+    this.setState({
+      route: Scenes.SETTINGS,
+      initialSettingsRoute: SettingsScenes.DOWNLOAD,
+    });
   }
 }
 

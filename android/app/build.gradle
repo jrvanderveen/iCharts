@@ -126,6 +126,9 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-fs')
+    compile project(':react-native-zip-archive')
+    compile project(':realm')
     compile project(':react-native-linear-gradient')
     compile project(':react-native-vector-icons')
     compile fileTree(dir: "libs", include: ["*.jar"])

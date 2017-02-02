@@ -8,21 +8,17 @@ import {
 } from 'react-native';
 import Border from './Border';
 import MenuCell from './MenuCell';
-import Scenes from '../containers/Scenes';
+import Scenes from '../constants/Scenes';
 import Colors from '../styles/Colors';
 
 const Menu = (props) => {
   var borderStyle = {
-    alignItems: 'flex-start',
     height: 0.5,
     marginLeft: 10,
     width: props.menuWidth - 20,
   };
 
-  const menuBorder =
-    <View style={{alignItems: "flex-start"}}>
-      <Border style={borderStyle} />
-    </View>
+  const menuBorder = <Border style={borderStyle} />
 
   return (
     <View style={styles.menu}>

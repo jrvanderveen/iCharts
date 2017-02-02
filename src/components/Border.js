@@ -11,19 +11,13 @@ import Colors from '../styles/Colors';
 
 const Border = (props) => {
   return (
-    <View style={styles.container}>
-      <View style={[styles.border, props.style]} />
-    </View>
+    <View style={[styles.border, props.style]} />
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center'
-  },
   border: {
-    alignItems: 'center',
+    alignItems: 'flex-start',
     backgroundColor: Colors.border,
     height: 1,
   },

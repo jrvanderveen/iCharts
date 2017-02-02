@@ -8,10 +8,9 @@ import {
   Text,
   View
 } from 'react-native';
-import VFRChart from '../model/VFRChart';
 import Colors from '../styles/Colors';
 import FontStyles from '../styles/FontStyles';
-import ChartCell from './ChartCell'
+import ChartCell from '../containers/ChartCell'
 
 class VFRChartsList extends Component {
   static propTypes = {
@@ -28,7 +27,7 @@ class VFRChartsList extends Component {
     this.renderRow = this.renderRow.bind(this);
   }
 
-  renderRow(vfrChart: VFRChart) {
+  renderRow(vfrChart) {
       return(
         <View>
             <ChartCell

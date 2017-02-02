@@ -1,6 +1,7 @@
 package com.icharts;
 
 import com.facebook.react.ReactActivity;
+import io.realm.react.RealmReactPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 // import com.BV.LinearGradient.LinearGradientPackage;
 

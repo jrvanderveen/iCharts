@@ -24,11 +24,7 @@
 
 RCT_EXPORT_MODULE()
 
-// initial bottom left corner region
-const NSInteger c_topLatitudeInitial = -80;
-const NSInteger c_leftLongitudeInitial = -151;
-const NSInteger c_latDeltaInitial = 40;
-const NSInteger c_longDeltaInitial = 60;
+RCT_EXPORT_VIEW_PROPERTY(regionId, NSString)
 
 const NSInteger c_topLatitude = -40;
 const NSInteger c_rightLongitude = 15;
@@ -37,18 +33,6 @@ const NSInteger c_rightLongitude = 15;
 {
 	IChartsMap *map = [[IChartsMap alloc] init];
 	map.delegate = self;
-	
-	NSString *bundleUrl = [[[NSBundle mainBundle] bundleURL] absoluteString];
-	NSString *urlTemplate = [bundleUrl stringByAppendingString:@"AlbuquerqueTiles2/{z}/{x}/{y}.png"];
-
-	IChartsTileOverlay *tileOverlay = [[IChartsTileOverlay alloc] initWithURLTemplate:urlTemplate];
-	tileOverlay.geometryFlipped = YES;
-	tileOverlay.canReplaceMapContent = YES;
-	tileOverlay.minimumZ = 4;
-	tileOverlay.maximumZ = 6;
-	[map addOverlay:tileOverlay level:MKOverlayLevelAboveLabels];
-	
-	[map setRegion:MKCoordinateRegionMake(CLLocationCoordinate2DMake(c_topLatitudeInitial, c_leftLongitudeInitial), MKCoordinateSpanMake(c_latDeltaInitial, c_longDeltaInitial))];
 	
 	return map;
 }

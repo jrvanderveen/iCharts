@@ -15,6 +15,7 @@ class SideMenu extends Component {
   static propTypes = {
     headerComponent: PropTypes.element.isRequired,
     height: PropTypes.number,
+    mainContentBackgroundColor: PropTypes.string,
     menu: PropTypes.element,
     menuWidth: PropTypes.number.isRequired,
     menuOpenBuffer: PropTypes.number.isRequired,
@@ -93,10 +94,8 @@ class SideMenu extends Component {
                   style={styles.linearGradient}
                 />
               : <View />}
-            <View style={{flex: 1}}>
-              <View>
-                {this.props.headerComponent}
-              </View>
+            <View style={{flex: 1, backgroundColor: this.props.mainContentBackgroundColor}}>
+              {this.props.headerComponent}
               {this.props.children}
             </View>
           </View>
@@ -142,7 +141,8 @@ class SideMenu extends Component {
     Animated.spring(
       this.state.pan,
       {
-        toValue: toValue
+        toValue: toValue,
+        tension: 60,
       }
     ).start();
 
