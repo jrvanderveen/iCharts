@@ -48,10 +48,20 @@ class AppContainer extends Component {
     // query the realm once for favorited charts and rely on auto-updated results
     this._savedVfrCharts = realm.objects('VFRChart');
     this._favoritedCharts = this._savedVfrCharts.filtered('isFavorited = true');
+
+    this._savedVfrCharts.addListener((allSavedCharts, changes) => {
+      if (changes.insertions.length > 0) {
+        this.forceUpdate();
+      }
+    });
   }
 
   componentDidMount() {
     this._timeOfLastActivity = Date.now();
+  }
+
+  componentWillUnmount() {
+    realm.removeAllListeners();
   }
 
   handleFavPress = favoritedChart => {
