@@ -55,6 +55,7 @@ class SettingsContainer extends Component {
             chartCellClass={DownloadChartCell}
             modelsToShow={downloadModels}
             errorMessage={errorMessage}
+            showIsWorkingIndicator={true}
           />
         );
       case SettingsScenes.REMOVE:
@@ -66,6 +67,7 @@ class SettingsContainer extends Component {
             chartCellProps={{
               doRemoveTiles: this._doRemoveTiles
             }}
+            showIsWorkingIndicator={false}
           />
         );
       case SettingsScenes.SETTINGS_MAIN_MENU:

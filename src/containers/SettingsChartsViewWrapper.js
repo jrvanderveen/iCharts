@@ -21,10 +21,12 @@ export default class SettingsChartsViewWrapper extends Component {
     chartCellProps: PropTypes.object,
     errorMessage: PropTypes.string,
     modelsToShow: PropTypes.array,
+    showIsWorkingIndicator: PropTypes.bool,
   };
 
   static defaultProps = {
     modelsToShow: [],
+    showIsWorkingIndicator: false,
   };
 
   constructor(props) {
@@ -34,7 +36,9 @@ export default class SettingsChartsViewWrapper extends Component {
   }
 
   render() {
-    const { chartCellProps, chartCellClass, modelsToShow, errorMessage } = this.props;
+    const { chartCellProps, chartCellClass, modelsToShow, errorMessage, showIsWorkingIndicator } = this.props;
+
+    console.log("chart cell props", chartCellProps, chartCellClass)
 
     return (
       <View style={{flex: 1, backgroundColor: Colors.secondary}}>
@@ -42,7 +46,7 @@ export default class SettingsChartsViewWrapper extends Component {
         <View style={styles.listView}>
           {errorMessage ?
             this._renderErrorMessage(errorMessage) :
-          modelsToShow.length === 0 ?
+          showIsWorkingIndicator && modelsToShow.length === 0 ?
             <ActivityIndicator
               style={{flex: 1, backgroundColor: Colors.secondary }}
               size="small"
