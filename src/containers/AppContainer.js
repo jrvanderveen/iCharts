@@ -167,7 +167,7 @@ class AppContainer extends Component {
     const header =
       <Header
         hideHeader={hideHeader}
-        title={headerTitle.toUpperCase()}
+        title={headerTitle.toLowerCase()}
         height={headerHeight}
         onPress={this.handleHamburgerPress}
       />;

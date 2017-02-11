@@ -80,6 +80,7 @@ class SettingsContainer extends Component {
             />
             <SettingsMenuCell
               buttonText={"Remove Charts"}
+              disabled={!this._savedVfrCharts || this._savedVfrCharts.length === 0}
               navigateToSettingsView={() => {
                 navigator.push({name: 'remove'})
               }}
