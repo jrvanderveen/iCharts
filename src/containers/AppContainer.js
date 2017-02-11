@@ -226,7 +226,10 @@ class AppContainer extends Component {
   }
 
   _shouldHideHeader = () => {
-    return this._sideMenu && !this._sideMenu.isOpen() && this.state.route === Scenes.CHARTVIEW;
+    return this._sideMenu
+      && !this._sideMenu.isOpen()
+      && this.state.route === Scenes.CHARTVIEW
+      && !this.state.hideHeader;
   }
 
   _goToDownloadsView = () => {
