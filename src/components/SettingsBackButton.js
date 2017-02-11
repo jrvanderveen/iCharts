@@ -25,6 +25,7 @@ SettingsBackButton.propTypes = {
 
 const styles = StyleSheet.create({
   backButton: {
+    backgroundColor: Colors.secondary,
     borderColor: Colors.border,
     borderWidth: 1,
     borderRadius: 8,
@@ -32,7 +33,8 @@ const styles = StyleSheet.create({
     justifyContent:'center',
     marginLeft: 10,
     marginRight: 10,
-    marginTop: 10,
+    marginTop: 6,
+    marginBottom: 4,
     paddingLeft: 20,
   },
 });
