@@ -29,7 +29,7 @@ class SettingsContainer extends Component {
 
     this.isStillMounted = false;
     this.state = {
-      downloadModels: undefined,
+      downloadModels: [],
     };
 
     this._savedVfrCharts = realm.objects('VFRChart');
@@ -53,7 +53,7 @@ class SettingsContainer extends Component {
           <SettingsChartsViewWrapper
             navigator={navigator}
             chartCellClass={DownloadChartCell}
-            modelsToShow={downloadModels}
+            modelsToShow={downloadModels.sort(sortModelsByRegionId)}
             errorMessage={errorMessage}
             showIsWorkingIndicator={true}
           />
