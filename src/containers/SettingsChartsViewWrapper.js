@@ -2,6 +2,7 @@
 
 import React, { Component, PropTypes } from 'react';
 import {
+  ActivityIndicator,
   ListView,
   StyleSheet,
   Text,
@@ -39,13 +40,18 @@ export default class SettingsChartsViewWrapper extends Component {
       <View style={{flex: 1, backgroundColor: Colors.secondary}}>
         <SettingsBackButton onPress={() => this.props.navigator.pop()} />
         <View style={styles.listView}>
-          {!errorMessage ?
+          {errorMessage ?
+            this._renderErrorMessage(errorMessage) :
+          modelsToShow.length === 0 ?
+            <ActivityIndicator
+              style={{flex: 1, backgroundColor: Colors.secondary }}
+              size="small"
+            /> :
             <ChartsView
               chartsToShow={modelsToShow}
               chartCellClass={chartCellClass}
               chartCellProps={chartCellProps}
-            /> :
-            this._renderErrorMessage(errorMessage)
+            />
           }
         </View>
       </View>
