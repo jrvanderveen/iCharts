@@ -9,23 +9,32 @@ import {
 } from 'react-native';
 import { Colors } from '../styles';
 
-const NoChartsWarningMessage = ({onPress}) => {
+const NoChartsWarningMessage = ({onPress, message, buttonPrompt}) => {
   return (
     <View style={styles.container}>
-      <Text>
-        It looks like you don't have any charts yet.
+      <Text style={styles.frown}>
+        :(
       </Text>
-      <TouchableOpacity style={styles.button} onPress={onPress}>
-        <Text>
-          Find some...
-        </Text>
-      </TouchableOpacity>
+      <Text>
+        {message}
+      </Text>
+      {
+        buttonPrompt ?
+        <TouchableOpacity style={styles.button} onPress={onPress}>
+          <Text>
+            {buttonPrompt}
+          </Text>
+        </TouchableOpacity>
+        : null
+      }
     </View>
   );
 }
 
 NoChartsWarningMessage.propTypes = {
+  message: PropTypes.string.isRequired,
   onPress: PropTypes.func.isRequired,
+  buttonPrompt: PropTypes.string,
 };
 
 const styles = StyleSheet.create({
@@ -47,6 +56,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
+  frown: {
+    fontSize: 96,
+    paddingBottom: 20,
+  }
 });
 
 export default NoChartsWarningMessage;

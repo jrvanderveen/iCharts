@@ -113,7 +113,13 @@ class AppContainer extends Component {
 
     switch (this.state.route.toLowerCase()) {
       case Scenes.FAVORITES:
-        return (
+        const noFavoritesButton = (
+          <NoChartsWarningMessage
+            message={"It looks like you don't have any favorited charts."}
+            onPress={this._goToDownloadsView}
+          />
+        );
+        const favoritedChartsList = (
           <ChartsView
             chartsToShow={Array.from(this._favoritedCharts).sort(sortModelsByRegionId)}
             chartCellClass={ChartCell}
@@ -123,6 +129,8 @@ class AppContainer extends Component {
             }}
           />
         );
+
+        return this._favoritedCharts.length === 0 ? noFavoritesButton : favoritedChartsList;
       case Scenes.SETTINGS:
         return <SettingsContainer initialRoute={this.state.initialSettingsRoute} />;
       case Scenes.CHARTVIEW:
@@ -141,7 +149,13 @@ class AppContainer extends Component {
         );
       case Scenes.HOME:
       default:
-        const noChartsButton = <NoChartsWarningMessage onPress={this._goToDownloadsView} />;
+        const noChartsButton = (
+          <NoChartsWarningMessage
+            message={"It looks like you don't have any charts yet."}
+            buttonPrompt={"Do you want some?"}
+            onPress={this._goToDownloadsView}
+          />
+        );
         const defaultChartsList = (
           <ChartsView
             chartsToShow={Array.from(this._savedVfrCharts).sort(sortModelsByRegionId)}
