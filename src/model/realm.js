@@ -11,7 +11,7 @@ VFRChart.schema = {
     regionId: 'string',
     publicationDate: 'date',
     expirationDate: 'date',
-    revisionNumber: 'int',
+    version: 'int',
     isFavorited: 'bool',
   }
 };

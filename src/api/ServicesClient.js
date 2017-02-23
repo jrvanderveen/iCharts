@@ -91,7 +91,7 @@ export default class ServicesClient {
 
     model.publicationDate = new Date(modelJson.publicationDate);
     model.expirationDate = new Date(modelJson.expirationDate);
-    model.revisionNumber = parseInt(modelJson.revisionNumber);
+    model.version = parseInt(modelJson.version);
 
     return model;
   }

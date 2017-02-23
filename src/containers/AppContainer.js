@@ -21,7 +21,7 @@ import realm from '../model/realm';
 import SettingsContainer from './SettingsContainer';
 import { Scenes, SettingsScenes } from '../constants';
 import SideMenu from './SideMenu';
-import { getSavedCharts, sortModelsByRegionId } from '../utility';
+import { sortModelsByRegionId } from '../utility';
 
 const headerHeight = 65;
 
@@ -37,13 +37,6 @@ class AppContainer extends Component {
 
     this._sideMenu = null;
     this._intervalId = 0;
-    let savedVfrChartsList = realm.objects('VFRChartsList');
-
-    if (savedVfrChartsList.length < 1) {
-      realm.write(() => {
-        realm.create('VFRChartsList', {name: 'VFRChartsList', charts: getSavedCharts()});
-      });
-    }
 
     // query the realm once for favorited charts and rely on auto-updated results
     this._savedVfrCharts = realm.objects('VFRChart');

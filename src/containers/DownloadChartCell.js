@@ -118,8 +118,10 @@ export default class DownloadChartCell extends Component {
   _fetchAndProcessTiles = () => {
     const { vfrChart } = this.props;
 
-    if (!vfrChart || !vfrChart.regionId)
+    if (!vfrChart || !vfrChart.regionId) {
+      console.log('Error: No region id to fetch this chart with.')
       return;
+    }
 
     this.setState({
       isDownloading: true,
@@ -142,7 +144,7 @@ export default class DownloadChartCell extends Component {
       if (successfullyDownloaded) {
         realm.write(() => {
           const { expirationDate, publicationDate, ...rest } = vfrChart;
-          
+
           realm.create('VFRChart', {
             ...rest,
             publicationDate: new Date(publicationDate),
