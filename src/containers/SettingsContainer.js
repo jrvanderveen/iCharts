@@ -117,7 +117,7 @@ class SettingsContainer extends Component {
     ServicesClient.getAllModels().then((result) => {
       if (this.isStillMounted && result) {
         this.setState({
-          downloadModels: result.models,
+          downloadModels: result.models || [],
           errorMessage: result.error,
         });
       }
