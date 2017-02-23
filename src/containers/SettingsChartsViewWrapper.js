@@ -38,8 +38,6 @@ export default class SettingsChartsViewWrapper extends Component {
   render() {
     const { chartCellProps, chartCellClass, modelsToShow, errorMessage, showIsWorkingIndicator } = this.props;
 
-    console.log("chart cell props", chartCellProps, chartCellClass)
-
     return (
       <View style={{flex: 1, backgroundColor: Colors.primary}}>
         <SettingsBackButton onPress={() => this.props.navigator.pop()} />
